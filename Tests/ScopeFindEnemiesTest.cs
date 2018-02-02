@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Checkers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using warcaby;
@@ -25,7 +26,7 @@ namespace Tests
         }
 
         [TestMethod]
-        public async void TestNoBeat()
+        public async Task TestNoBeat()
         {
             Pawn ownerPawn = new Pawn(p1, new Position(3, 4));
             board.PutOnBoard(ownerPawn);
@@ -35,7 +36,7 @@ namespace Tests
         }
 
         [TestMethod]
-        public async void TestOneBeat()
+        public async Task TestOneBeat()
         {
             Pawn ownerPawn = new Pawn(p1, new Position(3, 4));
             Pawn enemy = new Pawn(p2, new Position(4, 3));
@@ -47,7 +48,7 @@ namespace Tests
         }
 
         [TestMethod]
-        public async void TestTwoBeat() //2 enemies in different way
+        public async Task TestTwoBeat() //2 enemies in different way
         {
             Pawn ownerPawn = new Pawn(p1, new Position(3, 4));
             Pawn enemy0 = new Pawn(p2, new Position(4, 3));
@@ -60,7 +61,7 @@ namespace Tests
         }
 
         [TestMethod]
-        public async void TestBeatOnYouOwn()
+        public async Task TestBeatOnYouOwn()
         {
             Pawn ownerPawn = new Pawn(p1, new Position(3, 4));
             Pawn enemy0 = new Pawn(p1, new Position(4, 3));
@@ -72,7 +73,7 @@ namespace Tests
         }
 
         [TestMethod]
-        async void TestBeatBlocked()
+        public async Task TestBeatBlocked()
         {
             Pawn ownerPawn = new Pawn(p1, new Position(3, 4));
             Pawn enemy0 = new Pawn(p2, new Position(4, 3));
@@ -86,7 +87,7 @@ namespace Tests
 
 
         [TestMethod]
-        public async void EnemyArround() //enemies in ea direction
+        public async Task EnemyArround() //enemies in ea direction
         {
             Pawn ownerPawn = new Pawn(p1, new Position(3, 4));
 
@@ -107,79 +108,76 @@ namespace Tests
         ///    [King beat]
         /// 
 
-        //#region kingBeat
+        #region kingBeat
 
 
-        ////Remember!
-        ////Each free field after fight move is another fight move!
+        //Remember!
+        //Each free field after fight move is another fight move!
 
 
-        //[TestMethod]
-        //public void TestBeatOnYouOwnKing()
-        //{
-        //    Pawn ownerPawn0 = new Pawn(p1, new Position(2, 5));
-        //    Pawn ownerPawn1 = new Pawn(p1, new Position(5, 2));
+        [TestMethod]
+        public async Task TestBeatOnYouOwnKing()
+        {
+            Pawn ownerPawn0 = new Pawn(p1, new Position(2, 5));
+            Pawn ownerPawn1 = new Pawn(p1, new Position(5, 2));
 
-        //    ownerPawn0.SetKing();
-        //    ownerPawn1.SetKing();
+            ownerPawn0.KingState = true;
+            ownerPawn1.KingState = true;
 
-        //    board.PutOnBoard(ownerPawn0, ownerPawn1);
+            board.PutOnBoard(ownerPawn0, ownerPawn1);
+            List<FightMove> availableMoves = await scope.FindFightMoves(ownerPawn0);
+            Assert.IsTrue(availableMoves.Count == 0);
+        }
 
-        //    List<Move> availableMoves = scope.GetAvailableMoves(p1);
-        //    int enemiesFound = Extension.CountFightMoves(availableMoves);
-        //    Assert.IsTrue(enemiesFound == 0);
-        //}
+        [TestMethod]
+        public async Task TestBeatBlockedKing()
+        {
+            Pawn ownerPawn = new Pawn(p1, new Position(2, 5));
+            Pawn enemyPawn0 = new Pawn(p2, new Position(5, 2));
+            Pawn enemyPawn1 = new Pawn(p2, new Position(6, 1));
 
-        //[TestMethod]
-        //public void TestBeatBlockedKing()
-        //{
-        //    Pawn ownerPawn = new Pawn(p1, new Position(2, 5));
-        //    Pawn enemyPawn0 = new Pawn(p2, new Position(5, 2));
-        //    Pawn enemyPawn1 = new Pawn(p2, new Position(6, 1));
+            ownerPawn.KingState = true;
+            enemyPawn0.KingState = true;
+            enemyPawn1.KingState = true;
 
-        //    ownerPawn.SetKing();
-        //    enemyPawn0.SetKing();
-        //    enemyPawn1.SetKing();
+            board.PutOnBoard(ownerPawn, enemyPawn0, enemyPawn1);
 
-        //    board.PutOnBoard(ownerPawn, enemyPawn0, enemyPawn1);
+            List<FightMove> availableMoves = await scope.FindFightMoves(ownerPawn);
+            Assert.IsTrue(availableMoves.Count == 0);
+        }
 
-        //    List<Move> availableMoves = scope.GetAvailableMoves(p1);
-        //    int enemiesFound = Extension.CountFightMoves(availableMoves);
-        //    Assert.IsTrue(enemiesFound == 0);
-        //}
+        [TestMethod]
+        public async Task TestOneBeatKing()
+        {
+            Pawn ownerPawn = new Pawn(p1, new Position(2, 5));
+            Pawn enemyPawn = new Pawn(p2, new Position(5, 2));
 
-        //[TestMethod]
-        //public void TestOneBeatKing()
-        //{
-        //    Pawn ownerPawn = new Pawn(p1, new Position(2, 5));
-        //    Pawn enemyPawn = new Pawn(p2, new Position(5, 2));
+            ownerPawn.KingState = true;
+            enemyPawn.KingState = true;
 
-        //    ownerPawn.SetKing();
-        //    enemyPawn.SetKing();
+            board.PutOnBoard(ownerPawn, enemyPawn);
 
-        //    board.PutOnBoard(ownerPawn, enemyPawn);
+            List<FightMove> availableMoves = await scope.FindFightMoves(ownerPawn);
+            Assert.IsTrue(availableMoves.Count == 2);
+        }
 
-        //    List<Move> availableMoves = scope.GetAvailableMoves(p1);
-        //    Assert.IsTrue(availableMoves.Count == 2);
-        //}
+        [TestMethod]
+        public async Task TestTwoBeatKing()
+        {
+            Pawn ownerPawn = new Pawn(p1, new Position(3, 4));
+            Pawn enemyPawn0 = new Pawn(p2, new Position(5, 2));
+            Pawn enemyPawn1 = new Pawn(p2, new Position(1, 6));
 
-        //[TestMethod]
-        //public void TestTwoBeatKing()
-        //{
-        //    Pawn ownerPawn = new Pawn(p1, new Position(3, 4));
-        //    Pawn enemyPawn0 = new Pawn(p2, new Position(5, 2));
-        //    Pawn enemyPawn1 = new Pawn(p2, new Position(1, 6));
+            ownerPawn.KingState = true;
+            enemyPawn0.KingState = true;
 
-        //    ownerPawn.SetKing();
-        //    enemyPawn0.SetKing();
+            board.PutOnBoard(ownerPawn, enemyPawn0, enemyPawn1);
 
-        //    board.PutOnBoard(ownerPawn, enemyPawn0, enemyPawn1);
+            List<FightMove> availableMoves = await scope.FindFightMoves(ownerPawn);
+            Assert.IsTrue(availableMoves.Count == 3);
+        }
 
-        //    List<Move> availableMoves = scope.GetAvailableMoves(p1);
-        //    Assert.IsTrue(availableMoves.Count == 3);
-        //}
-
-        //#endregion
+        #endregion
     }
 }
 

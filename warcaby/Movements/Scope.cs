@@ -68,7 +68,7 @@ namespace Checkers
             return fightMoves;
         }
 
-        private async Task<List<FightMove>> FindFightMoves(Pawn pawn, MoveDirection direction)
+        public async Task<List<FightMove>> FindFightMoves(Pawn pawn, MoveDirection direction)
         {
             List<FightMove> fightMoves = null;
             Shape shape = Board.GetControlInDirection(pawn.Position, direction);
@@ -80,26 +80,41 @@ namespace Checkers
                 {
                     Pawn tempPawn = shape as Pawn;
 
-                    if (tempPawn == null && !pawn.KingState)
+                    if (tempPawn == null && !pawn.KingState) // normal 
                     {
                         return null;
                     }
 
-                    if (tempPawn != null && tempPawn.Player == pawn.Player)
+                    if (tempPawn != null) //you cannot beat your pawn
                     {
-                        return null;
-                    }
+                        if (tempPawn.Player == pawn.Player)
+                        {
+                            return null;
+                        }
 
-                    fightMoves = new List<FightMove>();
-                    enemy = tempPawn;
+                        fightMoves = new List<FightMove>();
+                        enemy = tempPawn;
+                    }
                 }
 
-                else if (shape is Field)
+                else if (enemy != null)
                 {
-                    fightMoves.Add(new FightMove(pawn.Position, shape.Position, enemy, direction));
-                }
+                    if (shape is Field)
+                    {
+                        fightMoves.Add(new FightMove(pawn.Position, shape.Position, enemy, direction));
 
-                shape = Board.GetControlInDirection(pawn.Position, direction);
+                        if (!pawn.KingState)
+                        {
+                            return fightMoves;
+                        }
+                    }
+
+                    else if (shape is Pawn)
+                    {
+                        return fightMoves;
+                    }
+                }
+                shape = Board.GetControlInDirection(shape.Position, direction);
             }
             return fightMoves;
         }
