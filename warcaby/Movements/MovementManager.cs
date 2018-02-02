@@ -8,7 +8,7 @@ using System.Windows.Forms;
 using Checkers;
 using NUnit.Framework.Internal.Execution;
 
-namespace warcaby
+namespace Checkers
 {
     public class MovementManager
     {

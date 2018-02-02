@@ -4,7 +4,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using Checkers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using warcaby;
 
 namespace Tests
 {

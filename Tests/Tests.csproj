@@ -70,9 +70,9 @@
     <Compile Include="ArtifficialInteligenceTest.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\warcaby\warcaby.csproj">
+    <ProjectReference Include="..\warcaby\Checkers.csproj">
       <Project>{c6886a50-b0a0-4e0a-95cd-ace711cfaaf6}</Project>
-      <Name>warcaby</Name>
+      <Name>Checkers</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

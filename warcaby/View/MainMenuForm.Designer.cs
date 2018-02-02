@@ -1,4 +1,4 @@
-﻿namespace warcaby
+﻿namespace Checkers
 {
     partial class MainMenuForm
     {
@@ -307,7 +307,7 @@
             // 
             // PawnColor1
             // 
-            this.PawnColor1.BackgroundImage = global::warcaby.Properties.Resources.lightPawn;
+            this.PawnColor1.BackgroundImage = global::Checkers.Properties.Resources.lightPawn;
             this.PawnColor1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.PawnColor1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.PawnColor1.Location = new System.Drawing.Point(244, 3);
@@ -352,7 +352,7 @@
             // 
             // PawnColor0
             // 
-            this.PawnColor0.BackgroundImage = global::warcaby.Properties.Resources.darkPawn;
+            this.PawnColor0.BackgroundImage = global::Checkers.Properties.Resources.darkPawn;
             this.PawnColor0.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.PawnColor0.Dock = System.Windows.Forms.DockStyle.Fill;
             this.PawnColor0.Location = new System.Drawing.Point(3, 3);
@@ -544,7 +544,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackgroundImage = global::warcaby.Properties.Resources.ai;
+            this.BackgroundImage = global::Checkers.Properties.Resources.ai;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ClientSize = new System.Drawing.Size(859, 527);
             this.Controls.Add(this.MainTable);

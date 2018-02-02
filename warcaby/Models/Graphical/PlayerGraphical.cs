@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Checkers;
 
-namespace warcaby
+namespace Checkers
 {
     public class PlayerGraphical
     {

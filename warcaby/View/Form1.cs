@@ -7,8 +7,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using warcaby;
-using warcaby.Properties;
+using Checkers;
+using Checkers.Properties;
 
 namespace Checkers
 {

@@ -6,8 +6,7 @@ using System.Threading.Tasks;
 using Castle.Components.DictionaryAdapter;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Checkers;
-using warcaby;
-using warcaby.Movements;
+using Checkers.Movements;
 
 namespace Tests
 {

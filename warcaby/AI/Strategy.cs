@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace warcaby.Engine
+namespace Checkers.Engine
 {
     public enum Strategy
     {

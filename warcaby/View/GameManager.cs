@@ -5,9 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Checkers;
-using warcaby.Engine;
+using Checkers.Engine;
 
-namespace warcaby
+namespace Checkers
 {
     public class GameManager
     {

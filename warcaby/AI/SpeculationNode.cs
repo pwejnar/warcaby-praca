@@ -6,8 +6,8 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using warcaby;
-using warcaby.Engine;
+using Checkers;
+using Checkers.Engine;
 
 namespace Checkers
 {

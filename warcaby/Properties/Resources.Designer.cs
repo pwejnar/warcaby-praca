@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace warcaby.Properties {
+namespace Checkers.Properties {
     using System;
     
     

@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using Castle.Components.DictionaryAdapter;
 using NUnit.Framework;
-using warcaby;
-using warcaby.Movements;
+using Checkers;
+using Checkers.Movements;
 
 namespace Checkers
 {

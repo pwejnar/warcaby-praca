@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Checkers;
-using warcaby.Engine;
+using Checkers.Engine;
 
-namespace warcaby
+namespace Checkers
 {
     class AiPlayer : Player
     {

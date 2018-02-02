@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using Castle.Components.DictionaryAdapter;
 using Checkers;
 
-namespace warcaby.Movements
+namespace Checkers.Movements
 {
     public class FightMoveTree :IGotChildrens
     {

@@ -7,7 +7,7 @@ using System.Windows.Forms;
 using Castle.Components.DictionaryAdapter;
 using Checkers;
 
-namespace warcaby
+namespace Checkers
 {
     public static class Extension
     {

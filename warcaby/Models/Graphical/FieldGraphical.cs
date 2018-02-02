@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using Checkers;
 
-namespace warcaby
+namespace Checkers
 {
     class FieldGraphical : PictureBox
     {

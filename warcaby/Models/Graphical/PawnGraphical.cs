@@ -6,9 +6,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Checkers;
-using warcaby.Properties;
+using Checkers.Properties;
 
-namespace warcaby
+namespace Checkers
 {
     public enum PawnColor
     {

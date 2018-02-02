@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "warcaby", "warcaby\warcaby.csproj", "{C6886A50-B0A0-4E0A-95CD-ACE711CFAAF6}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Checkers", "warcaby\Checkers.csproj", "{C6886A50-B0A0-4E0A-95CD-ACE711CFAAF6}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "Tests\Tests.csproj", "{355B7372-E72A-4C4B-A696-18A4EFF9F70B}"
 EndProject
