@@ -27,14 +27,14 @@ namespace warcaby.Movements
             moveDirections.Remove(Movement.GetOpositteDirection(FightMove.MoveDirection));
             List<FightMove> fightMoves = await scope.FindFightMoves(pawnNewState, moveDirections);
 
-            if (fightMoves == null)
-                return;
+            if (fightMoves != null)
 
-            foreach (FightMove fightMove in fightMoves)
             {
-                NextElements.Add(new FightMoveNode(boardNewState, fightMove));
+                foreach (FightMove fightMove in fightMoves)
+                {
+                    NextElements.Add(new FightMoveNode(boardNewState, fightMove));
+                }
             }
-
         }
     }
 }

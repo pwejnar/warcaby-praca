@@ -14,21 +14,23 @@ namespace warcaby.Movements
     {
         public List<FightMoveNode> Nodes { get; set; }
 
-        public FightMoveTree(Board sourceBoard)
+        public FightMoveTree(Board sourceBoard, Pawn pawn)
         {
             Nodes = new List<FightMoveNode>();
-            GenerateTree(sourceBoard);
+            GenerateTree(sourceBoard, pawn);
         }
 
-        private async void GenerateTree(Board sourceBoard)
+        private async void GenerateTree(Board sourceBoard, Pawn pawn)
         {
             Scope scope = new Scope(sourceBoard);
-            Pawn p = null;
-            List<FightMove> fightMoves = await scope.FindFightMoves(p, Movement.GetDirections());
+            List<FightMove> fightMoves = await scope.FindFightMoves(pawn, Movement.GetDirections());
 
-            foreach (var fightMove in fightMoves)
+            if (fightMoves != null)
             {
-                Nodes.Add(new FightMoveNode(sourceBoard, fightMove));
+                foreach (var fightMove in fightMoves)
+                {
+                    Nodes.Add(new FightMoveNode(sourceBoard, fightMove));
+                }
             }
         }
     }

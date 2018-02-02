@@ -14,12 +14,12 @@ namespace Checkers
 
         public Field(Position pos)
         {
-            base.SetPosition(pos);
+            base.Position = pos;
         }
 
         public override Shape Clone()
         {
-            return new Field(GetPosition());
+            return new Field(Position);
         }
     }
 }

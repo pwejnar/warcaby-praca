@@ -36,9 +36,9 @@ namespace Checkers
             return shapes;
         }
 
-        public List<Pawn> GetPlayerPawns(Player owner)
+        public List<Pawn> GetPlayerPawns(Player player)
         {
-            return GetPawns().Where(x => x.GetOwner() == owner).ToList();
+            return GetPawns().Where(x => x.Player == player).ToList();
         }
 
         public List<Pawn> GetPawns()
@@ -62,22 +62,22 @@ namespace Checkers
 
         public void PutOnBoard(Shape shape)
         {
-            shapes[shape.GetPosition().GetRow(), shape.GetPosition().GetColumn()] = shape;
+            shapes[shape.Position.Row, shape.Position.Column] = shape;
         }
 
         public void PutOnBoard(params Shape[] shapesTab)
         {
             foreach (Shape shape in shapesTab)
             {
-                shapes[shape.GetPosition().GetRow(), shape.GetPosition().GetColumn()] = shape;
+                shapes[shape.Position.Row, shape.Position.Column] = shape;
             }
 
         }
 
         public void Remove(Pawn pawn)
         {
-            int row = pawn.GetPosition().GetRow();
-            int column = pawn.GetPosition().GetColumn();
+            int row = pawn.Position.Row;
+            int column = pawn.Position.Column;
 
             shapes[row, column] = new Field(new Position(row, column));
             //remove pawn? auto?
@@ -95,28 +95,28 @@ namespace Checkers
 
         public void ChangePosition(Pawn pawn, Field field)
         {
-            Position pawnPosition = pawn.GetPosition();
-            Position fieldPosition = field.GetPosition();
+            Position pawnPosition = pawn.Position;
+            Position fieldPosition = field.Position;
 
             SetControlInPosition(pawn, fieldPosition);
             SetControlInPosition(field, pawnPosition);
 
-            pawn.SetPosition(fieldPosition);
-            field.SetPosition(pawnPosition);
+            pawn.Position = fieldPosition;
+            field.Position = pawnPosition;
         }
 
         public void CheckIfScoreKing(Pawn pawn)
         {
-            if (!pawn.GetKingState())
+            if (!pawn.KingState)
             {
-                Player player = pawn.GetOwner();
-                int pawnRow = pawn.GetPosition().GetRow();
+                Player player = pawn.Player;
+                int pawnRow = pawn.Position.Row;
 
                 if (player.GetDirection() == GameDirection.Down && pawnRow == verticalCellCount - 1)
-                    pawn.SetKing();
+                    pawn.KingState = true;
 
                 else if (player.GetDirection() == GameDirection.Up && pawnRow == 0)
-                    pawn.SetKing();
+                    pawn.KingState = true;
             }
         }
 
@@ -227,19 +227,19 @@ namespace Checkers
 
         public Shape GetControlInPosition(Position pos)
         {
-            if (pos.GetRow() >= verticalCellCount || pos.GetColumn() >= verticalCellCount)
+            if (pos.Row >= verticalCellCount || pos.Column >= verticalCellCount)
                 return null;
 
-            if (pos.GetRow() < 0 || pos.GetColumn() < 0)
+            if (pos.Row < 0 || pos.Column < 0)
                 return null;
 
-            return shapes[pos.GetRow(), pos.GetColumn()];
+            return shapes[pos.Row, pos.Column];
         }
 
         public void SetControlInPosition(Shape shape, Position pos)
         {
-            int row = pos.GetRow();
-            int col = pos.GetColumn();
+            int row = pos.Row;
+            int col = pos.Column;
 
             if (row >= verticalCellCount || col >= verticalCellCount)
                 throw new Exception();
@@ -247,7 +247,7 @@ namespace Checkers
             if (row < 0 || col < 0)
                 throw new Exception();
 
-            shapes[pos.GetRow(), pos.GetColumn()] = shape;
+            shapes[pos.Row, pos.Column] = shape;
         }
     }
 }

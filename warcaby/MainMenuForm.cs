@@ -88,7 +88,7 @@ namespace warcaby
             else
                 starting = p1;
 
-            Form1 f1 = new Form1(p0, p1, starting);
+            Form1 f1 = new Form1(p0, p1);
             f1.Show();
             this.Hide();
         }

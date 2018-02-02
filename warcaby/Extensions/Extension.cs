@@ -79,10 +79,10 @@ namespace warcaby
         {
             List<FightMove> fmoves = new List<FightMove>();
 
-            foreach (Move move  in tree)
+            foreach (Move move in tree)
             {
                 FightMove fm = move as FightMove;
-                if(fm!= null)
+                if (fm != null)
                     fmoves.Add(fm);
             }
             return fmoves;
@@ -100,18 +100,5 @@ namespace warcaby
             }
             return fmoves;
         }
-
-        public static int CountFightMoves(List<Move> availableMoves)
-        {
-            int counter = 0;
-
-            foreach (Move obj in availableMoves)
-            {
-                if (obj is FightMove)
-                    counter++;
-            }
-            return counter;
-        }
-
     }
 }

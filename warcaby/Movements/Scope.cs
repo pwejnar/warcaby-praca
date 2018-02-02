@@ -40,9 +40,14 @@ namespace Checkers
             return moves;
         }
 
-        public async Task<List<FightMove>> FindFightMoves(Pawn pawn, List<MoveDirection> directions)
+        public async Task<List<FightMove>> FindFightMoves(Pawn pawn, List<MoveDirection> directions = null)
         {
             List<Task<List<FightMove>>> tasks = new List<Task<List<FightMove>>>();
+
+            if (directions == null)
+            {
+                directions = Movement.GetDirections();
+            }
 
             foreach (MoveDirection direction in directions)
             {
