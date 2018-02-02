@@ -1,5 +1,6 @@
 ﻿using System;
 using System.CodeDom;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,7 +11,7 @@ using Checkers;
 
 namespace warcaby.Movements
 {
-    public class FightMoveTree
+    public class FightMoveTree :IGotChildrens
     {
         public List<FightMoveNode> Nodes { get; set; }
 
@@ -32,6 +33,11 @@ namespace warcaby.Movements
                     Nodes.Add(new FightMoveNode(sourceBoard, fightMove));
                 }
             }
+        }
+
+        public IList GetChildrens()
+        {
+            return Nodes;
         }
     }
 }

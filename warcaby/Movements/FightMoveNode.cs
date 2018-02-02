@@ -1,13 +1,15 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Castle.Components.DictionaryAdapter;
 using Checkers;
 
 namespace warcaby.Movements
 {
-    public class FightMoveNode
+    public class FightMoveNode : IGotChildrens
     {
         public FightMove FightMove { get; set; }
         public List<FightMoveNode> NextElements { get; set; }
@@ -15,6 +17,7 @@ namespace warcaby.Movements
         public FightMoveNode(Board board, FightMove fightMove)
         {
             FightMove = fightMove;
+            NextElements = new List<FightMoveNode>();
             FindNextNodes(board);
         }
 
@@ -35,6 +38,11 @@ namespace warcaby.Movements
                     NextElements.Add(new FightMoveNode(boardNewState, fightMove));
                 }
             }
+        }
+
+        public IList GetChildrens()
+        {
+            return NextElements;
         }
     }
 }
