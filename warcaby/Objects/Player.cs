@@ -9,29 +9,13 @@ namespace Checkers
 {
     public class Player
     {
-        private string nick;
-        private GameDirection direction;
+        public string Nick { get; set; }
+        public GameDirection Direction { get; set; }
 
         public Player(string nick, GameDirection gd)
         {
-            this.nick = nick;
-            this.direction = gd;
-        }//
-
-        public void SetNick(string nick)
-        {
-            this.nick = nick;
-
-        }
-
-        public string GetNick()
-        {
-            return nick;
-        }
-
-        public GameDirection GetDirection()
-        {
-            return direction;
+            this.Nick = nick;
+            this.Direction = gd;
         }
     }
 }

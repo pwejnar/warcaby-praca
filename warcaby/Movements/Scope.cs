@@ -20,6 +20,31 @@ namespace Checkers
             Board = board;
         }
 
+
+        public async Task<List<Move>> FindMoves(Pawn pawn)
+        {
+            List<Task<List<Move>>> tasks = new List<Task<List<Move>>>();
+            List<MoveDirection> directions = Movement.GetDirections(pawn.Player.Direction);
+
+            foreach (MoveDirection direction in directions)
+            {
+                tasks.Add(FindMove(pawn, direction));
+            }
+
+            await Task.WhenAll(tasks.ToArray());
+
+            List<Move> moves = new List<Move>();
+
+            foreach (Task<List<Move>> task in tasks)
+            {
+                if (task.Result != null)
+                {
+                    moves.AddRange(task.Result);
+                }
+            }
+            return moves;
+        }
+
         private async Task<List<Move>> FindMove(Pawn mainPawn, MoveDirection direction)
         {
             List<Move> moves = new List<Move>();

@@ -76,7 +76,7 @@ namespace warcaby
         public void EndGame()
         {
             Player losePlayer = ActualPlayer.Player;
-            string endText = string.Format("Game over Player {0} lose!", losePlayer.GetNick());
+            string endText = string.Format("Game over Player {0} lose!", losePlayer.Nick);
             GameForm.ShowMessage(endText);
             BoardForm.SourceBoard.ClearPawns();
             UpdateBoardState();

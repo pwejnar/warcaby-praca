@@ -112,10 +112,10 @@ namespace Checkers
                 Player player = pawn.Player;
                 int pawnRow = pawn.Position.Row;
 
-                if (player.GetDirection() == GameDirection.Down && pawnRow == verticalCellCount - 1)
+                if (player.Direction == GameDirection.Down && pawnRow == verticalCellCount - 1)
                     pawn.KingState = true;
 
-                else if (player.GetDirection() == GameDirection.Up && pawnRow == 0)
+                else if (player.Direction == GameDirection.Up && pawnRow == 0)
                     pawn.KingState = true;
             }
         }
@@ -143,14 +143,14 @@ namespace Checkers
             if (_player == null)
                 throw new Exception("Player not set");
 
-            if (_player.GetDirection() == GameDirection.Down)
+            if (_player.Direction == GameDirection.Down)
             {
                 min = 0;
                 blockade = horizontalCellCount - 1;
                 jump = 1;
             }
 
-            else if (_player.GetDirection() == GameDirection.Up)
+            else if (_player.Direction == GameDirection.Up)
             {
                 min = horizontalCellCount - 1;
                 blockade = 0;
