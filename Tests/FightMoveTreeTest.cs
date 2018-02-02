@@ -150,5 +150,27 @@ namespace Tests
             var longestWay = c.GetGeneratedLists().Where(x => x.Count == 2).ToList();
             Assert.IsTrue(listCountOk && longestWay != null);
         }
+
+
+        [TestMethod]
+        public void case6AroundLoopTrap()
+        {
+            Pawn ownerPawn = new Pawn(p1, new Position(2, 1));
+
+            Pawn enemy0 = new Pawn(p2, new Position(3, 2));
+            Pawn enemy1 = new Pawn(p2, new Position(3, 4));
+            Pawn enemy2 = new Pawn(p2, new Position(1, 4));
+            Pawn enemy3 = new Pawn(p2, new Position(1, 2));
+
+            board.PutOnBoard(ownerPawn, enemy0, enemy1, enemy2, enemy3);
+
+            FightMoveTree tree = new FightMoveTree(board, ownerPawn);
+            TreeConverter<FightMoveNode> c = new TreeConverter<FightMoveNode>(tree.Nodes);
+            bool listCountOk = c.GetGeneratedLists().Count == 2;
+            var longestWay = c.GetGeneratedLists().Where(x => x.Count == 4).ToList();
+            Assert.IsTrue(listCountOk && longestWay != null);
+        }
+
+
     }
 }
