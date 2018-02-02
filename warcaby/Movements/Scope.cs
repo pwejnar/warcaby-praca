@@ -4,143 +4,99 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Castle.Components.DictionaryAdapter;
+using NUnit.Framework;
 using warcaby;
+using warcaby.Movements;
 
 namespace Checkers
 {
     public class Scope
     {
-        private Board board;
+        public Board Board { get; set; }
+
         public Scope(Board board)
         {
-            this.board = board;
+            Board = board;
         }
 
-        public List<Move> GetAvailableMoves(Pawn pawn, bool forceBeat = true)
+        private async Task<List<Move>> FindMove(Pawn mainPawn, MoveDirection direction)
         {
             List<Move> moves = new List<Move>();
-            moves.AddRange(FindEnemies(pawn));
+            Shape shape = Board.GetControlInDirection(mainPawn.Position, direction);
 
-            if (forceBeat && moves.Count > 0)
-                return moves;
+            if (!(shape is Field))
+            {
+                return null;
+            }
 
-            moves.AddRange(FindMoves(pawn));
+            do
+            {
+                moves.Add(new Move(mainPawn.Position, shape.Position, direction));
+                shape = Board.GetControlInDirection(shape.Position, direction);
+
+            } while (shape is Field && mainPawn.KingState);
+
             return moves;
         }
 
-        public List<Move> GetAvailableMoves(Player player, bool forceBeat = true)
+        public async Task<List<FightMove>> FindFightMoves(Pawn pawn, List<MoveDirection> directions)
         {
-            List<Pawn> pawns = board.GetPlayerPawns(player);
-            List<Move> allMoves = new List<Move>();
+            List<Task<List<FightMove>>> tasks = new List<Task<List<FightMove>>>();
 
-            foreach (Pawn pawn in pawns)
+            foreach (MoveDirection direction in directions)
             {
-                var fightMoves = FindEnemies(pawn);
-                allMoves.AddRange(fightMoves);
+                tasks.Add(FindFightMoves(pawn, direction));
             }
 
-            if (forceBeat && allMoves.Count > 0)
-                return allMoves;
+            await Task.WhenAll(tasks.ToArray());
 
-            foreach (Pawn pawn in pawns)
+            List<FightMove> fightMoves = new List<FightMove>();
+
+            foreach (Task<List<FightMove>> task in tasks)
             {
-                var normalMoves = FindMoves(pawn);
-                allMoves.AddRange(normalMoves);
-            }
-
-            return allMoves;
-        }
-
-        private List<Move> FindMoves(Pawn mainPawn)
-        {
-            if (mainPawn == null)
-                throw new Exception("pawn cannot be null");
-
-            List<Move> moves = new List<Move>();
-            List<MoveDirection> availableDirections = mainPawn.GetKingState() ?
-                Movement.GetDirections()
-                : Movement.GetDirections(mainPawn.GetOwner().GetDirection());
-
-            foreach (var direction in availableDirections)
-            {
-                var availableField = board.GetControlInDirection(mainPawn.GetPosition(), direction) as Field;
-
-                while (availableField != null)
+                if (task.Result != null)
                 {
-                    moves.Add(new Move(mainPawn.GetPosition(), availableField.GetPosition(), direction));
-                    if (!mainPawn.GetKingState()) break;
-                    availableField = board.GetControlInDirection(availableField.GetPosition(), direction) as Field;
+                    fightMoves.AddRange(task.Result);
                 }
             }
-            return moves;
+            return fightMoves;
         }
 
-
-        private List<FightMove> FindEnemies(Pawn mainPawn, Position afterMove, List<MoveDirection> directions)
+        private async Task<List<FightMove>> FindFightMoves(Pawn pawn, MoveDirection direction)
         {
-            bool kingStatus = mainPawn.GetKingState();
-            List<FightMove> fightmoves = new List<FightMove>();
+            List<FightMove> fightMoves = null;
+            Shape shape = Board.GetControlInDirection(pawn.Position, direction);
+            Pawn enemy = null;
 
-            foreach (var beatDirection in directions)
+            while (shape != null)
             {
-                Pawn enemy = null;
-                Shape shape = board.GetControlInDirection(afterMove, beatDirection);
-
-                while (shape != null)
+                if (enemy == null)
                 {
-                    if (enemy == null)
-                    {
-                        enemy = shape as Pawn;
+                    Pawn tempPawn = shape as Pawn;
 
-                        if (enemy == null && !kingStatus || enemy != null && enemy.GetOwner() == mainPawn.GetOwner())
-                            break;
+                    if (tempPawn == null && !pawn.KingState)
+                    {
+                        return null;
                     }
 
-                    else if (shape is Pawn)
-                        break;
-
-                    else
+                    if (tempPawn != null && tempPawn.Player == pawn.Player)
                     {
-                        Field availableField = shape as Field;
-
-                        if (availableField != null)
-                        {
-                            FightMove fm = new FightMove(afterMove, availableField.GetPosition(), enemy, beatDirection);
-                            fm.NextMoves = GetNextBeats(fm, mainPawn);
-                            fightmoves.Add(fm);
-                        }
-
-                        if (!kingStatus) break;
+                        return null;
                     }
 
-                    shape = board.GetControlInDirection(shape.GetPosition(), beatDirection);
+                    fightMoves = new List<FightMove>();
+                    enemy = tempPawn;
                 }
+
+                else if (shape is Field)
+                {
+                    fightMoves.Add(new FightMove(pawn.Position, shape.Position, enemy, direction));
+                }
+
+                shape = Board.GetControlInDirection(pawn.Position, direction);
             }
-            return fightmoves;
-        }
-
-        private List<FightMove> GetNextBeats(FightMove move, Pawn mainPawn)
-        {
-            List<MoveDirection> availableDirections = Movement.GetDirections();
-            MoveDirection opositteDirection = Movement.GetOpositteDirection(move.MoveDirection);
-            availableDirections.Remove(opositteDirection);
-
-            List<FightMove> nextBeats = FindEnemies(mainPawn, move.PositionAfterMove, availableDirections);
-            return nextBeats;
-        }
-
-        private List<FightMove> FindEnemies(Pawn mainPawn)
-        {
-            List<FightMove> enemies = FindEnemies(mainPawn, mainPawn.GetPosition(), Movement.GetDirections());
-
-            foreach (FightMove fm in enemies)
-            {
-                TreeConverter<FightMove> converter = new TreeConverter<FightMove>(fm);
-                List<List<FightMove>> fightMovesList = converter.GetGeneratedLists();
-                fm.SetPossibleWays(fightMovesList);
-            }
-
-            return enemies;
+            return fightMoves;
         }
     }
 }

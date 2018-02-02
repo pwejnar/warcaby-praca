@@ -23,7 +23,7 @@ namespace warcaby
         {
             this.pawn = pawn;
 
-            if (pawn.GetKingState())
+            if (pawn.KingState)
             {
                 this.Image = color == PawnColor.Dark ? Resources.darkKing : Resources.lightKinggg;
             }

@@ -46,7 +46,7 @@ namespace warcaby
 
                     if (pawn != null)
                     {
-                        PawnColor color = p1.Player == pawn.GetOwner() ? p1.PawnsColor : p2.PawnsColor;
+                        PawnColor color = p1.Player == pawn.Player ? p1.PawnsColor : p2.PawnsColor;
                         PawnGraphical pawnGraphical = new PawnGraphical(pawn, color);
                         pawnGraphical.Click += new EventHandler(PawnClicked);
                         Controls.Add(pawnGraphical);

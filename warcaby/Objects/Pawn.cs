@@ -8,36 +8,24 @@ namespace Checkers
 {
     public class Pawn : Shape
     {
-        private bool king;
-        private Player _player;
+        public bool KingState { get; set; }
+        public Player Player { get; set; }
 
         public Pawn(Player player, Position pos)
         {
-            _player = player;
-            king = false;
-            base.SetPosition(pos);
-        }
-
-        public void SetKing(bool kingState = true)
-        {
-            this.king = kingState;
-        }
-
-        public Player GetOwner()
-        {
-            return _player;
-        }
-
-        public bool GetKingState()
-        {
-            return king;
+            Player = player;
+            KingState = false;
+            Position = pos;
         }
 
         public override Shape Clone()
         {
-            Pawn pawn = new Pawn(this._player, this.GetPosition());
-            if (king)
-                pawn.SetKing();
+            Pawn pawn = new Pawn(this.Player, this.Position);
+
+            if (KingState)
+            {
+                pawn.KingState = true;
+            }
             return pawn;
         }
     }

@@ -47,33 +47,33 @@ namespace warcaby
             control.Refresh();
         }
 
-        public static List<List<FightMove>> GetlongestWays(List<FightMove> tree)
-        {
-            int? maxCount = null;
-            List<List<FightMove>> longestPaths = new List<List<FightMove>>();
+        //public static List<List<FightMove>> GetlongestWays(List<FightMove> tree)
+        //{
+        //    int? maxCount = null;
+        //    List<List<FightMove>> longestPaths = new List<List<FightMove>>();
 
-            foreach (FightMove list in tree)
-            {
-                foreach (List<FightMove> fightMove in list.GetPossibleWays())
-                {
-                    int longestWayCount = fightMove.Count;
+        //    foreach (FightMove list in tree)
+        //    {
+        //        foreach (List<FightMove> fightMove in list.GetPossibleWays())
+        //        {
+        //            int longestWayCount = fightMove.Count;
 
-                    if (maxCount == null || longestWayCount > maxCount)
-                    {
-                        maxCount = longestWayCount;
-                        longestPaths.Clear();
-                        longestPaths.Add(fightMove);
-                    }
+        //            if (maxCount == null || longestWayCount > maxCount)
+        //            {
+        //                maxCount = longestWayCount;
+        //                longestPaths.Clear();
+        //                longestPaths.Add(fightMove);
+        //            }
 
-                    else if (maxCount == longestWayCount)
-                    {
-                        longestPaths.Add(fightMove);
-                    }
+        //            else if (maxCount == longestWayCount)
+        //            {
+        //                longestPaths.Add(fightMove);
+        //            }
 
-                }
-            }
-            return longestPaths;
-        }
+        //        }
+        //    }
+        //    return longestPaths;
+        //}
 
         public static List<FightMove> ToFightMoves(List<Move> tree)
         {

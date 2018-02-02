@@ -27,7 +27,7 @@ namespace warcaby
         {
             PlayerGraphical actualPlayer = GameManager.ActualPlayer;
 
-            if (pawn.GetOwner() == actualPlayer.Player)
+            if (pawn.Player == actualPlayer.Player)
             {
                 this.SelectedPawn = pawn;
             }

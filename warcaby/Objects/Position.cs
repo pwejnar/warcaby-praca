@@ -8,28 +8,19 @@ namespace Checkers
 {
     public struct Position
     {
-        private int row;
-        private int column;
+        public int Row { get; set; }
+        public int Column { get; set; }
 
         public Position(int row, int column)
         {
-            this.row = row;
-            this.column = column;
+            Row = row;
+            Column = column;
         }
 
-        public int GetRow()
-        {
-            return row;
-        }
-
-        public int GetColumn()
-        {
-            return column;
-        }
 
         public Position GetNextPosition(int x, int y)  // offset
         {
-            return new Position(this.row + x, this.column + y);
+            return new Position(this.Row + x, this.Column + y);
         }
 
         public Position GetPositionlInDirection(MoveDirection md)

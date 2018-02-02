@@ -8,18 +8,8 @@ namespace Checkers
 {
     public abstract class Shape
     {
-        private Position position;
+        public Position Position { get; set; }
 
         public abstract Shape Clone();
-
-        public void SetPosition(Position position)
-        {
-            this.position= position;
-        }
-
-        public Position GetPosition()
-        {
-            return position;
-        }
     }
 }
