@@ -61,8 +61,8 @@
 
 //        private List<Move> GetMaxInMinRating()
 //        {
-//            // in worse case i would have..
-//            //szukasz maksa wsród minów 
+//             in worse case i would have..
+//            szukasz maksa wsród minów
 
 //            int? max = null;
 //            List<Move> best = null;
@@ -157,8 +157,8 @@
 //            }
 //            else
 //            {
-//                //List<FightMove> fightMoves = Extension.ToFightMoves(bestMove);
-//                //FightMove.PrepareMove(board, fightMoves);
+//                List<FightMove> fightMoves = Extension.ToFightMoves(bestMove);
+//                FightMove.PrepareMove(board, fightMoves);
 //            }
 
 //            newDictionary = null;

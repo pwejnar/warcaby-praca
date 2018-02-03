@@ -4,8 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using Castle.Components.DictionaryAdapter;
-using NUnit.Framework;
 using Checkers;
 using Checkers.Movements;
 
@@ -20,6 +18,51 @@ namespace Checkers
             Board = board;
         }
 
+
+        public async Task<List<Move>> FindMoves(Player player, bool forceBeat)
+        {
+            List<Pawn> playerPawns = Board.GetPlayerPawns(player);
+            List<Move> allMoves = null;
+
+            foreach (Pawn pawn in playerPawns)
+            {
+                List<Move> pawnMoves = null;
+
+                if (forceBeat)
+                {
+                    List<FightMove> detectedFightMoves = await FindFightMoves(pawn);
+
+                    if (detectedFightMoves != null)
+                    {
+                        pawnMoves = new List<Move>();
+                        pawnMoves.AddRange(detectedFightMoves);
+                    }
+                }
+
+                if (pawnMoves == null)
+                {
+                    List<Move> detectedMoves = await FindMoves(pawn);
+
+
+                    if (detectedMoves != null)
+                    {
+                        pawnMoves = new List<Move>();
+                        pawnMoves.AddRange(detectedMoves);
+                    }
+                }
+
+                if (pawnMoves != null)
+                {
+                    if (allMoves == null)
+                    {
+                        allMoves = new List<Move>();
+                    }
+
+                    allMoves.AddRange(pawnMoves);
+                }
+            }
+            return allMoves;
+        }
 
         public async Task<List<Move>> FindMoves(Pawn pawn)
         {
