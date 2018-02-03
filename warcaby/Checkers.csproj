@@ -75,6 +75,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AI\Rating\GameStatus.cs" />
     <Compile Include="Models\AiPlayer.cs" />
     <Compile Include="AI\Rating\KeyRating.cs" />
     <Compile Include="AI\Rating\SpeculationListRating.cs" />

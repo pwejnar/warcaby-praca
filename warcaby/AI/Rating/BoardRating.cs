@@ -1,48 +1,38 @@
-﻿//using System;
-//using System.Collections.Generic;
-//using System.Linq;
-//using System.Text;
-//using System.Threading.Tasks;
-//using warcaby;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using warcaby.AI.Rating;
 
-//namespace Checkers
-//{
-//    public class BoardRating
-//    {
-//        private static readonly int rateForPawn = 2;
-//        private static readonly int rateForKing = 10;
+namespace Checkers
+{
+    public class BoardRating
+    {
+        private static readonly int rateForPawn = 1;
+        private static readonly int rateForKing = 3;
 
-//        //private static readonly int rateForDraw = 1;
-//        //private static readonly int rateForWinGame = 100;
-//        //private static readonly int rateForLoseGame = -100;
+        public static GameStatus Rate(Board board, Player player)
+        {
+            int mainPawnsCount = board.GetPawns().Count(x => x.KingState == false && x.Player == player);
+            int enemyPawnsCount = board.GetPawns().Count(x => x.KingState == false && x.Player != player);
 
-//        //zbicie damki przecwinika bardziej oplacalne niz zdobycie damki 
+            int mainKingsCount = board.GetPawns().Count(x => x.KingState && x.Player == player);
+            int enemyKingsCount = board.GetPawns().Count(x => x.KingState && x.Player != player);
 
-//        private Board board;
-//        private Player player;
+            int score = (mainPawnsCount - enemyPawnsCount) * rateForPawn + (mainKingsCount - enemyKingsCount) * rateForKing;
 
-//        public BoardRating(Board board, Player player)
-//        {
-//            this.board = board;
-//            this.player = player;
-//        }
+            if (enemyPawnsCount + enemyKingsCount == 0)
+            {
+                return new GameStatus(score, false, true);
+            }
 
-//        public int Rate()
-//        {
+            else if (mainPawnsCount + mainKingsCount == 0)
+            {
+                return new GameStatus(score, true, false);
+            }
 
-//            int mainPawnsCount = board.GetPawns().Count(x => x.GetKingState() == false && x.GetOwner() == player);
-//            int enemyPawnsCount = board.GetPawns().Count(x => x.GetKingState() == false && x.GetOwner() != player);
-
-//            int mainKingsCount = board.GetPawns().Count(x => x.GetKingState() && x.GetOwner() == player);
-//            int enemyKingsCount = board.GetPawns().Count(x => x.GetKingState() && x.GetOwner() != player);
-
-//            if (enemyPawnsCount + enemyKingsCount == 0)
-//                return 1000;
-
-//            int result = (mainKingsCount - enemyKingsCount) * rateForKing + (mainPawnsCount - enemyPawnsCount) * rateForPawn;
-
-
-//            return result;
-//        }
-//    }
-//}
+            return new GameStatus(score);
+        }
+    }
+}
