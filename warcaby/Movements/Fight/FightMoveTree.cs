@@ -1,15 +1,9 @@
-﻿using System;
-using System.CodeDom;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using Castle.Components.DictionaryAdapter;
 using Checkers;
+using Checkers.Movements;
 
-namespace Checkers.Movements
+namespace warcaby.Movements.Fight
 {
     public class FightMoveTree :IGotChildrens
     {
@@ -24,7 +18,7 @@ namespace Checkers.Movements
         private async void GenerateTree(Board sourceBoard, Pawn pawn)
         {
             Scope scope = new Scope(sourceBoard);
-            List<FightMove> fightMoves = await scope.FindFightMoves(pawn, Movement.GetDirections());
+            List<Move> fightMoves = await scope.FindFightMoves(pawn, Movement.GetDirections());
 
             if (fightMoves != null)
             {

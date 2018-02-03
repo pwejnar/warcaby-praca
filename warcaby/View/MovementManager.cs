@@ -6,7 +6,6 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Checkers;
-using NUnit.Framework.Internal.Execution;
 
 namespace Checkers
 {

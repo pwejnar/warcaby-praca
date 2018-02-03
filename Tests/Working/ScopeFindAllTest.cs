@@ -12,30 +12,35 @@ namespace Tests.Working
     public class ScopeFindAllTest
     {
         private Player p1;
+        private Player p2;
         private Board board;
         private Scope scope;
 
         [TestInitialize]
         public void TestInitialize()
         {
-            p1 = new Player("aa", GameDirection.Down);
+            p1 = new Player("aa", GameDirection.Up);
+            p2 = new Player("bb", GameDirection.Down);
             board = new Board(8);
             scope = new Scope(board);
         }
 
 
         [TestMethod]
-        public async Task Center()
+        public async Task FindAllMoves() //no forced beat 
         {
-            Pawn pawn = new Pawn(p1, new Position(3, 0));
-            board.PutOnBoard(pawn);
+            Pawn mainPawn0 = new Pawn(p1, new Position(3, 0));
+            Pawn mainPawn1 = new Pawn(p1, new Position(6, 3));
+            Pawn mainPawn2 = new Pawn(p1, new Position(6, 5));
 
-            List<Move> listOfMoves = await scope.FindMoves(p1, forceBeat);
+            Pawn enemyPawn0 = new Pawn(p2, new Position(5, 2));
+            Pawn enemyPawn1 = new Pawn(p2, new Position(2, 1));
+            Pawn enemyPawn2 = new Pawn(p2, new Position(2, 3));
 
+            board.PutOnBoard(mainPawn0, mainPawn1, mainPawn2, enemyPawn0, enemyPawn1, enemyPawn2);
 
-            Assert.IsTrue(listOfMoves.Count == 3);
-
-             longestPath
+            List<Move> moves = await scope.FindMoves(p1);
+            Assert.IsTrue(moves.Count == 5);
 
         }
     }

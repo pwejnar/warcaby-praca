@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Checkers;
 using Checkers.Movements;
+using warcaby.Movements.Fight;
 
 namespace Tests
 {
