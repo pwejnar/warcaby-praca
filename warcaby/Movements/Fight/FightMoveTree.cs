@@ -18,7 +18,7 @@ namespace warcaby.Movements.Fight
         private async void GenerateTree(Board sourceBoard, Pawn pawn)
         {
             Scope scope = new Scope(sourceBoard);
-            List<Move> fightMoves = await scope.FindFightMoves(pawn, Movement.GetDirections());
+            List<FightMove> fightMoves = await scope.FindFightMoves(pawn, Movement.GetDirections());
 
             if (fightMoves != null)
             {

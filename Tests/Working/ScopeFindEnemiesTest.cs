@@ -30,7 +30,7 @@ namespace Tests
             Pawn ownerPawn = new Pawn(p1, new Position(3, 4));
             board.PutOnBoard(ownerPawn);
 
-            List<Move> availableMoves = await scope.FindFightMoves(ownerPawn);
+            List<FightMove> availableMoves = await scope.FindFightMoves(ownerPawn);
             Assert.IsTrue(availableMoves.Count == 0);
         }
 
@@ -42,7 +42,7 @@ namespace Tests
 
             board.PutOnBoard(ownerPawn, enemy);
 
-            List<Move> availableMoves = await scope.FindFightMoves(ownerPawn);
+            List<FightMove> availableMoves = await scope.FindFightMoves(ownerPawn);
             Assert.IsTrue(availableMoves.Count == 1);
         }
 
@@ -55,7 +55,7 @@ namespace Tests
 
             board.PutOnBoard(ownerPawn, enemy0, enemy1);
 
-            List<Move> availableMoves = await scope.FindFightMoves(ownerPawn);
+            List<FightMove> availableMoves = await scope.FindFightMoves(ownerPawn);
             Assert.IsTrue(availableMoves.Count == 2);
         }
 
@@ -67,7 +67,7 @@ namespace Tests
 
             board.PutOnBoard(ownerPawn, enemy0);
 
-            List<Move> availableMoves = await scope.FindFightMoves(ownerPawn);
+            List<FightMove> availableMoves = await scope.FindFightMoves(ownerPawn);
             Assert.IsTrue(availableMoves.Count == 0);
         }
 
@@ -80,7 +80,7 @@ namespace Tests
 
             board.PutOnBoard(ownerPawn, enemy0, enemy1);
 
-            List<Move> availableMoves = await scope.FindFightMoves(ownerPawn);
+            List<FightMove> availableMoves = await scope.FindFightMoves(ownerPawn);
             Assert.IsTrue(availableMoves.Count == 0);
         }
 
@@ -97,7 +97,7 @@ namespace Tests
 
             board.PutOnBoard(ownerPawn, enemy0, enemy1, enemy2, enemy3);
 
-            List<Move> availableMoves = await scope.FindFightMoves(ownerPawn);
+            List<FightMove> availableMoves = await scope.FindFightMoves(ownerPawn);
             Assert.IsTrue(availableMoves.Count == 4);
         }
 
@@ -124,7 +124,7 @@ namespace Tests
             ownerPawn1.KingState = true;
 
             board.PutOnBoard(ownerPawn0, ownerPawn1);
-            List<Move> availableMoves = await scope.FindFightMoves(ownerPawn0);
+            List<FightMove> availableMoves = await scope.FindFightMoves(ownerPawn0);
             Assert.IsTrue(availableMoves.Count == 0);
         }
 
@@ -141,7 +141,7 @@ namespace Tests
 
             board.PutOnBoard(ownerPawn, enemyPawn0, enemyPawn1);
 
-            List<Move> availableMoves = await scope.FindFightMoves(ownerPawn);
+            List<FightMove> availableMoves = await scope.FindFightMoves(ownerPawn);
             Assert.IsTrue(availableMoves.Count == 0);
         }
 
@@ -156,7 +156,7 @@ namespace Tests
 
             board.PutOnBoard(ownerPawn, enemyPawn);
 
-            List<Move> availableMoves = await scope.FindFightMoves(ownerPawn);
+            List<FightMove> availableMoves = await scope.FindFightMoves(ownerPawn);
             Assert.IsTrue(availableMoves.Count == 2);
         }
 
@@ -172,7 +172,7 @@ namespace Tests
 
             board.PutOnBoard(ownerPawn, enemyPawn0, enemyPawn1);
 
-            List<Move> availableMoves = await scope.FindFightMoves(ownerPawn);
+            List<FightMove> availableMoves = await scope.FindFightMoves(ownerPawn);
             Assert.IsTrue(availableMoves.Count == 3);
         }
 

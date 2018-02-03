@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using warcaby.Extensions;
+using warcaby.Movements;
 
 namespace Checkers
 {
-    public class Move
+    public class Move : IMoveable
     {
         public Position PositionBeforeMove { get; set; }
         public Position PositionAfterMove { get; set; }

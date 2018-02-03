@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Checkers;
+using warcaby.Extensions;
 
 namespace Checkers
 {
@@ -19,7 +20,6 @@ namespace Checkers
         {
             this.PawntoBeat = pawntoBeat;
         }
-
 
         public override Board Simulate(Board board)
         {

@@ -10,10 +10,10 @@ namespace Checkers.Movements
 {
     public class FightMoveNode : IGotChildrens
     {
-        public Move FightMove { get; set; }
+        public FightMove FightMove { get; set; }
         public List<FightMoveNode> NextElements { get; set; }
 
-        public FightMoveNode(Board board, Move fightMove)
+        public FightMoveNode(Board board, FightMove fightMove)
         {
             FightMove = fightMove;
             NextElements = new List<FightMoveNode>();
@@ -27,7 +27,7 @@ namespace Checkers.Movements
             Pawn pawnNewState = boardNewState.GetControlInPosition(FightMove.PositionAfterMove) as Pawn;
             List<MoveDirection> moveDirections = Movement.GetDirections();
             moveDirections.Remove(Movement.GetOpositteDirection(FightMove.MoveDirection));
-            List<Move> fightMoves = await scope.FindFightMoves(pawnNewState, moveDirections);
+            List<FightMove> fightMoves = await scope.FindFightMoves(pawnNewState, moveDirections);
 
             if (fightMoves != null)
 
