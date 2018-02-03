@@ -7,6 +7,7 @@ using System.Windows.Forms;
 using Checkers;
 using Checkers.Movements;
 using warcaby.Extensions;
+using warcaby.Movements.Fight;
 
 namespace Checkers
 {
@@ -20,36 +21,47 @@ namespace Checkers
         }
 
 
-        public async Task<List<IMoveable>> FindMoves(Player player)
+        public async Task<List<IMoveable>> FindMoves(List<Pawn> pawns)
         {
-            List<Pawn> playerPawns = Board.GetPlayerPawns(player);
-            List<IMoveable> allMoves = null;
+            List<Task<List<Move>>> tasks1 = new List<Task<List<Move>>>();
+            List<Task<List<FightMove>>> tasks2 = new List<Task<List<FightMove>>>();
 
-            List<Task<List<IMoveable>>> allMovesTasks = new List<Task<List<IMoveable>>>();
-
-            foreach (Pawn pawn in playerPawns)
+            foreach (Pawn pawn in pawns)
             {
-                allMovesTasks.Add(FindFightMoves(pawn));
-                allMovesTasks.Add(FindMoves(pawn));
+                tasks1.AddRange(FindMoves(pawn));
+                tasks2.AddRange(FindFightMoves(pawn));
             }
 
-            await Task.WhenAll(allMovesTasks.ToArray());
+            await Task.WhenAll(tasks1.ToArray());
+            await Task.WhenAll(tasks2.ToArray());
 
-            foreach (Task<List<IMoveable>> task in allMovesTasks)
+            List<IMoveable> moves = new List<IMoveable>();
+
+            foreach (Task<List<Move>> task in tasks1)
             {
                 if (task.Result != null)
                 {
-                    if (allMoves == null)
-                    {
-                        allMoves = new List<IMoveable>();
-                    }
-                    allMoves.AddRange(task.Result);
+                    moves.AddRange(task.Result);
                 }
             }
-            return allMoves;
+
+            List<FightMove> fightMoves = new List<FightMove>();
+
+            foreach (Task<List<FightMove>> task in tasks2)
+            {
+                if (task.Result != null)
+                {
+                    fightMoves.AddRange(task.Result);
+                }
+            }
+
+            FightMoveTree tree = new FightMoveTree(Board, fightMoves);
+            moves.AddRange(tree.MultipleBeats);
+            return moves;
         }
 
-        public async Task<List<IMoveable>> FindMoves(Pawn pawn)
+
+        public List<Task<List<Move>>> FindMoves(Pawn pawn)
         {
             List<Task<List<Move>>> tasks = new List<Task<List<Move>>>();
             List<MoveDirection> directions = Movement.GetDirections(pawn.Player.Direction);
@@ -58,19 +70,24 @@ namespace Checkers
             {
                 tasks.Add(FindMove(pawn, direction));
             }
+            return tasks;
+        }
 
-            await Task.WhenAll(tasks.ToArray());
 
-            List<IMoveable> moves = new List<IMoveable>();
+        public List<Task<List<FightMove>>> FindFightMoves(Pawn pawn, List<MoveDirection> directions = null)
+        {
+            List<Task<List<FightMove>>> tasks = new List<Task<List<FightMove>>>();
 
-            foreach (Task<List<Move>> task in tasks)
+            if (directions == null)
             {
-                if (task.Result != null)
-                {
-                    moves.AddRange(task.Result);
-                }
+                directions = Movement.GetDirections();
             }
-            return moves;
+
+            foreach (MoveDirection direction in directions)
+            {
+                tasks.Add(FindFightMoves(pawn, direction));
+            }
+            return tasks;
         }
 
         private async Task<List<Move>> FindMove(Pawn mainPawn, MoveDirection direction)
@@ -91,34 +108,6 @@ namespace Checkers
             } while (shape is Field && mainPawn.KingState);
 
             return moves;
-        }
-
-        public async Task<List<IMoveable>> FindFightMoves(Pawn pawn, List<MoveDirection> directions = null)
-        {
-            List<Task<List<FightMove>>> tasks = new List<Task<List<FightMove>>>();
-
-            if (directions == null)
-            {
-                directions = Movement.GetDirections();
-            }
-
-            foreach (MoveDirection direction in directions)
-            {
-                tasks.Add(FindFightMoves(pawn, direction));
-            }
-
-            await Task.WhenAll(tasks.ToArray());
-
-            List<IMoveable> fightMoves = new List<IMoveable>();
-
-            foreach (Task<List<FightMove>> task in tasks)
-            {
-                if (task.Result != null)
-                {
-                    fightMoves.AddRange(task.Result);
-                }
-            }
-            return fightMoves;
         }
 
         public async Task<List<FightMove>> FindFightMoves(Pawn pawn, MoveDirection direction)

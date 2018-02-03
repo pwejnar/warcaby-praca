@@ -11,7 +11,7 @@ namespace Checkers
     public class TreeConverter<T> where T : IGotChildrens
     {
         private readonly List<T> _tree;
-        private List<List<T>> resultList;
+        public List<List<T>> ResultList { get; set; }
 
         public TreeConverter(List<T> tree)
         {
@@ -21,14 +21,14 @@ namespace Checkers
 
         public TreeConverter(T treeNode)
         {
-            _tree = new List <T>();
+            _tree = new List<T>();
             _tree.Add(treeNode);
             GeneratePathsFromTree();
         }
 
         private void GeneratePathsFromTree()
         {
-            resultList = new List<List<T>>();
+            ResultList = new List<List<T>>();
 
             foreach (var children in _tree)
             {
@@ -36,10 +36,6 @@ namespace Checkers
             }
         }
 
-        public List<List<T>> GetGeneratedLists()
-        {
-            return resultList;
-        }
 
         private void GeneratePathsRecursion(T children, List<T> currentPath = null)
         {
@@ -50,7 +46,7 @@ namespace Checkers
 
             if (children.GetChildrens() == null || children.GetChildrens().Count == 0)
             {
-                resultList.Add(currentPath);
+                ResultList.Add(currentPath);
             }
 
             else

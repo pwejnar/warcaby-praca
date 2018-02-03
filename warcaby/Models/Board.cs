@@ -36,7 +36,7 @@ namespace Checkers
             return shapes;
         }
 
-        public List<Pawn> GetPlayerPawns(Player player)
+        public List<Pawn> GetPawns(Player player)
         {
             return GetPawns().Where(x => x.Player == player).ToList();
         }

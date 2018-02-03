@@ -11,12 +11,16 @@ namespace warcaby.Movements.Fight
 {
     public class MultipleFightMove : IMoveable
     {
-        private List<FightMoveNode> fightMoveNodes;
+        public List<FightMoveNode> FightMoveNodes { get; set; }
 
+        public MultipleFightMove(List<FightMoveNode> fightMoveNodes)
+        {
+            FightMoveNodes = fightMoveNodes;
+        }
 
         public void PrepareMove(Board board)
         {
-            foreach (FightMoveNode fightNode in fightMoveNodes)
+            foreach (FightMoveNode fightNode in FightMoveNodes)
             {
                 fightNode.FightMove.PrepareMove(board);
             }
@@ -26,7 +30,7 @@ namespace warcaby.Movements.Fight
         {
             Board cloneBoard = board.Clone();
 
-            foreach (FightMoveNode fightNode in fightMoveNodes)
+            foreach (FightMoveNode fightNode in FightMoveNodes)
             {
                 fightNode.FightMove.PrepareMove(cloneBoard);
             }

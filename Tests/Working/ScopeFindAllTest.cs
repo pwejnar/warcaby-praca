@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Checkers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using warcaby.Extensions;
 
 namespace Tests.Working
 {
@@ -39,7 +40,7 @@ namespace Tests.Working
 
             board.PutOnBoard(mainPawn0, mainPawn1, mainPawn2, enemyPawn0, enemyPawn1, enemyPawn2);
 
-            List<Move> moves = await scope.FindMoves(p1);
+            List<IMoveable> moves = await scope.FindMoves(board.GetPawns(p1));
             Assert.IsTrue(moves.Count == 5);
 
         }

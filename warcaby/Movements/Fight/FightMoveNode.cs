@@ -13,7 +13,7 @@ namespace Checkers.Movements
         public FightMove FightMove { get; set; }
         public List<FightMoveNode> NextElements { get; set; }
 
-        public FightMoveNode(Board board, FightMove fightMove)
+        public FightMoveNode(FightMove fightMove, Board board)
         {
             FightMove = fightMove;
             NextElements = new List<FightMoveNode>();
@@ -27,17 +27,26 @@ namespace Checkers.Movements
             Pawn pawnNewState = boardNewState.GetControlInPosition(FightMove.PositionAfterMove) as Pawn;
             List<MoveDirection> moveDirections = Movement.GetDirections();
             moveDirections.Remove(Movement.GetOpositteDirection(FightMove.MoveDirection));
-            List<FightMove> fightMoves = await scope.FindFightMoves(pawnNewState, moveDirections);
 
-            if (fightMoves != null)
+            List<Task<List<FightMove>>> tasks = scope.FindFightMoves(pawnNewState, moveDirections);
+            await Task.WhenAll(tasks.ToArray());
 
+            List<FightMove> fightMoves = new List<FightMove>();
+
+            foreach (Task<List<FightMove>> task in tasks)
             {
-                foreach (FightMove fightMove in fightMoves)
+                if (task.Result != null)
                 {
-                    NextElements.Add(new FightMoveNode(boardNewState, fightMove));
+                    fightMoves.AddRange(task.Result);
                 }
             }
+
+            foreach (FightMove fightMove in fightMoves)
+            {
+                NextElements.Add(new FightMoveNode(fightMove, boardNewState));
+            }
         }
+
 
         public IList GetChildrens()
         {

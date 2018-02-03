@@ -2,29 +2,37 @@
 using System.Collections.Generic;
 using Checkers;
 using Checkers.Movements;
+using warcaby.Extensions;
 
 namespace warcaby.Movements.Fight
 {
-    public class FightMoveTree :IGotChildrens
+    public class FightMoveTree : IGotChildrens
     {
         public List<FightMoveNode> Nodes { get; set; }
+        public List<MultipleFightMove> MultipleBeats { get; set; }
 
-        public FightMoveTree(Board sourceBoard, Pawn pawn)
+        public FightMoveTree(Board sourceBoard, List<FightMove> fightMoves)
         {
             Nodes = new List<FightMoveNode>();
-            GenerateTree(sourceBoard, pawn);
+            GenerateTree(sourceBoard, fightMoves);
         }
 
-        private async void GenerateTree(Board sourceBoard, Pawn pawn)
+        private void GenerateTree(Board sourceBoard, List<FightMove> fightMoves)
         {
-            Scope scope = new Scope(sourceBoard);
-            List<FightMove> fightMoves = await scope.FindFightMoves(pawn, Movement.GetDirections());
-
             if (fightMoves != null)
             {
                 foreach (var fightMove in fightMoves)
                 {
-                    Nodes.Add(new FightMoveNode(sourceBoard, fightMove));
+                    Nodes.Add(new FightMoveNode(fightMove, sourceBoard));
+                }
+
+                TreeConverter<FightMoveNode> converter = new TreeConverter<FightMoveNode>(Nodes);
+                List<List<FightMoveNode>> fightMoveNodesList = converter.ResultList;
+                MultipleBeats= new List<MultipleFightMove>();
+
+                foreach (List<FightMoveNode> nodes in fightMoveNodesList)
+                {
+                    MultipleBeats.Add(new MultipleFightMove(nodes));
                 }
             }
         }
