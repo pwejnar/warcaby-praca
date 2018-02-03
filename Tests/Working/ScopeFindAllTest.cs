@@ -44,5 +44,40 @@ namespace Tests.Working
             Assert.IsTrue(moves.Count == 5);
 
         }
+
+
+        [TestMethod]
+        public async Task FindAllMoves2() //no forced beat 
+        {
+            var watch = System.Diagnostics.Stopwatch.StartNew();
+
+            Pawn mainPawn0 = new Pawn(p1, new Position(3, 0));
+            Pawn mainPawn1 = new Pawn(p1, new Position(1, 4));
+            Pawn mainPawn2 = new Pawn(p1, new Position(1, 6));
+            Pawn mainPawn3 = new Pawn(p1, new Position(3, 4));
+            Pawn mainPawn4 = new Pawn(p1, new Position(5, 4));
+            Pawn mainPawn5 = new Pawn(p1, new Position(6, 1));
+            Pawn mainPawn6 = new Pawn(p1, new Position(7, 4));
+
+            mainPawn0.KingState = true;
+            mainPawn1.KingState = true;
+            mainPawn2.KingState = true;
+            mainPawn3.KingState = true;
+            mainPawn4.KingState = true;
+            mainPawn5.KingState = true;
+            mainPawn6.KingState = true;
+
+
+            board.PutOnBoard(mainPawn0, mainPawn1, mainPawn2, mainPawn3, mainPawn4, mainPawn5, mainPawn6);
+
+
+            List<IMoveable> moves = await scope.FindMoves(board.GetPawns(p1));
+
+            watch.Stop();
+            var elapsedMs = watch.ElapsedMilliseconds;
+
+            Assert.IsTrue(moves.Count == 5);
+
+        }
     }
 }

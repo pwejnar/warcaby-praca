@@ -64,7 +64,15 @@ namespace Checkers
         public List<Task<List<Move>>> FindMoves(Pawn pawn)
         {
             List<Task<List<Move>>> tasks = new List<Task<List<Move>>>();
-            List<MoveDirection> directions = Movement.GetDirections(pawn.Player.Direction);
+            List<MoveDirection> directions;
+            if (pawn.KingState)
+            {
+                directions = Movement.GetDirections();
+            }
+            else
+            {
+                directions = Movement.GetDirections(pawn.Player.Direction);
+            }
 
             foreach (MoveDirection direction in directions)
             {
