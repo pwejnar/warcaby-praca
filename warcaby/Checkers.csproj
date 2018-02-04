@@ -83,6 +83,7 @@
     <Compile Include="AI\SpeculationLists.cs" />
     <Compile Include="AI\Strategy.cs" />
     <Compile Include="Movements\Fight\MultipleFightMove.cs" />
+    <Compile Include="Movements\MoveBase.cs" />
     <Compile Include="View\GameManager.cs" />
     <Compile Include="Extensions\IGotChildrens.cs" />
     <Compile Include="View\MainMenuForm.cs">

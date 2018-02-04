@@ -26,14 +26,26 @@ namespace warcaby.Movements.Fight
                     Nodes.Add(new FightMoveNode(fightMove, sourceBoard));
                 }
 
-                TreeConverter<FightMoveNode> converter = new TreeConverter<FightMoveNode>(Nodes);
-                List<List<FightMoveNode>> fightMoveNodesList = converter.ResultList;
-                MultipleBeats= new List<MultipleFightMove>();
+                MakeLists();
+            }
+        }
 
-                foreach (List<FightMoveNode> nodes in fightMoveNodesList)
+        void MakeLists()
+        {
+            TreeConverter<FightMoveNode> converter = new TreeConverter<FightMoveNode>(Nodes);
+            List<List<FightMoveNode>> fightMoveNodesList = converter.ResultList;
+            MultipleBeats = new List<MultipleFightMove>();
+
+            foreach (List<FightMoveNode> nodes in fightMoveNodesList)
+            {
+                List<FightMove> fightMoves = new List<FightMove>();
+
+                foreach (FightMoveNode node in nodes)
                 {
-                    MultipleBeats.Add(new MultipleFightMove(nodes));
+                    fightMoves.Add(node.FightMove);
                 }
+
+                MultipleBeats.Add(new MultipleFightMove(fightMoves));
             }
         }
 

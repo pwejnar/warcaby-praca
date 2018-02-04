@@ -8,7 +8,7 @@ using warcaby.Movements;
 
 namespace Checkers
 {
-    public class Move : IMoveable
+    public class Move : MoveBase
     {
         public Position PositionBeforeMove { get; set; }
         public Position PositionAfterMove { get; set; }
@@ -22,14 +22,14 @@ namespace Checkers
         }
 
 
-        public virtual Board Simulate(Board board)
+        public override Board Simulate(Board board)
         {
             Board clonedBoard = board.Clone();
             PrepareMove(clonedBoard);
             return clonedBoard;
         }
 
-        public virtual void PrepareMove(Board board)
+        public override void PrepareMove(Board board)
         {
             Pawn pawn = (Pawn)board.GetControlInPosition(PositionBeforeMove);
             Field field = (Field)board.GetControlInPosition(PositionAfterMove);

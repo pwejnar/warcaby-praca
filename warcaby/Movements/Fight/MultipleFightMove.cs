@@ -9,30 +9,30 @@ using warcaby.Extensions;
 
 namespace warcaby.Movements.Fight
 {
-    public class MultipleFightMove : IMoveable
+    public class MultipleFightMove : MoveBase
     {
-        public List<FightMoveNode> FightMoveNodes { get; set; }
+        public List<FightMove> FightMoves { get; set; }
 
-        public MultipleFightMove(List<FightMoveNode> fightMoveNodes)
+        public MultipleFightMove(List<FightMove> fightMoves)
         {
-            FightMoveNodes = fightMoveNodes;
+            FightMoves = fightMoves;
         }
 
-        public void PrepareMove(Board board)
+        public override void PrepareMove(Board board)
         {
-            foreach (FightMoveNode fightNode in FightMoveNodes)
+            foreach (FightMove fightMove in FightMoves)
             {
-                fightNode.FightMove.PrepareMove(board);
+                fightMove.PrepareMove(board);
             }
         }
 
-        public Board Simulate(Board board)
+        public override Board Simulate(Board board)
         {
             Board cloneBoard = board.Clone();
 
-            foreach (FightMoveNode fightNode in FightMoveNodes)
+            foreach (FightMove fightMove in FightMoves)
             {
-                fightNode.FightMove.PrepareMove(cloneBoard);
+                fightMove.PrepareMove(cloneBoard);
             }
             return cloneBoard;
         }
