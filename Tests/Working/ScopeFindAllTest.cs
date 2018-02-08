@@ -67,7 +67,6 @@ namespace Tests.Working
         [TestMethod]
         public async Task FindAllMoves2()
         {
-
             Pawn mainPawn0 = new Pawn(p1, new Position(3, 0));
             Pawn mainPawn1 = new Pawn(p2, new Position(4, 1));
 
@@ -82,7 +81,6 @@ namespace Tests.Working
         [TestMethod]
         public async Task FindAllMoves3()
         {
-
             Pawn mainPawn0 = new Pawn(p1, new Position(3, 0));
             Pawn mainPawn1 = new Pawn(p2, new Position(4, 1));
             Pawn mainPawn2 = new Pawn(p2, new Position(4, 5));
@@ -98,7 +96,6 @@ namespace Tests.Working
         [TestMethod]
         public async Task FindAllMoves4()
         {
-
             Pawn mainPawn0 = new Pawn(p1, new Position(3, 0));
             Pawn mainPawn1 = new Pawn(p2, new Position(4, 1));
             Pawn mainPawn2 = new Pawn(p2, new Position(6, 1));
@@ -114,7 +111,6 @@ namespace Tests.Working
         [TestMethod]
         public async Task FindAllMoves5()
         {
-
             Pawn mainPawn0 = new Pawn(p1, new Position(7, 0));
             Pawn mainPawn1 = new Pawn(p2, new Position(5, 2));
             Pawn mainPawn2 = new Pawn(p2, new Position(5, 6));
@@ -124,14 +120,13 @@ namespace Tests.Working
 
             board.PutOnBoard(mainPawn0, mainPawn1, mainPawn2, mainPawn3);
             List<IMoveable> moves = await scope.FindMoves(p1);
-            Assert.IsTrue(moves.Count == 3);
+            Assert.IsTrue(moves.Count == 4);
         }
 
 
         [TestMethod]
         public async Task FindAllMoves6()
         {
-
             Pawn mainPawn0 = new Pawn(p1, new Position(3, 0));
             Pawn mainPawn1 = new Pawn(p2, new Position(4, 1));
             Pawn mainPawn2 = new Pawn(p2, new Position(4, 5));

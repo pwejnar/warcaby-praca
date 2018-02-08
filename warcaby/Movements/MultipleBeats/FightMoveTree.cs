@@ -64,13 +64,6 @@ namespace warcaby.Movements.Fight
             return beats;
         }
 
-
-        public static List<IMakeBeat> ReduceNotAllowedMoveDirection(List<IMakeBeat> moves, MoveDirection directionToReduce)
-        {
-            return moves.Except(moves.Where(x => x.MoveDirection == directionToReduce)).ToList();
-        }
-
-
         public IList GetChildrens()
         {
             return Nodes;

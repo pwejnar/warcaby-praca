@@ -27,47 +27,46 @@ namespace Checkers
             return await FindMoves(playePawns, beatRequired);
         }
 
-        private bool firstTime = true;
-        public static FightMoveTree mainTree;
-
         public async Task<List<IMoveable>> FindMoves(List<Pawn> pawns, bool beatRequired = true)
         {
             List<Task<List<IMoveable>>> moveTasks = new List<Task<List<IMoveable>>>();
+            List<Task<List<IMakeBeat>>> fightMoveTasks = new List<Task<List<IMakeBeat>>>();
 
             foreach (Pawn pawn in pawns)
             {
                 moveTasks.AddRange(FindMoves(pawn));
-                moveTasks.AddRange(FindFightMoves(pawn));
+                fightMoveTasks.AddRange(FindFightMoves(pawn));
             }
 
+            List<IMoveable> normalMoves = new List<IMoveable>();
             await Task.WhenAll(moveTasks.ToArray());
-
-            List<IMoveable> allMoves = new List<IMoveable>();
 
             foreach (Task<List<IMoveable>> task in moveTasks)
             {
                 if (task.Result != null)
                 {
-                    allMoves.AddRange(task.Result);
+                    normalMoves.AddRange(task.Result);
                 }
             }
 
-            List<IMoveable> normalMoves = allMoves.Where(x => !(x is IMakeBeat)).ToList().ConvertAll(obj => (IMoveable)obj);
-            List<IMakeBeat> fightMoves = allMoves.Where(x => x is IMakeBeat).ToList().ConvertAll(obj => (IMakeBeat)obj);
+            List<IMakeBeat> fightMoves = new List<IMakeBeat>();
+            await Task.WhenAll(fightMoveTasks.ToArray());
+
+            foreach (Task<List<IMakeBeat>> task in fightMoveTasks)
+            {
+                if (task.Result != null)
+                {
+                    fightMoves.AddRange(task.Result);
+                }
+            }
+
             List<IMoveable> movesDetected = new List<IMoveable>();
 
             if (fightMoves.Count > 0)
             {
 
                 FightMoveTree tree = new FightMoveTree(Board, fightMoves);
-
-                if (firstTime)
-                {
-                    mainTree = tree;
-                    firstTime = false;
-                }
-
-                var beatLists = tree.GetBeatLists();
+                List<IMakeBeat> beatLists = tree.GetBeatLists();
 
                 if (beatLists.Count > 0) // is single beat multiple beat?
                 {
@@ -84,9 +83,11 @@ namespace Checkers
             return movesDetected;
         }
 
-        private List<Task<List<IMoveable>>> FindFightMoves(Pawn pawn, List<MoveDirection> directions = null)
+
+
+        public List<Task<List<IMakeBeat>>> FindFightMoves(Pawn pawn, List<MoveDirection> directions = null)
         {
-            List<Task<List<IMoveable>>> tasks = new List<Task<List<IMoveable>>>();
+            List<Task<List<IMakeBeat>>> tasks = new List<Task<List<IMakeBeat>>>();
 
             if (directions == null)
             {
@@ -142,9 +143,9 @@ namespace Checkers
             return moves;
         }
 
-        private async Task<List<IMoveable>> FindFightMoves(Pawn pawn, MoveDirection direction)
+        private async Task<List<IMakeBeat>> FindFightMoves(Pawn pawn, MoveDirection direction)
         {
-            List<IMoveable> fightMoves = null;
+            List<IMakeBeat> fightMoves = new List<IMakeBeat>();
             Shape shape = Board.GetControlInDirection(pawn.Position, direction);
             Pawn enemy = null;
 
@@ -165,8 +166,6 @@ namespace Checkers
                         {
                             return null;
                         }
-
-                        fightMoves = new List<IMoveable>();
                         enemy = tempPawn;
                     }
                 }

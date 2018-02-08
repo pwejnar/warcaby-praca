@@ -32,23 +32,27 @@ namespace Checkers.Movements
             Scope scope = new Scope(boardNewState);
 
             Pawn pawnNewState = boardNewState.GetControlInPosition(BeatMove.PositionAfterMove) as Pawn;
-            List<Pawn> pawnToCheckBeatFor = new List<Pawn>();
-            pawnToCheckBeatFor.Add(pawnNewState);
-
-            List<IMoveable> moves = await scope.FindMoves(pawnToCheckBeatFor);
-            List<IMakeBeat> nextFightMoves = moves.Where(obj => obj is IMakeBeat).ToList().ConvertAll(x => (IMakeBeat)x);
             MoveDirection notAllowedDirection = Movement.GetOpositteDirection(BeatMove.MoveDirection);
-            nextFightMoves = FightMoveTree.ReduceNotAllowedMoveDirection(nextFightMoves, notAllowedDirection);
+            List<MoveDirection> directions = Movement.GetDirections();
+            directions.Remove(notAllowedDirection);
+
+            List<IMakeBeat> nextFightMoves = new List<IMakeBeat>();
+            var detectedMoves = scope.FindFightMoves(pawnNewState, directions);
+            await Task.WhenAll(detectedMoves.ToArray());
+
+            foreach (Task<List<IMakeBeat>> task in detectedMoves)
+            {
+                if (task.Result != null)
+                {
+                    nextFightMoves.AddRange(task.Result);
+                }
+            }
 
             if (nextFightMoves.Count > 0)
             {
                 NextElements = new List<FightMoveNode>();
                 foreach (IMakeBeat fightMove in nextFightMoves)
                 {
-                    if (fightMove is MultipleFightMove)
-                    {
-                        var x = 3;
-                    }
                     NextElements.Add(new FightMoveNode(fightMove, boardNewState));
                 }
             }
