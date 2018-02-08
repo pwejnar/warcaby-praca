@@ -76,12 +76,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AI\Rating\GameStatus.cs" />
+    <Compile Include="AI\SpeculationTree.cs" />
+    <Compile Include="AI\SpeculationNode.cs" />
     <Compile Include="Extensions\IMakeBeat.cs" />
     <Compile Include="Extensions\IMoveable.cs" />
     <Compile Include="Models\AiPlayer.cs" />
-    <Compile Include="AI\Rating\KeyRating.cs" />
-    <Compile Include="AI\Rating\SpeculationListRating.cs" />
-    <Compile Include="AI\SpeculationLists.cs" />
     <Compile Include="AI\Strategy.cs" />
     <Compile Include="Movements\MultipleBeats\MultipleFightMove.cs" />
     <Compile Include="View\GameManager.cs" />
@@ -100,8 +99,6 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="Extensions\TreeConverter.cs" />
-    <Compile Include="AI\ArtificialIntelligence.cs" />
-    <Compile Include="AI\Speculation.cs" />
     <Compile Include="Models\Board.cs" />
     <Compile Include="Models\Graphical\BoardGraphical.cs">
       <SubType>Component</SubType>
@@ -133,7 +130,6 @@
     <Compile Include="AI\Rating\BoardRating.cs" />
     <Compile Include="Movements\Scope.cs" />
     <Compile Include="Models\Shape.cs" />
-    <Compile Include="AI\SpeculationNode.cs" />
     <EmbeddedResource Include="View\Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
       <SubType>Designer</SubType>
