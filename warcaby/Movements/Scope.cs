@@ -27,6 +27,9 @@ namespace Checkers
             return await FindMoves(playePawns, beatRequired);
         }
 
+        private bool firstTime = true;
+        public static FightMoveTree mainTree;
+
         public async Task<List<IMoveable>> FindMoves(List<Pawn> pawns, bool beatRequired = true)
         {
             List<Task<List<IMoveable>>> moveTasks = new List<Task<List<IMoveable>>>();
@@ -55,8 +58,15 @@ namespace Checkers
 
             if (fightMoves.Count > 0)
             {
-              
+
                 FightMoveTree tree = new FightMoveTree(Board, fightMoves);
+
+                if (firstTime)
+                {
+                    mainTree = tree;
+                    firstTime = false;
+                }
+
                 var beatLists = tree.GetBeatLists();
 
                 if (beatLists.Count > 0) // is single beat multiple beat?

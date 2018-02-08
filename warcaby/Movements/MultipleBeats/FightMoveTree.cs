@@ -26,7 +26,7 @@ namespace warcaby.Movements.Fight
             }
             foreach (var fightMove in fightMoves)
             {
-                Nodes.Add(new FightMoveNode(null, fightMove, sourceBoard));
+                Nodes.Add(new FightMoveNode(fightMove, sourceBoard));
             }
         }
 
@@ -42,14 +42,22 @@ namespace warcaby.Movements.Fight
 
                 foreach (List<FightMoveNode> nodes in fightMoveNodesList)
                 {
-                    List<IMakeBeat> fightMoves = new List<IMakeBeat>();
-
-                    foreach (FightMoveNode node in nodes)
+                    if (nodes.Count == 1)
                     {
-                        fightMoves.Add(node.BeatMove);
+                        beats.Add(nodes.First().BeatMove);
                     }
 
-                    multipleBeats.Add(new MultipleFightMove(fightMoves));
+                    else
+                    {
+                        List<IMakeBeat> fightMoves = new List<IMakeBeat>();
+
+                        foreach (FightMoveNode node in nodes)
+                        {
+                            fightMoves.Add(node.BeatMove);
+                        }
+
+                        multipleBeats.Add(new MultipleFightMove(fightMoves));
+                    }
                 }
                 beats.AddRange(multipleBeats);
             }

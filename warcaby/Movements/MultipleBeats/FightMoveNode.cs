@@ -15,21 +15,14 @@ namespace Checkers.Movements
     {
         public IMakeBeat BeatMove { get; set; }
         public List<FightMoveNode> NextElements { get; set; }
-        public FightMoveNode Parent { get; set; }
 
-        public static FightMoveNode MainParent;
+        public static List<FightMoveNode> allNodes = new List<FightMoveNode>();
 
-        public FightMoveNode(FightMoveNode parent, IMakeBeat beatMove, Board board)
+        public FightMoveNode(IMakeBeat beatMove, Board board)
         {
-            if (MainParent == null)
-            { MainParent = this; }
-
-            Parent = parent;
+            allNodes.Add(this);
             BeatMove = beatMove;
-            NextElements = new List<FightMoveNode>();
             FindNextNodes(board);
-
-
         }
 
 
@@ -47,9 +40,17 @@ namespace Checkers.Movements
             MoveDirection notAllowedDirection = Movement.GetOpositteDirection(BeatMove.MoveDirection);
             nextFightMoves = FightMoveTree.ReduceNotAllowedMoveDirection(nextFightMoves, notAllowedDirection);
 
-            foreach (IMakeBeat fightMove in nextFightMoves)
+            if (nextFightMoves.Count > 0)
             {
-                NextElements.Add(new FightMoveNode(this, fightMove, boardNewState));
+                NextElements = new List<FightMoveNode>();
+                foreach (IMakeBeat fightMove in nextFightMoves)
+                {
+                    if (fightMove is MultipleFightMove)
+                    {
+                        var x = 3;
+                    }
+                    NextElements.Add(new FightMoveNode(fightMove, boardNewState));
+                }
             }
         }
 

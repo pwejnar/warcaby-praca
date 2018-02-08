@@ -64,9 +64,72 @@ namespace Tests.Working
             Assert.IsTrue(moves.Count == 2);
         }
 
-
         [TestMethod]
         public async Task FindAllMoves2()
+        {
+
+            Pawn mainPawn0 = new Pawn(p1, new Position(3, 0));
+            Pawn mainPawn1 = new Pawn(p2, new Position(4, 1));
+
+
+            mainPawn0.KingState = true;
+
+            board.PutOnBoard(mainPawn0, mainPawn1);
+            List<IMoveable> moves = await scope.FindMoves(p1);
+            Assert.IsTrue(moves.Count == 3);
+        }
+
+        [TestMethod]
+        public async Task FindAllMoves3()
+        {
+
+            Pawn mainPawn0 = new Pawn(p1, new Position(3, 0));
+            Pawn mainPawn1 = new Pawn(p2, new Position(4, 1));
+            Pawn mainPawn2 = new Pawn(p2, new Position(4, 5));
+
+
+            mainPawn0.KingState = true;
+
+            board.PutOnBoard(mainPawn0, mainPawn1, mainPawn2);
+            List<IMoveable> moves = await scope.FindMoves(p1);
+            Assert.IsTrue(moves.Count == 4);
+        }
+
+        [TestMethod]
+        public async Task FindAllMoves4()
+        {
+
+            Pawn mainPawn0 = new Pawn(p1, new Position(3, 0));
+            Pawn mainPawn1 = new Pawn(p2, new Position(4, 1));
+            Pawn mainPawn2 = new Pawn(p2, new Position(6, 1));
+            Pawn mainPawn3 = new Pawn(p2, new Position(1, 6));
+
+            mainPawn0.KingState = true;
+
+            board.PutOnBoard(mainPawn0, mainPawn1, mainPawn2, mainPawn3);
+            List<IMoveable> moves = await scope.FindMoves(p1);
+            Assert.IsTrue(moves.Count == 4);
+        }
+
+        [TestMethod]
+        public async Task FindAllMoves5()
+        {
+
+            Pawn mainPawn0 = new Pawn(p1, new Position(7, 0));
+            Pawn mainPawn1 = new Pawn(p2, new Position(5, 2));
+            Pawn mainPawn2 = new Pawn(p2, new Position(5, 6));
+            Pawn mainPawn3 = new Pawn(p2, new Position(1, 6));
+
+            mainPawn0.KingState = true;
+
+            board.PutOnBoard(mainPawn0, mainPawn1, mainPawn2, mainPawn3);
+            List<IMoveable> moves = await scope.FindMoves(p1);
+            Assert.IsTrue(moves.Count == 3);
+        }
+
+
+        [TestMethod]
+        public async Task FindAllMoves6()
         {
 
             Pawn mainPawn0 = new Pawn(p1, new Position(3, 0));
@@ -75,15 +138,10 @@ namespace Tests.Working
             Pawn mainPawn3 = new Pawn(p2, new Position(1, 6));
 
             mainPawn0.KingState = true;
-            mainPawn1.KingState = true;
-            mainPawn2.KingState = true;
-            mainPawn3.KingState = true;
 
             board.PutOnBoard(mainPawn0, mainPawn1, mainPawn2, mainPawn3);
             List<IMoveable> moves = await scope.FindMoves(p1);
-            FightMoveNode aa = FightMoveNode.MainParent;
-            var longest = (moves.Where(x => x is MultipleFightMove).ToList().ConvertAll(obj => (MultipleFightMove)obj)).Where(a => a.FightMoves.Count == 5);
-            Assert.IsTrue(longest != null);
+            Assert.IsTrue(moves.Count==4);
         }
     }
 }
