@@ -30,17 +30,17 @@ namespace warcaby.Movements.Fight
             }
         }
 
-        public List<IMakeBeat> GetBeatLists()
+        public List<IMakeBeat> GetBeatLists(bool onlyLongestBeats)
         {
             List<IMakeBeat> beats = new List<IMakeBeat>();
 
             if (Nodes.Count > 0)
             {
                 TreeConverter<FightMoveNode> converter = new TreeConverter<FightMoveNode>(Nodes);
-                List<List<FightMoveNode>> fightMoveNodesList = converter.ResultList;
-                List<IMakeBeat> multipleBeats = new List<IMakeBeat>();
 
-                foreach (List<FightMoveNode> nodes in fightMoveNodesList)
+                List<MultipleFightMove> multipleBeats = new List<MultipleFightMove>();
+
+                foreach (List<FightMoveNode> nodes in converter.ResultList)
                 {
                     if (nodes.Count == 1)
                     {
@@ -59,6 +59,16 @@ namespace warcaby.Movements.Fight
                         multipleBeats.Add(new MultipleFightMove(fightMoves));
                     }
                 }
+
+                if (onlyLongestBeats && multipleBeats.Count > 0)
+                {
+                    multipleBeats.Sort((obj1, obj2) => obj1.FightMoves.Count.CompareTo(obj2.FightMoves.Count));
+                    int longestListCount = multipleBeats.Last().FightMoves.Count;
+                    List<MultipleFightMove> shorterBeats = multipleBeats.Where(x => x.FightMoves.Count < longestListCount).ToList();
+                    multipleBeats = multipleBeats.Except(shorterBeats).ToList();
+                    return multipleBeats.ConvertAll(obj => (IMakeBeat)obj);
+                }
+
                 beats.AddRange(multipleBeats);
             }
             return beats;

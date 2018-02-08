@@ -8,7 +8,7 @@
 //namespace Tests
 //{
 //    [TestClass]
-//    public class UnitTest1
+//    public class LongestBeatPathDetectionTest
 //    {
 
 //        private Player p1;

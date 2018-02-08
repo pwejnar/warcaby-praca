@@ -43,7 +43,7 @@ namespace Tests.Working
 
             board.PutOnBoard(mainPawn0, mainPawn1, mainPawn2, enemyPawn0, enemyPawn1, enemyPawn2);
 
-            List<IMoveable> moves = await scope.FindMoves(p1, false);
+            List<IMoveable> moves = await scope.FindMoves(p1, false, false);
             Assert.IsTrue(moves.Count == 5);
         }
 
@@ -60,7 +60,7 @@ namespace Tests.Working
 
             board.PutOnBoard(mainPawn0, mainPawn1, mainPawn2, enemyPawn0, enemyPawn1, enemyPawn2);
 
-            List<IMoveable> moves = await scope.FindMoves(p1, true);
+            List<IMoveable> moves = await scope.FindMoves(p1, true, false);
             Assert.IsTrue(moves.Count == 2);
         }
 
@@ -74,7 +74,7 @@ namespace Tests.Working
             mainPawn0.KingState = true;
 
             board.PutOnBoard(mainPawn0, mainPawn1);
-            List<IMoveable> moves = await scope.FindMoves(p1);
+            List<IMoveable> moves = await scope.FindMoves(p1, true, false);
             Assert.IsTrue(moves.Count == 3);
         }
 
@@ -89,7 +89,7 @@ namespace Tests.Working
             mainPawn0.KingState = true;
 
             board.PutOnBoard(mainPawn0, mainPawn1, mainPawn2);
-            List<IMoveable> moves = await scope.FindMoves(p1);
+            List<IMoveable> moves = await scope.FindMoves(p1, true, false);
             Assert.IsTrue(moves.Count == 4);
         }
 
@@ -104,7 +104,7 @@ namespace Tests.Working
             mainPawn0.KingState = true;
 
             board.PutOnBoard(mainPawn0, mainPawn1, mainPawn2, mainPawn3);
-            List<IMoveable> moves = await scope.FindMoves(p1);
+            List<IMoveable> moves = await scope.FindMoves(p1, true, false);
             Assert.IsTrue(moves.Count == 4);
         }
 
@@ -119,7 +119,7 @@ namespace Tests.Working
             mainPawn0.KingState = true;
 
             board.PutOnBoard(mainPawn0, mainPawn1, mainPawn2, mainPawn3);
-            List<IMoveable> moves = await scope.FindMoves(p1);
+            List<IMoveable> moves = await scope.FindMoves(p1, true, false);
             Assert.IsTrue(moves.Count == 4);
         }
 
@@ -135,8 +135,8 @@ namespace Tests.Working
             mainPawn0.KingState = true;
 
             board.PutOnBoard(mainPawn0, mainPawn1, mainPawn2, mainPawn3);
-            List<IMoveable> moves = await scope.FindMoves(p1);
-            Assert.IsTrue(moves.Count==4);
+            List<IMoveable> moves = await scope.FindMoves(p1, true, false);
+            Assert.IsTrue(moves.Count == 4);
         }
     }
 }

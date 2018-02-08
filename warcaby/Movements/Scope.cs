@@ -21,13 +21,13 @@ namespace Checkers
             Board = board;
         }
 
-        public async Task<List<IMoveable>> FindMoves(Player player, bool beatRequired = true)
+        public async Task<List<IMoveable>> FindMoves(Player player, bool beatRequired = true, bool longestBeatsRequired = true)
         {
             List<Pawn> playePawns = Board.GetPawns(player);
-            return await FindMoves(playePawns, beatRequired);
+            return await FindMoves(playePawns, beatRequired, longestBeatsRequired);
         }
 
-        public async Task<List<IMoveable>> FindMoves(List<Pawn> pawns, bool beatRequired = true)
+        public async Task<List<IMoveable>> FindMoves(List<Pawn> pawns, bool beatRequired = true, bool longestBeatsRequired = true)
         {
             List<Task<List<IMoveable>>> moveTasks = new List<Task<List<IMoveable>>>();
             List<Task<List<IMakeBeat>>> fightMoveTasks = new List<Task<List<IMakeBeat>>>();
@@ -66,7 +66,7 @@ namespace Checkers
             {
 
                 FightMoveTree tree = new FightMoveTree(Board, fightMoves);
-                List<IMakeBeat> beatLists = tree.GetBeatLists();
+                List<IMakeBeat> beatLists = tree.GetBeatLists(longestBeatsRequired);
 
                 if (beatLists.Count > 0) // is single beat multiple beat?
                 {
