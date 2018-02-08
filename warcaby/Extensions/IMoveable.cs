@@ -11,5 +11,8 @@ namespace warcaby.Extensions
     {
         void PrepareMove(Board board);
         Board Simulate(Board board);
+        Position PositionBeforeMove { get; set; }
+        Position PositionAfterMove { get; set; }
+        MoveDirection MoveDirection { get; set; }
     }
 }

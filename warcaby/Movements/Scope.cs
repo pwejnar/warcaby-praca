@@ -21,49 +21,79 @@ namespace Checkers
             Board = board;
         }
 
-        public async Task<List<MoveBase>> FindMoves(Player player)
+        public async Task<List<IMoveable>> FindMoves(Player player, bool beatRequired = true)
         {
-            List<MoveBase> moves = new List<MoveBase>();
-            List<Task<List<Move>>> moveTasks = new List<Task<List<Move>>>();
-            List<Task<List<FightMove>>> fightMoveTasks = new List<Task<List<FightMove>>>();
             List<Pawn> playePawns = Board.GetPawns(player);
+            return await FindMoves(playePawns, beatRequired);
+        }
 
-            foreach (Pawn pawn in playePawns)
+        public async Task<List<IMoveable>> FindMoves(List<Pawn> pawns, bool beatRequired = true)
+        {
+            List<Task<List<IMoveable>>> moveTasks = new List<Task<List<IMoveable>>>();
+
+            foreach (Pawn pawn in pawns)
             {
                 moveTasks.AddRange(FindMoves(pawn));
-                fightMoveTasks.AddRange(FindFightMoves(pawn));
+                moveTasks.AddRange(FindFightMoves(pawn));
             }
 
             await Task.WhenAll(moveTasks.ToArray());
-            await Task.WhenAll(fightMoveTasks.ToArray());
 
-            foreach (Task<List<Move>> task in moveTasks)
+            List<IMoveable> allMoves = new List<IMoveable>();
+
+            foreach (Task<List<IMoveable>> task in moveTasks)
             {
                 if (task.Result != null)
                 {
-                    moves.AddRange(task.Result);
+                    allMoves.AddRange(task.Result);
                 }
             }
 
-            List<FightMove> fightMoves = new List<FightMove>();
+            List<IMoveable> normalMoves = allMoves.Where(x => !(x is IMakeBeat)).ToList().ConvertAll(obj => (IMoveable)obj);
+            List<IMakeBeat> fightMoves = allMoves.Where(x => x is IMakeBeat).ToList().ConvertAll(obj => (IMakeBeat)obj);
+            List<IMoveable> movesDetected = new List<IMoveable>();
 
-            foreach (Task<List<FightMove>> task in fightMoveTasks)
+            if (fightMoves.Count > 0)
             {
-                if (task.Result != null)
+              
+                FightMoveTree tree = new FightMoveTree(Board, fightMoves);
+                var beatLists = tree.GetBeatLists();
+
+                if (beatLists.Count > 0) // is single beat multiple beat?
                 {
-                    fightMoves.AddRange(task.Result);
+                    movesDetected.AddRange(beatLists.ConvertAll(obj => (IMoveable)obj));
+
+                    if (beatRequired)
+                    {
+                        return movesDetected;
+                    }
                 }
             }
 
-            FightMoveTree tree = new FightMoveTree(Board, fightMoves);
-            moves.AddRange(tree.MultipleBeats);
-            return moves;
+            movesDetected.AddRange(normalMoves);
+            return movesDetected;
+        }
+
+        private List<Task<List<IMoveable>>> FindFightMoves(Pawn pawn, List<MoveDirection> directions = null)
+        {
+            List<Task<List<IMoveable>>> tasks = new List<Task<List<IMoveable>>>();
+
+            if (directions == null)
+            {
+                directions = Movement.GetDirections();
+            }
+
+            foreach (MoveDirection direction in directions)
+            {
+                tasks.Add(FindFightMoves(pawn, direction));
+            }
+            return tasks;
         }
 
 
-        private List<Task<List<Move>>> FindMoves(Pawn pawn)
+        private List<Task<List<IMoveable>>> FindMoves(Pawn pawn)
         {
-            List<Task<List<Move>>> tasks = new List<Task<List<Move>>>();
+            List<Task<List<IMoveable>>> tasks = new List<Task<List<IMoveable>>>();
             List<MoveDirection> directions;
             if (pawn.KingState)
             {
@@ -82,25 +112,9 @@ namespace Checkers
         }
 
 
-        public List<Task<List<FightMove>>> FindFightMoves(Pawn pawn, List<MoveDirection> directions = null)
+        private async Task<List<IMoveable>> FindMove(Pawn mainPawn, MoveDirection direction)
         {
-            List<Task<List<FightMove>>> tasks = new List<Task<List<FightMove>>>();
-
-            if (directions == null)
-            {
-                directions = Movement.GetDirections();
-            }
-
-            foreach (MoveDirection direction in directions)
-            {
-                tasks.Add(FindFightMoves(pawn, direction));
-            }
-            return tasks;
-        }
-
-        private async Task<List<Move>> FindMove(Pawn mainPawn, MoveDirection direction)
-        {
-            List<Move> moves = new List<Move>();
+            List<IMoveable> moves = new List<IMoveable>();
             Shape shape = Board.GetControlInDirection(mainPawn.Position, direction);
 
             if (!(shape is Field))
@@ -118,9 +132,9 @@ namespace Checkers
             return moves;
         }
 
-        private async Task<List<FightMove>> FindFightMoves(Pawn pawn, MoveDirection direction)
+        private async Task<List<IMoveable>> FindFightMoves(Pawn pawn, MoveDirection direction)
         {
-            List<FightMove> fightMoves = null;
+            List<IMoveable> fightMoves = null;
             Shape shape = Board.GetControlInDirection(pawn.Position, direction);
             Pawn enemy = null;
 
@@ -142,7 +156,7 @@ namespace Checkers
                             return null;
                         }
 
-                        fightMoves = new List<FightMove>();
+                        fightMoves = new List<IMoveable>();
                         enemy = tempPawn;
                     }
                 }

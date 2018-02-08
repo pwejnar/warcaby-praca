@@ -53,14 +53,14 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="BoardTest.cs" />
+    <Compile Include="Not working\BoardTest.cs" />
     <Compile Include="Working\ScopeFindAllTest.cs" />
     <Compile Include="Working\ScopeFindMovesTest.cs" />
-    <Compile Include="SpeculationTest.cs" />
-    <Compile Include="Working\FightMoveTreeTest.cs" />
+    <Compile Include="Not working\SpeculationTest.cs" />
+    <Compile Include="Not working\BeatPathsFind.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Working\ScopeFindEnemiesTest.cs" />
-    <Compile Include="ArtifficialInteligenceTest.cs" />
+    <Compile Include="Working\SingleBeatsTest.cs" />
+    <Compile Include="Not working\ArtifficialInteligenceTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\warcaby\Checkers.csproj">

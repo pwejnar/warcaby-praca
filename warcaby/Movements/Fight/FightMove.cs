@@ -10,7 +10,7 @@ using warcaby.Extensions;
 
 namespace Checkers
 {
-    public class FightMove : Move
+    public class FightMove : Move, IMakeBeat
     {
         public Pawn PawntoBeat { get; set; }
 
@@ -21,17 +21,22 @@ namespace Checkers
             this.PawntoBeat = pawntoBeat;
         }
 
-        public override Board Simulate(Board board)
+        public new Board Simulate(Board board)
         {
             Board clonedBoard = board.Clone();
             PrepareMove(clonedBoard);
             return clonedBoard;
         }
 
-        public override void PrepareMove(Board board)
+        public new void PrepareMove(Board board)
         {
             base.PrepareMove(board);
             board.Remove(PawntoBeat);
+        }
+
+        public void MakeBeat(Board board)
+        {
+            PrepareMove(board);
         }
     }
 }

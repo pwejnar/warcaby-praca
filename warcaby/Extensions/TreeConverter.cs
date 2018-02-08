@@ -15,6 +15,10 @@ namespace Checkers
 
         public TreeConverter(List<T> tree)
         {
+            if (tree == null || tree.Count == 0)
+            {
+                throw new Exception("Tree cannot be null and has to have elements.");
+            }
             this._tree = tree;
             GeneratePathsFromTree();
         }
