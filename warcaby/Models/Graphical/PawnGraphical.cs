@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using Checkers;
 using Checkers.Properties;
+using warcaby.Properties;
 
 namespace Checkers
 {
@@ -25,7 +26,7 @@ namespace Checkers
 
             if (pawn.KingState)
             {
-                this.Image = color == PawnColor.Dark ? Resources.darkKing : Resources.lightKinggg;
+                this.Image = color == PawnColor.Dark ? Resources.darkKing : Resources.lightKing;
             }
             else
             {

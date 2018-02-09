@@ -11,7 +11,7 @@ using warcaby.Extensions;
 
 namespace warcaby.AI
 {
-    public class SpeculationTree : IGotChildrens
+    public struct SpeculationTree : IGotChildrens
     {
         public Board StartBoard { get; set; }
         public Player Player { get; set; }
@@ -25,8 +25,8 @@ namespace warcaby.AI
             this.Player = player;
             this.Oponent = oponent;
             Nodes = new List<SpeculationNode>();
-            SpeculationNode.Root = this;
             DeepthStepsRemaining = deepth;
+            SpeculationNode.Root = this;
             FindPlayerMoves(board, player);
         }
 
@@ -37,8 +37,11 @@ namespace warcaby.AI
 
             foreach (var move in moves)
             {
-                Nodes.Add(new SpeculationNode(player, move, move.Simulate(board), 0));
+                SpeculationNode node = new SpeculationNode(player, move, move.Simulate(board), 0);
+                Nodes.Add(node);
             }
+
+            SpeculationNode.FindNextSpeculationNodes(Nodes);
         }
 
         public List<List<SpeculationNode>> GetSpeculationLists()

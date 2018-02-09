@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Checkers.Properties {
+namespace warcaby.Properties {
     using System;
     
     
@@ -113,9 +113,9 @@ namespace Checkers.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap lightKinggg {
+        internal static System.Drawing.Bitmap lightKing {
             get {
-                object obj = ResourceManager.GetObject("lightKinggg", resourceCulture);
+                object obj = ResourceManager.GetObject("lightKing", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

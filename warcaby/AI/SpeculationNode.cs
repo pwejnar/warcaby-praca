@@ -5,12 +5,13 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 using Checkers;
 using warcaby.Extensions;
 
 namespace warcaby.AI
 {
-    public class SpeculationNode : IGotChildrens
+    public struct SpeculationNode : IGotChildrens
     {
         public int Depth { get; set; }
         public Player Player { get; set; }
@@ -26,22 +27,32 @@ namespace warcaby.AI
             this.BoardState = boardState;
             this.Depth = depth;
             NextNodes = new List<SpeculationNode>();
-            FindNextSpeculationNodes();
         }
 
-        private async void FindNextSpeculationNodes()
+        public static async void FindNextSpeculationNodes(List<SpeculationNode> nodes)
         {
-            if (Depth < Root.DeepthStepsRemaining)
-            {
-                Scope scope = new Scope(BoardState);
-                Player other = Root.ChangePlayer(Player);
-                List<IMoveable> moves = await scope.FindMoves(other);
 
-                foreach (IMoveable move in moves)
+            //    SpeculationNode node = new SpeculationNode();
+
+            for (int i = 0; i < nodes.Count; i++)
+            {
+                if (nodes[i].Depth < Root.DeepthStepsRemaining)
                 {
-                    NextNodes.Add(new SpeculationNode(other, move, move.Simulate(BoardState), Depth + 1));
-                }
+                    Scope scope = new Scope(nodes[i].BoardState);
+                    Player other = Root.ChangePlayer(nodes[i].Player);
+                    List<IMoveable> moves = await scope.FindMoves(other);
+
+                    foreach (IMoveable move in moves)
+                    {
+                        SpeculationNode node2 = new SpeculationNode(other, move, move.Simulate(nodes[i].BoardState), nodes[i].Depth + 1);
+                        node2.NextNodes.Add(node2);
+                        // node.FindNextSpeculationNodes();
+                    }
+
+                } 
             }
+
+           
         }
 
         public IList GetChildrens()
