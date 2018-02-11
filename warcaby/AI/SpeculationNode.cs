@@ -11,13 +11,13 @@ using warcaby.Extensions;
 
 namespace warcaby.AI
 {
-    public class SpeculationNode : IGotChildrens
+    public class SpeculationNode : IGotChildrens 
     {
         public int Depth { get; set; }
         public Player Player { get; set; }
         public IMoveable Move { get; set; }
         public Board BoardState { get; set; }
-        public List<SpeculationNode> NextNodes { get; set; }
+        public LinkedList<SpeculationNode> NextNodes { get; set; }
         public static SpeculationTree Root { get; set; }
 
         public SpeculationNode(Player player, IMoveable move, Board boardState, int depth)
@@ -26,7 +26,7 @@ namespace warcaby.AI
             this.Move = move;
             this.BoardState = boardState;
             this.Depth = depth;
-            NextNodes = new List<SpeculationNode>();
+            NextNodes = new LinkedList<SpeculationNode>();
         }
 
         private async void FindSpeculationNodes()
@@ -36,24 +36,28 @@ namespace warcaby.AI
                 Scope scope = new Scope(BoardState);
                 Player other = Root.ChangePlayer(Player);
                 List<IMoveable> moves = await scope.FindMoves(other);
-                NextNodes = GenerateChildrens(moves, other, BoardState, Depth + 1).ToList();
+                NextNodes = GenerateChildrens(moves, other, BoardState, Depth + 1);
                 //BoardState = null;
             }
         }
 
-        public static IEnumerable<SpeculationNode> GenerateChildrens(List<IMoveable> moves, Player player, Board board, int depth)
+        public static LinkedList<SpeculationNode> GenerateChildrens(List<IMoveable> moves, Player player, Board board, int depth)
         {
+            LinkedList<SpeculationNode> nodes = new LinkedList<SpeculationNode>();
+
             foreach (IMoveable move in moves)
             {
                 SpeculationNode child = new SpeculationNode(player, move, move.Simulate(board), depth);
+                nodes.AddLast(child);
                 child.FindSpeculationNodes();
-                yield return child;
+                //    yield return child;
             }
+            return nodes;
         }
 
         public IList GetChildrens()
         {
-            return NextNodes;
+            return null;
         }
     }
 }
