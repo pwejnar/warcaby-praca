@@ -28,7 +28,7 @@ namespace Tests.Working
             board.SetUpPawns(p1);
             board.SetUpPawns(p2);
 
-            SpeculationTree tree = new SpeculationTree(board, p1, p2, 10);
+            SpeculationTree tree = new SpeculationTree(board, p1, p2, 5);
             var speculationLists = tree.GetSpeculationLists();
 
             Assert.IsTrue(true);

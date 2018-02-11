@@ -31,13 +31,14 @@
             this.newGame_btn = new System.Windows.Forms.Button();
             this.Player2 = new System.Windows.Forms.Label();
             this.Player1 = new System.Windows.Forms.Label();
+            this.button1 = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // newGame_btn
             // 
             this.newGame_btn.Location = new System.Drawing.Point(676, 393);
             this.newGame_btn.Name = "newGame_btn";
-            this.newGame_btn.Size = new System.Drawing.Size(75, 23);
+            this.newGame_btn.Size = new System.Drawing.Size(98, 23);
             this.newGame_btn.TabIndex = 0;
             this.newGame_btn.Text = "New Game";
             this.newGame_btn.UseVisualStyleBackColor = true;
@@ -67,6 +68,15 @@
             this.Player1.TabIndex = 2;
             this.Player1.Text = "Player1";
             // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(676, 422);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(98, 23);
+            this.button1.TabIndex = 3;
+            this.button1.Text = "Restart";
+            this.button1.UseVisualStyleBackColor = true;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -74,6 +84,7 @@
             this.BackgroundImage = global::warcaby.Properties.Resources.background;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ClientSize = new System.Drawing.Size(864, 609);
+            this.Controls.Add(this.button1);
             this.Controls.Add(this.Player1);
             this.Controls.Add(this.Player2);
             this.Controls.Add(this.newGame_btn);
@@ -93,6 +104,7 @@
         private System.Windows.Forms.Button newGame_btn;
         private System.Windows.Forms.Label Player2;
         private System.Windows.Forms.Label Player1;
+        private System.Windows.Forms.Button button1;
     }
 }
 

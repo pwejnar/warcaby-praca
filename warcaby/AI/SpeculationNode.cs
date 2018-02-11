@@ -11,7 +11,7 @@ using warcaby.Extensions;
 
 namespace warcaby.AI
 {
-    public struct SpeculationNode : IGotChildrens
+    public class SpeculationNode : IGotChildrens
     {
         public int Depth { get; set; }
         public Player Player { get; set; }
@@ -32,27 +32,39 @@ namespace warcaby.AI
         public static async void FindNextSpeculationNodes(List<SpeculationNode> nodes)
         {
 
-            //    SpeculationNode node = new SpeculationNode();
-
-            for (int i = 0; i < nodes.Count; i++)
+            while (nodes.Count > 0)
             {
-                if (nodes[i].Depth < Root.DeepthStepsRemaining)
+                List<SpeculationNode> newNodes = new List<SpeculationNode>();
+
+                foreach (SpeculationNode node in nodes)
                 {
-                    Scope scope = new Scope(nodes[i].BoardState);
-                    Player other = Root.ChangePlayer(nodes[i].Player);
-                    List<IMoveable> moves = await scope.FindMoves(other);
-
-                    foreach (IMoveable move in moves)
+                    if (node.Depth < Root.DeepthStepsRemaining)
                     {
-                        SpeculationNode node2 = new SpeculationNode(other, move, move.Simulate(nodes[i].BoardState), nodes[i].Depth + 1);
-                        node2.NextNodes.Add(node2);
-                        // node.FindNextSpeculationNodes();
+                        Scope scope = new Scope(node.BoardState);
+                        Player other = Root.ChangePlayer(node.Player);
+                        List<IMoveable> moves = await scope.FindMoves(other);
+
+                        foreach (IMoveable move in moves)
+                        {
+                            SpeculationNode child = new SpeculationNode(other, move, move.Simulate(node.BoardState), node.Depth + 1);
+                            node.NextNodes.Add(child);
+                            newNodes.Add(child);
+                        }
                     }
+                }
 
-                } 
+                for (int i = 0; i < nodes.Count; i++)
+                {
+                    nodes[i].BoardState = null;
+                }
+
+                GC.Collect();
+                GC.WaitForPendingFinalizers();
+
+                nodes = newNodes;
             }
+            
 
-           
         }
 
         public IList GetChildrens()
