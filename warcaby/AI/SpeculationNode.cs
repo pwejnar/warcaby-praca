@@ -29,42 +29,26 @@ namespace warcaby.AI
             NextNodes = new List<SpeculationNode>();
         }
 
-        public static async void FindNextSpeculationNodes(List<SpeculationNode> nodes)
+        private async void FindSpeculationNodes()
         {
-
-            while (nodes.Count > 0)
+            if (Depth < Root.DeepthStepsRemaining)
             {
-                List<SpeculationNode> newNodes = new List<SpeculationNode>();
-
-                foreach (SpeculationNode node in nodes)
-                {
-                    if (node.Depth < Root.DeepthStepsRemaining)
-                    {
-                        Scope scope = new Scope(node.BoardState);
-                        Player other = Root.ChangePlayer(node.Player);
-                        List<IMoveable> moves = await scope.FindMoves(other);
-
-                        foreach (IMoveable move in moves)
-                        {
-                            SpeculationNode child = new SpeculationNode(other, move, move.Simulate(node.BoardState), node.Depth + 1);
-                            node.NextNodes.Add(child);
-                            newNodes.Add(child);
-                        }
-                    }
-                }
-
-                for (int i = 0; i < nodes.Count; i++)
-                {
-                    nodes[i].BoardState = null;
-                }
-
-                GC.Collect();
-                GC.WaitForPendingFinalizers();
-
-                nodes = newNodes;
+                Scope scope = new Scope(BoardState);
+                Player other = Root.ChangePlayer(Player);
+                List<IMoveable> moves = await scope.FindMoves(other);
+                NextNodes = GenerateChildrens(moves, other, BoardState, Depth + 1).ToList();
+                //BoardState = null;
             }
-            
+        }
 
+        public static IEnumerable<SpeculationNode> GenerateChildrens(List<IMoveable> moves, Player player, Board board, int depth)
+        {
+            foreach (IMoveable move in moves)
+            {
+                SpeculationNode child = new SpeculationNode(player, move, move.Simulate(board), depth);
+                child.FindSpeculationNodes();
+                yield return child;
+            }
         }
 
         public IList GetChildrens()

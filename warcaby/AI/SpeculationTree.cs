@@ -27,21 +27,14 @@ namespace warcaby.AI
             Nodes = new List<SpeculationNode>();
             DeepthStepsRemaining = deepth;
             SpeculationNode.Root = this;
-            FindPlayerMoves(board, player);
         }
 
-        private async void FindPlayerMoves(Board board, Player player)
+        public async void FindPlayerMoves()
         {
-            Scope scope = new Scope(board);
-            List<IMoveable> moves = await scope.FindMoves(player);
+            Scope scope = new Scope(StartBoard);
+            List<IMoveable> moves = await scope.FindMoves(Player);
+            Nodes = SpeculationNode.GenerateChildrens(moves, Player, StartBoard, 0).ToList();
 
-            foreach (var move in moves)
-            {
-                SpeculationNode node = new SpeculationNode(player, move, move.Simulate(board), 0);
-                Nodes.Add(node);
-            }
-
-            SpeculationNode.FindNextSpeculationNodes(Nodes);
         }
 
         public List<List<SpeculationNode>> GetSpeculationLists()

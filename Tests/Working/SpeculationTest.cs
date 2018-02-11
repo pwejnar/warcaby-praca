@@ -29,6 +29,8 @@ namespace Tests.Working
             board.SetUpPawns(p2);
 
             SpeculationTree tree = new SpeculationTree(board, p1, p2, 5);
+            tree.FindPlayerMoves();
+
             var speculationLists = tree.GetSpeculationLists();
 
             Assert.IsTrue(true);
