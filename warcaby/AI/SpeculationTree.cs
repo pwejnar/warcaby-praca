@@ -33,7 +33,7 @@ namespace warcaby.AI
         {
             Scope scope = new Scope(StartBoard);
             List<IMoveable> moves = await scope.FindMoves(Player);
-            Nodes = SpeculationNode.GenerateChildrens(moves, Player, StartBoard, 0).ToList();
+            SpeculationNode.Initialize(moves, Player, StartBoard);
 
         }
 

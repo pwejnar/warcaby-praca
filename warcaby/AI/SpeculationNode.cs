@@ -11,13 +11,13 @@ using warcaby.Extensions;
 
 namespace warcaby.AI
 {
-    public class SpeculationNode : IGotChildrens 
+    public class SpeculationNode : IGotChildrens
     {
         public int Depth { get; set; }
         public Player Player { get; set; }
         public IMoveable Move { get; set; }
         public Board BoardState { get; set; }
-        public LinkedList<SpeculationNode> NextNodes { get; set; }
+        public List<SpeculationNode> Nodes { get; set; }
         public static SpeculationTree Root { get; set; }
 
         public SpeculationNode(Player player, IMoveable move, Board boardState, int depth)
@@ -26,38 +26,64 @@ namespace warcaby.AI
             this.Move = move;
             this.BoardState = boardState;
             this.Depth = depth;
-            NextNodes = new LinkedList<SpeculationNode>();
+            Nodes = new List<SpeculationNode>();
         }
 
-        private async void FindSpeculationNodes()
+        private SpeculationNode()
         {
-            if (Depth < Root.DeepthStepsRemaining)
-            {
-                Scope scope = new Scope(BoardState);
-                Player other = Root.ChangePlayer(Player);
-                List<IMoveable> moves = await scope.FindMoves(other);
-                NextNodes = GenerateChildrens(moves, other, BoardState, Depth + 1);
-                //BoardState = null;
-            }
-        }
 
-        public static LinkedList<SpeculationNode> GenerateChildrens(List<IMoveable> moves, Player player, Board board, int depth)
-        {
-            LinkedList<SpeculationNode> nodes = new LinkedList<SpeculationNode>();
-
-            foreach (IMoveable move in moves)
-            {
-                SpeculationNode child = new SpeculationNode(player, move, move.Simulate(board), depth);
-                nodes.AddLast(child);
-                child.FindSpeculationNodes();
-                //    yield return child;
-            }
-            return nodes;
         }
 
         public IList GetChildrens()
         {
-            return null;
+            return Nodes;
         }
+
+        public static void Initialize(List<IMoveable> moves, Player player, Board board)
+        {
+            SpeculationNode sn = new SpeculationNode();
+
+            List<SpeculationNode> childrens = sn.GenerateChildrens(moves, player, board, 0);
+            sn.FindSpeculationNodes(childrens);
+        }
+
+        public List<SpeculationNode> GenerateChildrens(List<IMoveable> moves, Player player, Board board, int depth)
+        {
+            List<SpeculationNode> nodes = new List<SpeculationNode>();
+
+            foreach (IMoveable move in moves)
+            {
+                SpeculationNode child = new SpeculationNode(player, move, move.Simulate(board), depth);
+                nodes.Add(child);
+            }
+
+            return nodes;
+        }
+
+        private async void FindSpeculationNodes(List<SpeculationNode> nodes)
+        {
+            for (int i = 0; i < nodes.Count; i++)
+            {
+                SpeculationNode n = nodes[i];
+
+                if (n.Depth >= Root.DeepthStepsRemaining)
+                    break;
+
+                Scope scope = new Scope(n.BoardState);
+                Player other = Root.ChangePlayer(n.Player);
+                List<IMoveable> moves = await scope.FindMoves(other);
+                List<SpeculationNode> childrens = n.GenerateChildrens(moves, other, n.BoardState, n.Depth + 1);
+                n.Nodes = childrens;
+                n.BoardState = null;
+
+                if (n.Depth < Root.DeepthStepsRemaining)
+                {
+                    n.FindSpeculationNodes(childrens);
+                }
+            }
+        }
+
+        //nastepny obiekt opiera sie na planszy poprzedniego
+        //po wykonaniu petli moge pousuwac wszystkie plansze, ale to juz bedzie na samym koncu
     }
 }

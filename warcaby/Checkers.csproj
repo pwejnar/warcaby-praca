@@ -76,6 +76,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AI\Rating\GameStatus.cs" />
+    <Compile Include="AI\SpeculationMove.cs" />
     <Compile Include="AI\SpeculationTree.cs" />
     <Compile Include="AI\SpeculationNode.cs" />
     <Compile Include="Extensions\IMakeBeat.cs" />
