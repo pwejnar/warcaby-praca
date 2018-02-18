@@ -8,7 +8,7 @@ using warcaby.Movements;
 
 namespace Checkers
 {
-    public struct Move : IMoveable
+    public class Move : IMoveable
     {
         public Position PositionBeforeMove { get; set; }
         public Position PositionAfterMove { get; set; }
@@ -39,7 +39,7 @@ namespace Checkers
 
         public bool IsMove(Move move)
         {
-            return this.Equals(move);
+            return Equals(move);
         }
     }
 }

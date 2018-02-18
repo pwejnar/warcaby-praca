@@ -35,6 +35,15 @@ namespace warcaby.Movements.Fight
             return cloneBoard;
         }
 
+
+        public bool IsMove(Move move)
+        {
+            var x = FightMoves.Where(obj => obj.IsMove(move)).ToList();
+            if (x.Count > 0)
+                return true;
+            return false;
+        }
+
         public void PrepareMove(Board board)
         {
             foreach (IMakeBeat fightMove in FightMoves)

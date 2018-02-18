@@ -26,7 +26,6 @@ namespace Checkers
             Player2 = player2;
 
             BuildBoardForm();
-            GameMovementManager = new MovementManager(BoardForm.SourceBoard, this);
             ActualPlayer = player1.PawnsColor == PawnColor.Light ? player1 : player2;
         }
 
@@ -40,6 +39,8 @@ namespace Checkers
         {
             //other size not work yet
             BoardForm = new BoardGraphical(new Board(8), GameMovementManager);
+            GameMovementManager = new MovementManager(BoardForm.SourceBoard);
+
             GameForm.AddToForm(BoardForm);
             UpdateBoardState();
         }
@@ -67,7 +68,7 @@ namespace Checkers
             }
         }
 
-  
+
 
         public void UpdateBoardState()
         {

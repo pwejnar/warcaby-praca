@@ -46,10 +46,20 @@ namespace Checkers
             if (SelectedPawn != null)
             {
                 this.SelectedField = field;
-                Move move = new Move(SelectedPawn.Position, SelectedField.Position, MoveDirection.);
-                //check if valid move 
-                MakeMove();
+                if (CheckIfValidMove(SelectedPawn.Position, SelectedField.Position))
+                    MakeMove();
             }
+        }
+
+        bool CheckIfValidMove(Position pos1, Position pos2)
+        {
+            MoveDirection direction = Movement.GetDirection(pos1, pos2);
+            if (direction == MoveDirection.Undefined)
+                return false;
+
+            Move move = new Move(pos1, pos2, direction);
+            List<IMoveable> x = AvailablePawnMoves.Where(obj => obj.IsMove(move)).ToList();
+            return x.Count > 0;
         }
 
         private void MakeMove()

@@ -16,7 +16,8 @@ namespace Checkers
         DownRight,
         DownLeft,
         UpperRight,
-        UpperLeft
+        UpperLeft,
+        Undefined
     }
     public static class Movement
     {
@@ -69,8 +70,34 @@ namespace Checkers
             {
                 return MoveDirection.UpperLeft;
             }
-            
-            throw  new Exception("direction not supported.");
+
+            throw new Exception("direction not supported.");
+        }
+
+        public static MoveDirection GetDirection(Position position1, Position position2)
+        {
+
+            if (position1.Row + 1 == position2.Row && position1.Column - 1 == position2.Column)
+            {
+                return MoveDirection.DownLeft;
+            }
+
+            if (position1.Row + 1 == position2.Row && position1.Column + 1 == position2.Column)
+            {
+                return MoveDirection.DownRight;
+            }
+
+            if (position1.Row - 1 == position2.Row && position1.Column - 1 == position2.Column)
+            {
+                return MoveDirection.UpperLeft;
+            }
+
+            if (position1.Row - 1 == position2.Row && position1.Column + 1 == position2.Column)
+            {
+                return MoveDirection.UpperRight;
+            }
+
+            return MoveDirection.Undefined;
         }
     }
 }
