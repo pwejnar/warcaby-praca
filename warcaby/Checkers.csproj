@@ -75,10 +75,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AI\Rating\GameStatus.cs" />
-    <Compile Include="AI\SpeculationMove.cs" />
-    <Compile Include="AI\SpeculationTree.cs" />
-    <Compile Include="AI\SpeculationNode.cs" />
+    <Compile Include="AI\Rating\MoveAnalyze.cs" />
+    <Compile Include="AI\Rating\MoveStatus.cs" />
+    <Compile Include="AI\Speculation.cs" />
+    <Compile Include="AI\MoveEffect.cs" />
     <Compile Include="Extensions\IMakeBeat.cs" />
     <Compile Include="Extensions\IMoveable.cs" />
     <Compile Include="Models\AiPlayer.cs" />

@@ -8,39 +8,39 @@ namespace warcaby.AI.Rating
 {
     public enum GameRating
     {
-        lost, losing, drawing, winning, won
+        Lost, Losing, Drawing, Winning, Won
     }
 
-    public class GameStatus
+    public class MoveStatus
     {
         public int Score { get; set; }
         public GameRating Rating { get; }
 
-        public GameStatus(int score, bool lost = false, bool won = false)
+        public MoveStatus(int score, bool lost = false, bool won = false)
         {
             Score = score;
 
             if (lost)
             {
-                Rating = GameRating.lost;
+                Rating = GameRating.Lost;
             }
 
             else if (won)
             {
-                Rating = GameRating.won;
+                Rating = GameRating.Won;
             }
 
             else if (score == 0)
             {
-                Rating = GameRating.drawing;
+                Rating = GameRating.Drawing;
             }
             else if (score > 0)
             {
-                Rating = GameRating.winning;
+                Rating = GameRating.Winning;
             }
             else if (score < 0)
             {
-                Rating = GameRating.losing;
+                Rating = GameRating.Losing;
             }
         }
     }

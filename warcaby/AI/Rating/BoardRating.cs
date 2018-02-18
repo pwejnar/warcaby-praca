@@ -12,7 +12,9 @@ namespace Checkers
         private static readonly int rateForPawn = 1;
         private static readonly int rateForKing = 3;
 
-        public static GameStatus Rate(Board board, Player player)
+
+
+        public static MoveStatus Rate(Board board, Player player)
         {
             int mainPawnsCount = board.GetPawns().Count(x => x.KingState == false && x.Player == player);
             int enemyPawnsCount = board.GetPawns().Count(x => x.KingState == false && x.Player != player);
@@ -24,15 +26,15 @@ namespace Checkers
 
             if (enemyPawnsCount + enemyKingsCount == 0)
             {
-                return new GameStatus(score, false, true);
+                return new MoveStatus(score, false, true);
             }
 
             else if (mainPawnsCount + mainKingsCount == 0)
             {
-                return new GameStatus(score, true, false);
+                return new MoveStatus(score, true, false);
             }
 
-            return new GameStatus(score);
+            return new MoveStatus(score);
         }
     }
 }
