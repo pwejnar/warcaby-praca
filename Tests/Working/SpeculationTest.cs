@@ -120,6 +120,60 @@ namespace Tests.Working
             Assert.IsTrue(true);
         }
 
+        [TestMethod]
+        public async Task TestMethod6()
+        {
+            Pawn pawn0 = new Pawn(p1, new Position(5, 4));
+            Pawn enemyPawn0 = new Pawn(p2, new Position(2, 3));
 
+            board.PutOnBoard(pawn0);
+            board.PutOnBoard(enemyPawn0);
+
+            Speculation spec = new Speculation(p1, p2, board, 3);
+            MoveAnalyze bestMove = await spec.FindBestMove();
+            Assert.IsTrue(bestMove.Move.MoveDirection == MoveDirection.UpperLeft);
+        }
+
+        [TestMethod]
+        public async Task TestMethod7()
+        {
+            Pawn pawn0 = new Pawn(p1, new Position(0, 5));
+            pawn0.KingState = true;
+
+            Pawn enemyPawn0 = new Pawn(p2, new Position(2, 5));
+            Pawn enemyPawn1 = new Pawn(p2, new Position(2, 7));
+
+            board.PutOnBoard(pawn0);
+            board.PutOnBoard(enemyPawn0);
+            board.PutOnBoard(enemyPawn1);
+
+            Speculation spec = new Speculation(p1, p2, board, 3);
+            MoveAnalyze bestMove = await spec.FindBestMove();
+
+            Position newPosition = new Position(2, 3);
+            Assert.IsTrue(bestMove.Move.PositionAfterMove.Equals(newPosition));
+        }
+
+        [TestMethod]
+        public async Task TestMethod8()
+        {
+            Pawn pawn0 = new Pawn(p1, new Position(5, 4));
+            Pawn pawn1 = new Pawn(p1, new Position(6, 5));
+            Pawn pawn2 = new Pawn(p1, new Position(7, 6));
+            pawn1.KingState = true;
+
+            Pawn enemyPawn0 = new Pawn(p2, new Position(3, 2));
+            Pawn enemyPawn1 = new Pawn(p2, new Position(3, 4));
+            Pawn enemyPawn2 = new Pawn(p2, new Position(5, 2));
+
+
+            board.PutOnBoard(pawn0, pawn1, pawn2, enemyPawn0, enemyPawn1, enemyPawn2);
+
+            Speculation spec = new Speculation(p1, p2, board, 3);
+            MoveAnalyze bestMove = await spec.FindBestMove();
+
+            Position newPosition = new Position(4, 3);
+            Assert.IsTrue(bestMove.Move.PositionAfterMove.Equals(newPosition));
+        }
     }
 }

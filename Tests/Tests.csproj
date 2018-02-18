@@ -53,14 +53,11 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="Not working\BoardTest.cs" />
+    <Compile Include="Working\BoardTest.cs" />
     <Compile Include="Working\ScopeFindAllTest.cs" />
     <Compile Include="Working\ScopeFindMovesTest.cs" />
-    <Compile Include="Not working\SpeculationTest.cs" />
-    <Compile Include="Not working\BeatPathsFind.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Working\SingleBeatsTest.cs" />
-    <Compile Include="Not working\ArtifficialInteligenceTest.cs" />
     <Compile Include="Working\LongestBeatPathDetectionTest.cs" />
     <Compile Include="Working\SpeculationTest.cs" />
   </ItemGroup>
