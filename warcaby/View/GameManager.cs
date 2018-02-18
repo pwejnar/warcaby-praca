@@ -10,7 +10,7 @@ namespace Checkers
 {
     public class GameManager
     {
-        public Form1 GameForm { get; set; }
+        public BoardForm GameForm { get; set; }
         public BoardGraphical BoardForm { get; set; }
 
         public PlayerGraphical Player1 { get; set; }
@@ -19,15 +19,21 @@ namespace Checkers
         public static PlayerGraphical ActualPlayer { get; set; }
         public MovementManager GameMovementManager { get; set; }
 
-        public GameManager(Form1 form, PlayerGraphical player1, PlayerGraphical player2)    // every time white pawns start game
+        public GameManager(BoardForm form, PlayerGraphical player1, PlayerGraphical player2)    // every time white pawns start game
         {
             GameForm = form;
             Player1 = player1;
             Player2 = player2;
 
             BuildBoardForm();
-            GameMovementManager = new MovementManager(BoardForm.SourceBoard);
+            GameMovementManager = new MovementManager(BoardForm.SourceBoard, this);
             ActualPlayer = player1.PawnsColor == PawnColor.Light ? player1 : player2;
+        }
+
+        public void SetUpGame()
+        {
+            BoardForm.SetUpPawns(Player1, Player2);
+            UpdateBoardState();
         }
 
         void BuildBoardForm()
@@ -61,11 +67,7 @@ namespace Checkers
             }
         }
 
-        public void SetUpGame()
-        {
-            BoardForm.SetUpPawns(Player1, Player2);
-            UpdateBoardState();
-        }
+  
 
         public void UpdateBoardState()
         {

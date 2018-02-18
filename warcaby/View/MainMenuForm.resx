@@ -1284,7 +1284,7 @@
   <data name="PawnColor1.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAAPoAAAD9CAYAAACV6WqFAAAAIGNIUk0AAHolAACAgwAA+f8AAIDpAAB1
-        MAAA6mAAADqYAAAXb5JfxUYAAAAJcEhZcwAACxIAAAsSAdLdfvwAAP+WSURBVHhe7P1XdGVZdh2IPn20
+        MAAA6mAAADqYAAAXb5JfxUYAAAAJcEhZcwAACxEAAAsRAX9kX5EAAP+WSURBVHhe7P1XdGVZdh2IPn20
         NIb09NMfUg99SaOf+j21miyyyCqWr6z0NnyG994jIoCACXgg4L333nvvvffeexNAeJsZ6as435wbiST1
         HkarSBbJqmJ8rHEuDi4u7j33zDXn3Hvttf8fAF7Fq3gVf+Sx5clX8SpexR9XbHnyVbyKV/HHFVuefBWv
         4lX8ccWWJ1/Fq3gVf1yx5clX8SpexR9XbHnyVbyKV/HHFVuefBWv4lX8ccWWJ1/Fq3gVf1yx5clX8Spe
@@ -3250,7 +3250,7 @@
   <data name="PawnColor0.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAAPoAAAD9CAYAAACV6WqFAAAAIGNIUk0AAHolAACAgwAA+f8AAIDpAAB1
-        MAAA6mAAADqYAAAXb5JfxUYAAAAJcEhZcwAACxEAAAsRAX9kX5EAAPPCSURBVHhe7N0J1G1Vdeb9qjJN
+        MAAA6mAAADqYAAAXb5JfxUYAAAAJcEhZcwAACxAAAAsQAa0jvXUAAPPCSURBVHhe7N0J1G1Vdeb9qjJN
         NalKlSnSW8EkxqixIUaNaCSiogbFaDDqh01iF02nRLCpGMUWOxQRkE66CwgIiojYIIoxNojGUNLYIBpA
         gzGWyQASRbjnO7/D+7+12G6aqxdFvGeMOfbea6+91lxzPs+cc+1z3nv/3WKx2CybZbPcxGW2cbNsls1y
         05LZxs2yWTbLTUtmGzfLZtksNy2Zbdwsm2Wz3LRktnGzbJbNctOS2cbNslk2y01LZhs3y2bZLDctmW3c

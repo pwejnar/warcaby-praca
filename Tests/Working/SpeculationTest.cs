@@ -169,7 +169,7 @@ namespace Tests.Working
 
             board.PutOnBoard(pawn0, pawn1, pawn2, enemyPawn0, enemyPawn1, enemyPawn2);
 
-            Speculation spec = new Speculation(p1, p2, board, 3);
+            Speculation spec = new Speculation(p1, p2, board, 8);
             MoveAnalyze bestMove = await spec.FindBestMove();
 
             Position newPosition = new Position(4, 3);

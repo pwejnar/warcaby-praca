@@ -1,6 +1,6 @@
 ﻿namespace Checkers
 {
-    partial class Form1
+    partial class BoardForm
     {
         /// <summary>
         /// Required designer variable.
@@ -77,7 +77,7 @@
             this.button1.Text = "Restart";
             this.button1.UseVisualStyleBackColor = true;
             // 
-            // Form1
+            // BoardForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -90,9 +90,9 @@
             this.Controls.Add(this.newGame_btn);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MaximizeBox = false;
-            this.Name = "Form1";
+            this.Name = "BoardForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Form1";
+            this.Text = "Board";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
             this.ResumeLayout(false);
             this.PerformLayout();

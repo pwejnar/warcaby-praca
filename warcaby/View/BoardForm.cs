@@ -12,19 +12,19 @@ using Checkers.Properties;
 
 namespace Checkers
 {
-    public partial class Form1 : Form
+    public partial class BoardForm : Form
     {
         private GameManager gameManager;
 
         //move to config 
         public static readonly int ControlSize = 60;
-        public static readonly Color darkColor = Color.FromArgb(90, 00, 00);
-        public static readonly Color lightColor = Color.FromArgb(250, 200, 100);
+        public static readonly Color DarkFieldsColor = Color.FromArgb(90, 00, 00);
+        public static readonly Color LightFieldsColor = Color.FromArgb(250, 200, 100);
 
-        public Form1(PlayerGraphical p1, PlayerGraphical p2)
+        public BoardForm(PlayerGraphical pg1, PlayerGraphical pg2)
         {
             InitializeComponent();
-            gameManager = new GameManager(this, p1, p2);
+            gameManager = new GameManager(this, pg1, pg2);
         }
 
         public void AddToForm(Control control)

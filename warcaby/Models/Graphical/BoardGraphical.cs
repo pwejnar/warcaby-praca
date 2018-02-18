@@ -54,7 +54,7 @@ namespace Checkers
 
                     else
                     {
-                        Color color = (i + j) % 2 == 0 ? Form1.lightColor : Form1.darkColor;
+                        Color color = (i + j) % 2 == 0 ? BoardForm.LightFieldsColor : BoardForm.DarkFieldsColor;
                         FieldGraphical fieldGraphical = new FieldGraphical(field, color);
                         fieldGraphical.Click += new EventHandler(FieldClicked);
                         Controls.Add(fieldGraphical);

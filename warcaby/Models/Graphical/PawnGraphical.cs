@@ -34,8 +34,8 @@ namespace Checkers
             }
 
             this.SizeMode = PictureBoxSizeMode.StretchImage;
-            this.BackColor = Form1.darkColor;
-            int controlSize = Form1.ControlSize;
+            this.BackColor = BoardForm.DarkFieldsColor;
+            int controlSize = BoardForm.ControlSize;
             this.Size = new Size(controlSize, controlSize);
             this.Margin = new Padding(0);
         }

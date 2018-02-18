@@ -17,7 +17,7 @@ namespace Checkers
         {
             this.field = field;
             BackColor = fieldColor;
-            int controlSize = Form1.ControlSize;
+            int controlSize = BoardForm.ControlSize;
             Size = new Size(controlSize, controlSize);
             this.Margin = new Padding(0);
         }

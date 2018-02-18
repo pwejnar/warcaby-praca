@@ -5,6 +5,7 @@ using System.Linq;
 using System.Net.Configuration;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 using Checkers;
 
 namespace Checkers
@@ -13,11 +14,13 @@ namespace Checkers
     {
         public Player Player { get; set; }
         public PawnColor PawnsColor { get; set; }
+        public bool Ai { get; set; }
 
-        public PlayerGraphical(Player player, PawnColor pawnsColor)
+        public PlayerGraphical(string nick, bool aiMode, PawnColor pawnsColor, GameDirection gameDirection)
         {
-            this.Player = player;
-            this.PawnsColor = pawnsColor;
+            Player = new Player(nick, gameDirection);
+            PawnsColor = pawnsColor;
+            Ai = aiMode;
         }
     }
 }

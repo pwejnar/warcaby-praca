@@ -30,27 +30,24 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainMenuForm));
             this.MainTable = new System.Windows.Forms.TableLayoutPanel();
-            this.trackBar1 = new System.Windows.Forms.TrackBar();
-            this.button1 = new System.Windows.Forms.Button();
+            this.closeButton = new System.Windows.Forms.Button();
             this.PlayerRight = new System.Windows.Forms.TableLayoutPanel();
             this.AiTable1 = new System.Windows.Forms.TableLayoutPanel();
             this.label2 = new System.Windows.Forms.Label();
             this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
-            this.Player1Name = new System.Windows.Forms.TextBox();
+            this.nickRightValue = new System.Windows.Forms.TextBox();
             this.PawnColor1 = new System.Windows.Forms.PictureBox();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
-            this.checkBox1 = new System.Windows.Forms.CheckBox();
+            this.aiRight_checkbox = new System.Windows.Forms.CheckBox();
             this.PlayerLeft = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
-            this.checkBox2 = new System.Windows.Forms.CheckBox();
+            this.aiLeft_checkbox = new System.Windows.Forms.CheckBox();
             this.PawnColor0 = new System.Windows.Forms.PictureBox();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.nickLeftValue = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.PlayButton = new System.Windows.Forms.Button();
-            this.label3 = new System.Windows.Forms.Label();
             this.MainTable.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).BeginInit();
             this.PlayerRight.SuspendLayout();
             this.AiTable1.SuspendLayout();
             this.tableLayoutPanel4.SuspendLayout();
@@ -70,12 +67,10 @@
             this.MainTable.ColumnCount = 2;
             this.MainTable.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.MainTable.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.MainTable.Controls.Add(this.trackBar1, 1, 2);
-            this.MainTable.Controls.Add(this.button1, 0, 3);
+            this.MainTable.Controls.Add(this.closeButton, 0, 3);
             this.MainTable.Controls.Add(this.PlayerRight, 0, 1);
             this.MainTable.Controls.Add(this.PlayerLeft, 0, 1);
             this.MainTable.Controls.Add(this.PlayButton, 1, 3);
-            this.MainTable.Controls.Add(this.label3, 1, 2);
             this.MainTable.Dock = System.Windows.Forms.DockStyle.Fill;
             this.MainTable.Location = new System.Drawing.Point(0, 0);
             this.MainTable.Name = "MainTable";
@@ -89,28 +84,16 @@
             this.MainTable.Size = new System.Drawing.Size(859, 527);
             this.MainTable.TabIndex = 0;
             // 
-            // trackBar1
+            // closeButton
             // 
-            this.trackBar1.BackColor = System.Drawing.Color.DarkGreen;
-            this.MainTable.SetColumnSpan(this.trackBar1, 2);
-            this.trackBar1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.trackBar1.Location = new System.Drawing.Point(3, 466);
-            this.trackBar1.Maximum = 6;
-            this.trackBar1.Minimum = 1;
-            this.trackBar1.Name = "trackBar1";
-            this.trackBar1.Size = new System.Drawing.Size(853, 26);
-            this.trackBar1.TabIndex = 11;
-            this.trackBar1.Value = 3;
-            // 
-            // button1
-            // 
-            this.button1.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.button1.Location = new System.Drawing.Point(3, 498);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(152, 26);
-            this.button1.TabIndex = 10;
-            this.button1.Text = "Exit";
-            this.button1.UseVisualStyleBackColor = true;
+            this.closeButton.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.closeButton.Location = new System.Drawing.Point(3, 487);
+            this.closeButton.Name = "closeButton";
+            this.closeButton.Size = new System.Drawing.Size(152, 26);
+            this.closeButton.TabIndex = 10;
+            this.closeButton.Text = "Exit";
+            this.closeButton.UseVisualStyleBackColor = true;
+            this.closeButton.Click += new System.EventHandler(this.closeButton_Click);
             // 
             // PlayerRight
             // 
@@ -122,13 +105,13 @@
             this.PlayerRight.Controls.Add(this.PawnColor1, 1, 0);
             this.PlayerRight.Controls.Add(this.tableLayoutPanel2, 0, 1);
             this.PlayerRight.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.PlayerRight.Location = new System.Drawing.Point(432, 20);
+            this.PlayerRight.Location = new System.Drawing.Point(432, 22);
             this.PlayerRight.Name = "PlayerRight";
             this.PlayerRight.RowCount = 2;
             this.PlayerRight.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.PlayerRight.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.PlayerRight.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.PlayerRight.Size = new System.Drawing.Size(424, 354);
+            this.PlayerRight.Size = new System.Drawing.Size(424, 402);
             this.PlayerRight.TabIndex = 6;
             // 
             // AiTable1
@@ -139,12 +122,12 @@
             this.AiTable1.Controls.Add(this.label2, 0, 0);
             this.AiTable1.Controls.Add(this.tableLayoutPanel4, 0, 1);
             this.AiTable1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.AiTable1.Location = new System.Drawing.Point(203, 180);
+            this.AiTable1.Location = new System.Drawing.Point(203, 204);
             this.AiTable1.Name = "AiTable1";
             this.AiTable1.RowCount = 2;
             this.AiTable1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.AiTable1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.AiTable1.Size = new System.Drawing.Size(218, 171);
+            this.AiTable1.Size = new System.Drawing.Size(218, 195);
             this.AiTable1.TabIndex = 2;
             // 
             // label2
@@ -153,7 +136,7 @@
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Bodoni MT Poster Compressed", 27.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label2.ForeColor = System.Drawing.Color.Snow;
-            this.label2.Location = new System.Drawing.Point(50, 21);
+            this.label2.Location = new System.Drawing.Point(50, 27);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(118, 42);
             this.label2.TabIndex = 5;
@@ -163,23 +146,23 @@
             // 
             this.tableLayoutPanel4.ColumnCount = 1;
             this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel4.Controls.Add(this.Player1Name, 0, 0);
+            this.tableLayoutPanel4.Controls.Add(this.nickRightValue, 0, 0);
             this.tableLayoutPanel4.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel4.Location = new System.Drawing.Point(3, 88);
+            this.tableLayoutPanel4.Location = new System.Drawing.Point(3, 100);
             this.tableLayoutPanel4.Name = "tableLayoutPanel4";
             this.tableLayoutPanel4.RowCount = 1;
             this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 77F));
-            this.tableLayoutPanel4.Size = new System.Drawing.Size(212, 80);
+            this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 80F));
+            this.tableLayoutPanel4.Size = new System.Drawing.Size(212, 92);
             this.tableLayoutPanel4.TabIndex = 3;
             // 
-            // Player1Name
+            // nickRightValue
             // 
-            this.Player1Name.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.Player1Name.Location = new System.Drawing.Point(62, 3);
-            this.Player1Name.Name = "Player1Name";
-            this.Player1Name.Size = new System.Drawing.Size(87, 20);
-            this.Player1Name.TabIndex = 1;
+            this.nickRightValue.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.nickRightValue.Location = new System.Drawing.Point(62, 3);
+            this.nickRightValue.Name = "nickRightValue";
+            this.nickRightValue.Size = new System.Drawing.Size(87, 20);
+            this.nickRightValue.TabIndex = 1;
             // 
             // PawnColor1
             // 
@@ -188,7 +171,7 @@
             this.PawnColor1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.PawnColor1.Location = new System.Drawing.Point(203, 3);
             this.PawnColor1.Name = "PawnColor1";
-            this.PawnColor1.Size = new System.Drawing.Size(218, 171);
+            this.PawnColor1.Size = new System.Drawing.Size(218, 195);
             this.PawnColor1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.PawnColor1.TabIndex = 9;
             this.PawnColor1.TabStop = false;
@@ -197,31 +180,31 @@
             // 
             this.tableLayoutPanel2.ColumnCount = 1;
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel2.Controls.Add(this.checkBox1, 0, 1);
+            this.tableLayoutPanel2.Controls.Add(this.aiRight_checkbox, 0, 1);
             this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel2.Location = new System.Drawing.Point(3, 180);
+            this.tableLayoutPanel2.Location = new System.Drawing.Point(3, 204);
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
             this.tableLayoutPanel2.RowCount = 3;
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 44.44444F));
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 39.48718F));
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 16.41026F));
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(194, 171);
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(194, 195);
             this.tableLayoutPanel2.TabIndex = 10;
             // 
-            // checkBox1
+            // aiRight_checkbox
             // 
-            this.checkBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.checkBox1.AutoSize = true;
-            this.checkBox1.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.checkBox1.Font = new System.Drawing.Font("Bodoni MT Poster Compressed", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.checkBox1.ForeColor = System.Drawing.Color.White;
-            this.checkBox1.Location = new System.Drawing.Point(141, 98);
-            this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(50, 41);
-            this.checkBox1.TabIndex = 13;
-            this.checkBox1.Text = "Ai";
-            this.checkBox1.UseVisualStyleBackColor = true;
+            this.aiRight_checkbox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.aiRight_checkbox.AutoSize = true;
+            this.aiRight_checkbox.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.aiRight_checkbox.Font = new System.Drawing.Font("Bodoni MT Poster Compressed", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.aiRight_checkbox.ForeColor = System.Drawing.Color.White;
+            this.aiRight_checkbox.Location = new System.Drawing.Point(141, 118);
+            this.aiRight_checkbox.Name = "aiRight_checkbox";
+            this.aiRight_checkbox.Size = new System.Drawing.Size(50, 41);
+            this.aiRight_checkbox.TabIndex = 13;
+            this.aiRight_checkbox.Text = "Ai";
+            this.aiRight_checkbox.UseVisualStyleBackColor = true;
             // 
             // PlayerLeft
             // 
@@ -233,21 +216,21 @@
             this.PlayerLeft.Controls.Add(this.PawnColor0, 0, 0);
             this.PlayerLeft.Controls.Add(this.tableLayoutPanel1, 0, 1);
             this.PlayerLeft.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.PlayerLeft.Location = new System.Drawing.Point(3, 20);
+            this.PlayerLeft.Location = new System.Drawing.Point(3, 22);
             this.PlayerLeft.Name = "PlayerLeft";
             this.PlayerLeft.RowCount = 2;
             this.PlayerLeft.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.PlayerLeft.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.PlayerLeft.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.PlayerLeft.Size = new System.Drawing.Size(423, 354);
+            this.PlayerLeft.Size = new System.Drawing.Size(423, 402);
             this.PlayerLeft.TabIndex = 5;
             // 
             // tableLayoutPanel3
             // 
             this.tableLayoutPanel3.ColumnCount = 1;
             this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel3.Controls.Add(this.checkBox2, 0, 1);
-            this.tableLayoutPanel3.Location = new System.Drawing.Point(209, 180);
+            this.tableLayoutPanel3.Controls.Add(this.aiLeft_checkbox, 0, 1);
+            this.tableLayoutPanel3.Location = new System.Drawing.Point(209, 204);
             this.tableLayoutPanel3.Name = "tableLayoutPanel3";
             this.tableLayoutPanel3.RowCount = 3;
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 44.44444F));
@@ -256,18 +239,18 @@
             this.tableLayoutPanel3.Size = new System.Drawing.Size(194, 165);
             this.tableLayoutPanel3.TabIndex = 11;
             // 
-            // checkBox2
+            // aiLeft_checkbox
             // 
-            this.checkBox2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.checkBox2.AutoSize = true;
-            this.checkBox2.Font = new System.Drawing.Font("Bodoni MT Poster Compressed", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.checkBox2.ForeColor = System.Drawing.Color.White;
-            this.checkBox2.Location = new System.Drawing.Point(3, 85);
-            this.checkBox2.Name = "checkBox2";
-            this.checkBox2.Size = new System.Drawing.Size(50, 41);
-            this.checkBox2.TabIndex = 12;
-            this.checkBox2.Text = "Ai";
-            this.checkBox2.UseVisualStyleBackColor = true;
+            this.aiLeft_checkbox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.aiLeft_checkbox.AutoSize = true;
+            this.aiLeft_checkbox.Font = new System.Drawing.Font("Bodoni MT Poster Compressed", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.aiLeft_checkbox.ForeColor = System.Drawing.Color.White;
+            this.aiLeft_checkbox.Location = new System.Drawing.Point(3, 85);
+            this.aiLeft_checkbox.Name = "aiLeft_checkbox";
+            this.aiLeft_checkbox.Size = new System.Drawing.Size(50, 41);
+            this.aiLeft_checkbox.TabIndex = 12;
+            this.aiLeft_checkbox.Text = "Ai";
+            this.aiLeft_checkbox.UseVisualStyleBackColor = true;
             // 
             // PawnColor0
             // 
@@ -276,7 +259,7 @@
             this.PawnColor0.Dock = System.Windows.Forms.DockStyle.Fill;
             this.PawnColor0.Location = new System.Drawing.Point(3, 3);
             this.PawnColor0.Name = "PawnColor0";
-            this.PawnColor0.Size = new System.Drawing.Size(200, 171);
+            this.PawnColor0.Size = new System.Drawing.Size(200, 195);
             this.PawnColor0.TabIndex = 0;
             this.PawnColor0.TabStop = false;
             // 
@@ -285,24 +268,24 @@
             this.tableLayoutPanel1.ColumnCount = 1;
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel1.Controls.Add(this.textBox1, 0, 1);
+            this.tableLayoutPanel1.Controls.Add(this.nickLeftValue, 0, 1);
             this.tableLayoutPanel1.Controls.Add(this.label1, 0, 0);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel1.Location = new System.Drawing.Point(3, 180);
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(3, 204);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 2;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(200, 171);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(200, 195);
             this.tableLayoutPanel1.TabIndex = 1;
             // 
-            // textBox1
+            // nickLeftValue
             // 
-            this.textBox1.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.textBox1.Location = new System.Drawing.Point(56, 88);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(87, 20);
-            this.textBox1.TabIndex = 4;
+            this.nickLeftValue.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.nickLeftValue.Location = new System.Drawing.Point(56, 100);
+            this.nickLeftValue.Name = "nickLeftValue";
+            this.nickLeftValue.Size = new System.Drawing.Size(87, 20);
+            this.nickLeftValue.TabIndex = 4;
             // 
             // label1
             // 
@@ -310,7 +293,7 @@
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Bodoni MT Poster Compressed", 27.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.ForeColor = System.Drawing.Color.Snow;
-            this.label1.Location = new System.Drawing.Point(41, 21);
+            this.label1.Location = new System.Drawing.Point(41, 27);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(118, 42);
             this.label1.TabIndex = 3;
@@ -319,25 +302,13 @@
             // PlayButton
             // 
             this.PlayButton.Anchor = System.Windows.Forms.AnchorStyles.Right;
-            this.PlayButton.Location = new System.Drawing.Point(704, 498);
+            this.PlayButton.Location = new System.Drawing.Point(704, 487);
             this.PlayButton.Name = "PlayButton";
             this.PlayButton.Size = new System.Drawing.Size(152, 26);
             this.PlayButton.TabIndex = 9;
             this.PlayButton.Text = "Play!";
             this.PlayButton.UseVisualStyleBackColor = true;
-            // 
-            // label3
-            // 
-            this.label3.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.label3.AutoSize = true;
-            this.MainTable.SetColumnSpan(this.label3, 2);
-            this.label3.Font = new System.Drawing.Font("Bodoni MT", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.ForeColor = System.Drawing.Color.White;
-            this.label3.Location = new System.Drawing.Point(365, 421);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(129, 38);
-            this.label3.TabIndex = 13;
-            this.label3.Text = "Ai level:";
+            this.PlayButton.Click += new System.EventHandler(this.PlayButton_Click_1);
             // 
             // MainMenuForm
             // 
@@ -352,8 +323,6 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "MainMenu";
             this.MainTable.ResumeLayout(false);
-            this.MainTable.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).EndInit();
             this.PlayerRight.ResumeLayout(false);
             this.AiTable1.ResumeLayout(false);
             this.AiTable1.PerformLayout();
@@ -381,18 +350,16 @@
         private System.Windows.Forms.TableLayoutPanel PlayerLeft;
         private System.Windows.Forms.PictureBox PawnColor0;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel4;
-        private System.Windows.Forms.TextBox Player1Name;
+        private System.Windows.Forms.TextBox nickRightValue;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
-        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.TextBox nickLeftValue;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.TrackBar trackBar1;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
-        private System.Windows.Forms.Label label3;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel3;
-        private System.Windows.Forms.CheckBox checkBox2;
-        private System.Windows.Forms.CheckBox checkBox1;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.CheckBox aiLeft_checkbox;
+        private System.Windows.Forms.CheckBox aiRight_checkbox;
+        private System.Windows.Forms.Button closeButton;
         private System.Windows.Forms.Button PlayButton;
     }
 }

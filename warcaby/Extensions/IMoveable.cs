@@ -9,10 +9,11 @@ namespace warcaby.Extensions
 {
     public interface IMoveable
     {
-        void PrepareMove(Board board);
-        Board Simulate(Board board);
         Position PositionBeforeMove { get; set; }
         Position PositionAfterMove { get; set; }
         MoveDirection MoveDirection { get; set; }
+        void PrepareMove(Board board);
+        Board Simulate(Board board);
+        bool IsMove(Move move);
     }
 }

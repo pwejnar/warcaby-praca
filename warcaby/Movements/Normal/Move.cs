@@ -8,7 +8,7 @@ using warcaby.Movements;
 
 namespace Checkers
 {
-    public class Move : IMoveable
+    public struct Move : IMoveable
     {
         public Position PositionBeforeMove { get; set; }
         public Position PositionAfterMove { get; set; }
@@ -36,5 +36,11 @@ namespace Checkers
             board.ChangePosition(pawn, field);
             board.CheckIfScoreKing(pawn);
         }
+
+        public bool IsMove(Move move)
+        {
+            return this.Equals(move);
+        }
     }
 }
+

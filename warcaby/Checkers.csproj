@@ -80,7 +80,6 @@
     <Compile Include="AI\MoveEffect.cs" />
     <Compile Include="Extensions\IMakeBeat.cs" />
     <Compile Include="Extensions\IMoveable.cs" />
-    <Compile Include="Models\AiPlayer.cs" />
     <Compile Include="Movements\MultipleBeats\MultipleFightMove.cs" />
     <Compile Include="View\GameManager.cs" />
     <Compile Include="Extensions\IGotChildrens.cs" />
@@ -108,17 +107,11 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Movements\Fight\FightMove.cs" />
-    <Compile Include="View\Form1.cs">
+    <Compile Include="View\BoardForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="View\Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
-    </Compile>
-    <Compile Include="View\Menu.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="View\Menu.Designer.cs">
-      <DependentUpon>Menu.cs</DependentUpon>
+    <Compile Include="View\BoardForm.Designer.cs">
+      <DependentUpon>BoardForm.cs</DependentUpon>
     </Compile>
     <Compile Include="View\MovementManager.cs" />
     <Compile Include="Movements\Normal\Move.cs" />
@@ -135,8 +128,8 @@
     <Compile Include="AI\Rating\BoardRating.cs" />
     <Compile Include="Movements\Scope.cs" />
     <Compile Include="Models\Shape.cs" />
-    <EmbeddedResource Include="View\Form1.resx">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <EmbeddedResource Include="View\BoardForm.resx">
+      <DependentUpon>BoardForm.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="View\MainMenuForm.resx">
@@ -146,9 +139,6 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <SubType>Designer</SubType>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="View\Menu.resx">
-      <DependentUpon>Menu.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
