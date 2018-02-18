@@ -10,12 +10,12 @@ namespace warcaby.AI.Rating
     public class MoveAnalyze
     {
         public IMoveable Move { get; set; }
-        public MoveStatus Status { get; set; }
+        public double Rate { get; set; }
 
-        public MoveAnalyze(IMoveable move, MoveStatus status)
+        public MoveAnalyze(IMoveable move, double rate)
         {
             this.Move = move;
-            this.Status = status;
+            this.Rate = rate;
         }
     }
 }

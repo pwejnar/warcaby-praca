@@ -32,6 +32,11 @@ namespace Checkers
             List<Task<List<IMoveable>>> moveTasks = new List<Task<List<IMoveable>>>();
             List<Task<List<IMakeBeat>>> fightMoveTasks = new List<Task<List<IMakeBeat>>>();
 
+            if (pawns == null || pawns.Count == 0)
+            {
+                return new List<IMoveable>();
+            }
+
             foreach (Pawn pawn in pawns)
             {
                 moveTasks.AddRange(FindMoves(pawn));

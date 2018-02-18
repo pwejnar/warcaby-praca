@@ -12,29 +12,32 @@ namespace Checkers
         private static readonly int rateForPawn = 1;
         private static readonly int rateForKing = 3;
 
-
-
-        public static MoveStatus Rate(Board board, Player player)
+        public static double Rate(Board start, Board end, Player player)
         {
-            int mainPawnsCount = board.GetPawns().Count(x => x.KingState == false && x.Player == player);
-            int enemyPawnsCount = board.GetPawns().Count(x => x.KingState == false && x.Player != player);
+            int startBoardPawnsCount = start.GetPawns().Count(x => x.KingState == false && x.Player == player);
+            int startBoardKingsCount = start.GetPawns().Count(x => x.KingState && x.Player == player);
+            int startBoardEnemyPawnsCount = start.GetPawns().Count(x => x.KingState == false && x.Player != player);
+            int startBoardEnemyKingsCount = start.GetPawns().Count(x => x.KingState && x.Player != player);
 
-            int mainKingsCount = board.GetPawns().Count(x => x.KingState && x.Player == player);
-            int enemyKingsCount = board.GetPawns().Count(x => x.KingState && x.Player != player);
+            int endBoardPawnsCount = end.GetPawns().Count(x => x.KingState == false && x.Player == player);
+            int endBoardKingsCount = end.GetPawns().Count(x => x.KingState && x.Player == player);
+            int endBoardEnemyPawnsCount = end.GetPawns().Count(x => x.KingState == false && x.Player != player);
+            int endBoardEnemyKingsCount = end.GetPawns().Count(x => x.KingState && x.Player != player);
 
-            int score = (mainPawnsCount - enemyPawnsCount) * rateForPawn + (mainKingsCount - enemyKingsCount) * rateForKing;
-
-            if (enemyPawnsCount + enemyKingsCount == 0)
+            if (endBoardEnemyPawnsCount + endBoardEnemyKingsCount == 0)
             {
-                return new MoveStatus(score, false, true);
+                return 1000;
             }
 
-            else if (mainPawnsCount + mainKingsCount == 0)
+            if (endBoardPawnsCount + endBoardKingsCount == 0)
             {
-                return new MoveStatus(score, true, false);
+                return -1000;
             }
 
-            return new MoveStatus(score);
+            int myDifference = (startBoardPawnsCount + startBoardKingsCount) - (startBoardEnemyPawnsCount + startBoardEnemyKingsCount);
+            int enemyDifference = (endBoardPawnsCount + endBoardKingsCount) - (endBoardEnemyPawnsCount + endBoardEnemyKingsCount);
+
+            return enemyDifference - myDifference;
         }
     }
 }

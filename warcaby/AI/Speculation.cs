@@ -37,7 +37,7 @@ namespace warcaby.AI
             List<MoveEffect> latestNodes = null;
 
             for (int i = 0; i < Depth; i++)
-            {              
+            {
                 if (i == 0)
                 {
                     Scope scope = new Scope(currentBoard);
@@ -66,6 +66,10 @@ namespace warcaby.AI
                         }
                     }
 
+                    if (newMoves.Count == 0)
+                    {
+                        break;
+                    }
                     latestNodes = newMoves;
                 }
             }
@@ -77,19 +81,38 @@ namespace warcaby.AI
 
         private MoveAnalyze FindBestMove(List<MoveEffect> moves)
         {
-            MoveStatus bestStatus = null;
+            double? worseRate = null;
             IMoveable bestMove = null;
 
-            foreach (var root in moves)
+            var group = moves.GroupBy(obj => obj.InitMove).ToDictionary(a => a.Key, b => b.ToList());
+
+            foreach (var grp in group)
             {
-                MoveStatus status = BoardRating.Rate(root.EffectOfMove, Player);
-                if (bestStatus == null || status.Score > bestStatus.Score)
+
+                double? worseGroupRate = null;
+
+                foreach (MoveEffect moveEffect in grp.Value)
                 {
-                    bestStatus = status;
-                    bestMove = root.InitMove;
+                    double tempRate = BoardRating.Rate(Board, moveEffect.EffectOfMove, Player);
+                    if (worseGroupRate == null || (tempRate < worseGroupRate))
+                    {
+                        worseGroupRate = tempRate;
+                    }
+                }
+
+                if (worseRate == null || worseGroupRate > worseRate)
+                {
+                    worseRate = worseGroupRate;
+                    bestMove = grp.Key;
                 }
             }
-            return new MoveAnalyze(bestMove, bestStatus);
+
+            if (worseRate == null)
+            {
+                return null;
+            }
+
+            return new MoveAnalyze(bestMove, (double)worseRate);
         }
 
 
