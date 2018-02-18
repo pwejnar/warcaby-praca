@@ -3,6 +3,8 @@ using System.Threading.Tasks;
 using Checkers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using warcaby.AI;
+using warcaby.AI.Rating;
+using warcaby.Extensions;
 
 namespace Tests.Working
 {
@@ -28,12 +30,12 @@ namespace Tests.Working
             board.SetUpPawns(p1);
             board.SetUpPawns(p2);
 
-            SpeculationTree tree = new SpeculationTree(board, p1, p2, 5);
-            tree.FindPlayerMoves();
-
-            var speculationLists = tree.GetSpeculationLists();
+            Speculation spec = new Speculation(p1, p2, board, 5);
+            MoveAnalyze move = await spec.FindBestMove();
 
             Assert.IsTrue(true);
         }
+
+
     }
 }

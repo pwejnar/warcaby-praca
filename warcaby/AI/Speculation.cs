@@ -32,37 +32,43 @@ namespace warcaby.AI
             if (Depth < 2)
             { throw new Exception("Deepth must be be value at least 2"); }
 
+            Player actual = Player;
             Board currentBoard = Board;
             List<MoveEffect> latestNodes = null;
 
             for (int i = 0; i < Depth; i++)
-            {
-                Scope scope = new Scope(currentBoard);
-
+            {              
                 if (i == 0)
                 {
+                    Scope scope = new Scope(currentBoard);
                     List<IMoveable> roots = await scope.FindMoves(Player);
                     latestNodes = new List<MoveEffect>();
 
                     foreach (var root in roots)
                     {
-                        latestNodes.Add(new MoveEffect(root, root, root.Simulate(currentBoard)));
+                        latestNodes.Add(new MoveEffect(root, root.Simulate(currentBoard)));
                     }
                 }
 
                 else
                 {
                     List<MoveEffect> newMoves = new List<MoveEffect>();
+                    actual = ChangePlayer(actual);
 
                     foreach (var root in latestNodes)
                     {
-                        newMoves.Add(new MoveEffect(root.InitMove, root.Move, root.Move.Simulate(root.EffectOfMove)));
+                        Scope scope1 = new Scope(root.EffectOfMove);
+                        List<IMoveable> moves = await scope1.FindMoves(actual);
+
+                        foreach (var move in moves)
+                        {
+                            newMoves.Add(new MoveEffect(root.InitMove, move.Simulate(root.EffectOfMove)));
+                        }
                     }
 
                     latestNodes = newMoves;
                 }
             }
-
             MoveAnalyze best = FindBestMove(latestNodes);
             return best;
         }

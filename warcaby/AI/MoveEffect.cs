@@ -11,13 +11,12 @@ namespace warcaby.AI
     public class MoveEffect
     {
         public IMoveable InitMove { get; set; }
-        public IMoveable Move { get; set; }
         public Board EffectOfMove { get; set; }
 
-        public MoveEffect(IMoveable initMove, IMoveable move, Board boardState)
+        //pozbycie sie ruchow posrednich
+        public MoveEffect(IMoveable initMove, Board boardState)
         {
             this.InitMove = initMove;
-            this.Move = move;
             this.EffectOfMove = boardState;
         }
     }
