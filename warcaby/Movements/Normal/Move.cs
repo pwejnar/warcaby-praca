@@ -37,7 +37,7 @@ namespace Checkers
             board.CheckIfScoreKing(pawn);
         }
 
-        public bool IsMove(Move move)
+        public bool IsMove(IMoveable move)
         {
             bool a = move.PositionBeforeMove.Equals(this.PositionBeforeMove);
             bool b = move.PositionAfterMove.Equals(this.PositionAfterMove);
@@ -47,6 +47,7 @@ namespace Checkers
                 return true;
             return false;
         }
+
     }
 }
 

@@ -32,23 +32,23 @@ namespace Checkers
         public void SetUpGame()
         {
             BoardGraphical.SetUpPawns(Player1, Player2);
-            UpdateBoardState();
+            MovementManager.UpdatePlayerMoves();
+            BoardGraphical.BuildBoard(Player1,Player2);
         }
 
         void BuildBoardForm()
         {
             MovementManager = new MovementManager(this);
             BoardGraphical = new BoardGraphical(new Board(8), MovementManager);
-            MovementManager.SetUpBoard(BoardGraphical);
             BoardForm.AddToForm(BoardGraphical);
-
         }
 
 
         public void ChangeTurn()
         {
             ChangePlayer();
-            UpdateBoardState();
+            MovementManager.UpdatePlayerMoves();
+
             //show info about player
             //show info about pawn color 
             //check if game has ended
@@ -58,6 +58,7 @@ namespace Checkers
 
         void ChangePlayer()
         {
+
             if (ActualPlayer == Player1)
             {
                 ActualPlayer = Player2;
@@ -66,12 +67,6 @@ namespace Checkers
             {
                 ActualPlayer = Player1;
             }
-
-        }
-
-        public void UpdateBoardState()
-        {
-            BoardGraphical.UpdateBoardState(Player1, Player2);
         }
 
         public void EndGame()
@@ -80,7 +75,6 @@ namespace Checkers
             string endText = string.Format("Game over Player {0} lose!", losePlayer.Nick);
             BoardForm.ShowMessage(endText);
             BoardGraphical.SourceBoard.ClearPawns();
-            UpdateBoardState();
         }
     }
 }

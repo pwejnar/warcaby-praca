@@ -36,7 +36,7 @@ namespace warcaby.Movements.Fight
         }
 
 
-        public bool IsMove(Move move)
+        public bool IsMove(IMoveable move)
         {
             var x = FightMoves.Where(obj => obj.IsMove(move)).ToList();
             if (x.Count > 0)
@@ -50,6 +50,13 @@ namespace warcaby.Movements.Fight
             {
                 fightMove.PrepareMove(board);
             }
+        }
+
+        public IMakeBeat GetNextMove()
+        {
+            IMakeBeat makeBeat = FightMoves.First();
+            FightMoves.Remove(makeBeat);
+            return makeBeat;
         }
 
         public void MakeBeat(Board board)

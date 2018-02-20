@@ -77,22 +77,22 @@ namespace Checkers
         public static MoveDirection GetDirection(Position position1, Position position2)
         {
 
-            if (position1.Row + 1 == position2.Row && position1.Column - 1 == position2.Column)
+            if (position1.Row < position2.Row && position1.Column > position2.Column)
             {
                 return MoveDirection.DownLeft;
             }
 
-            if (position1.Row + 1 == position2.Row && position1.Column + 1 == position2.Column)
+            if (position1.Row < position2.Row && position1.Column < position2.Column)
             {
                 return MoveDirection.DownRight;
             }
 
-            if (position1.Row - 1 == position2.Row && position1.Column - 1 == position2.Column)
+            if (position1.Row > position2.Row && position1.Column > position2.Column)
             {
                 return MoveDirection.UpperLeft;
             }
 
-            if (position1.Row - 1 == position2.Row && position1.Column + 1 == position2.Column)
+            if (position1.Row > position2.Row && position1.Column < position2.Column)
             {
                 return MoveDirection.UpperRight;
             }

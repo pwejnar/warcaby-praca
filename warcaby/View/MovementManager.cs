@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using Checkers;
 using warcaby.Extensions;
+using warcaby.Movements.Fight;
 
 namespace Checkers
 {
@@ -16,7 +17,6 @@ namespace Checkers
         public Pawn SelectedPawn { get; set; }
         public List<IMoveable> AvailablePlayerMoves { get; set; }
         public Field SelectedField { get; set; }
-        public BoardGraphical Board { get; set; }
         public GameManager GameManager { get; set; }
         public Control HighlitedControl { get; set; }
 
@@ -27,20 +27,15 @@ namespace Checkers
             SelectedPawn = null;
         }
 
-        public void SetUpBoard(BoardGraphical board)
+        public async void UpdatePlayerMoves()
         {
-            Board = board;
-        }
-
-        async void ChangeTurn()
-        {
-            if (Board.SourceBoard.GetPawns(GameManager.ActualPlayer.Player).Count == 0)
+            if (GameManager.BoardGraphical.SourceBoard.GetPawns(GameManager.ActualPlayer.Player).Count == 0)
             {
                 GameManager.EndGame();
                 return;
             }
 
-            Scope scope = new Scope(Board.SourceBoard);
+            Scope scope = new Scope(GameManager.BoardGraphical.SourceBoard);
             this.AvailablePlayerMoves = await scope.FindMoves(GameManager.ActualPlayer.Player);
 
             if (AvailablePlayerMoves.Count == 0)
@@ -64,7 +59,7 @@ namespace Checkers
 
             if (SelectedPawn != null && SelectedPawn == pawn)
             {
-                Board.GetControl(pawn.Position).BackColor = BoardForm.DarkFieldsColor; //unhighlit selected pawn
+                GameManager.BoardGraphical.GetControl(pawn.Position).BackColor = BoardForm.DarkFieldsColor; //unhighlit selected pawn
                 SelectedPawn = null;
                 return;
             }
@@ -76,7 +71,7 @@ namespace Checkers
             }
 
             this.SelectedPawn = pawn;
-            HighlitedControl = Board.GetControl(pawn.Position);
+            HighlitedControl = GameManager.BoardGraphical.GetControl(pawn.Position);
             HighlitedControl.BackColor = Color.Blue; //highlit selected pawn
         }
 
@@ -85,30 +80,53 @@ namespace Checkers
             if (SelectedPawn != null)
             {
                 this.SelectedField = field;
-                if (!CheckIfValidMove(SelectedPawn.Position, SelectedField.Position))
+                IMoveable selectedMove = GetMove(SelectedPawn.Position, SelectedField.Position);
+
+                if (selectedMove == null)
                 {
                     GameManager.BoardForm.ShowMessage("This move in not allowed");
                     return;
                 }
-                MakeMove();
+                MakeMove(selectedMove);
             }
         }
 
-        bool CheckIfValidMove(Position pos1, Position pos2)
+        IMoveable GetMove(Position pos1, Position pos2)
         {
             MoveDirection direction = Movement.GetDirection(pos1, pos2);
             if (direction == MoveDirection.Undefined)
-                return false;
+                return null;
 
             Move move = new Move(pos1, pos2, direction);
-            return AvailablePlayerMoves.Exists(obj => obj.IsMove(move));
+            return AvailablePlayerMoves.FirstOrDefault(obj => obj.IsMove(move));
         }
 
-        private void MakeMove()
+        private void MakeMove(IMoveable selectedMove)
         {
-            Board.SourceBoard.ChangePosition(SelectedPawn, SelectedField);
+
+            if (!(selectedMove is MultipleFightMove))
+            {
+                selectedMove.PrepareMove(GameManager.BoardGraphical.SourceBoard);
+                GameManager.BoardGraphical.SwapControls(selectedMove.PositionBeforeMove, selectedMove.PositionAfterMove);
+                GameManager.ChangeTurn();
+            }
+            else
+            {
+                MultipleFightMove multipleMove = (MultipleFightMove)selectedMove;
+                IMakeBeat makeBeat = multipleMove.GetNextMove();
+
+                if (makeBeat!= null)
+                {
+                    makeBeat.PrepareMove(GameManager.BoardGraphical.SourceBoard);
+                    GameManager.BoardGraphical.SwapControls(makeBeat.PositionBeforeMove, makeBeat.PositionAfterMove);
+                }
+                else
+                {
+                    GameManager.ChangeTurn();
+                }
+            }
+
             ClearMoveData();
-            GameManager.ChangeTurn();
         }
 
         private void ClearMoveData()

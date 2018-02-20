@@ -73,31 +73,6 @@ namespace Checkers
         //    }
         //    return longestPaths;
         //}
-
-        public static List<FightMove> ToFightMoves(List<Move> tree)
-        {
-            List<FightMove> fmoves = new List<FightMove>();
-
-            foreach (Move move in tree)
-            {
-                FightMove fm = move as FightMove;
-                if (fm != null)
-                    fmoves.Add(fm);
-            }
-            return fmoves;
-        }
-
-        public static List<Move> ToMoves(List<FightMove> tree)
-        {
-            List<Move> fmoves = new List<Move>();
-
-            foreach (FightMove fmove in tree)
-            {
-                Move move = fmove as Move;
-                if (move != null)
-                    fmoves.Add(move);
-            }
-            return fmoves;
-        }
+    
     }
 }

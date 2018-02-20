@@ -14,6 +14,6 @@ namespace warcaby.Extensions
         MoveDirection MoveDirection { get; set; }
         void PrepareMove(Board board);
         Board Simulate(Board board);
-        bool IsMove(Move move);
+        bool IsMove(IMoveable move);
     }
 }
