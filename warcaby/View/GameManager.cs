@@ -10,18 +10,18 @@ namespace Checkers
 {
     public class GameManager
     {
-        public BoardForm GameForm { get; set; }
-        public BoardGraphical BoardForm { get; set; }
+        public BoardForm BoardForm { get; set; }
+        public BoardGraphical BoardGraphical { get; set; }
 
         public PlayerGraphical Player1 { get; set; }
         public PlayerGraphical Player2 { get; set; }
 
-        public static PlayerGraphical ActualPlayer { get; set; }
-        public MovementManager GameMovementManager { get; set; }
+        public PlayerGraphical ActualPlayer { get; set; }
+        public MovementManager MovementManager { get; set; }
 
         public GameManager(BoardForm form, PlayerGraphical player1, PlayerGraphical player2)    // every time white pawns start game
         {
-            GameForm = form;
+            BoardForm = form;
             Player1 = player1;
             Player2 = player2;
 
@@ -31,24 +31,24 @@ namespace Checkers
 
         public void SetUpGame()
         {
-            BoardForm.SetUpPawns(Player1, Player2);
+            BoardGraphical.SetUpPawns(Player1, Player2);
             UpdateBoardState();
         }
 
         void BuildBoardForm()
         {
-            //other size not work yet
-            BoardForm = new BoardGraphical(new Board(8), GameMovementManager);
-            GameMovementManager = new MovementManager(BoardForm.SourceBoard);
+            MovementManager = new MovementManager(this);
+            BoardGraphical = new BoardGraphical(new Board(8), MovementManager);
+            MovementManager.SetUpBoard(BoardGraphical);
+            BoardForm.AddToForm(BoardGraphical);
 
-            GameForm.AddToForm(BoardForm);
-            UpdateBoardState();
         }
 
 
         public void ChangeTurn()
         {
             ChangePlayer();
+            UpdateBoardState();
             //show info about player
             //show info about pawn color 
             //check if game has ended
@@ -66,21 +66,20 @@ namespace Checkers
             {
                 ActualPlayer = Player1;
             }
+
         }
-
-
 
         public void UpdateBoardState()
         {
-            BoardForm.UpdateBoardState(Player1, Player2);
+            BoardGraphical.UpdateBoardState(Player1, Player2);
         }
 
         public void EndGame()
         {
             Player losePlayer = ActualPlayer.Player;
             string endText = string.Format("Game over Player {0} lose!", losePlayer.Nick);
-            GameForm.ShowMessage(endText);
-            BoardForm.SourceBoard.ClearPawns();
+            BoardForm.ShowMessage(endText);
+            BoardGraphical.SourceBoard.ClearPawns();
             UpdateBoardState();
         }
     }

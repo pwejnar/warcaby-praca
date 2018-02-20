@@ -13,9 +13,14 @@ namespace Checkers
 {
     public partial class MainMenuForm : Form
     {
+        private PawnColor pawnColorLeft;
+        private PawnColor pawnColorRight;
+
         public MainMenuForm()
         {
             InitializeComponent();
+            pawnColorLeft = PawnColor.Dark;
+            pawnColorRight = PawnColor.Light;
         }
 
         private void PlayButton_Click_1(object sender, EventArgs e)
@@ -29,17 +34,33 @@ namespace Checkers
                 return;
             }
 
-            PlayerGraphical pg0 = new PlayerGraphical(nickLeft, aiLeft_checkbox.Checked, PawnColor.Dark, GameDirection.Down);
-            PlayerGraphical pg1 = new PlayerGraphical(nickRight, aiRight_checkbox.Checked, PawnColor.Light, GameDirection.Up);
+            PlayerGraphical pg0 = new PlayerGraphical(nickLeft, aiLeft_checkbox.Checked, pawnColorLeft, GameDirection.Down);
+            PlayerGraphical pg1 = new PlayerGraphical(nickRight, aiRight_checkbox.Checked, pawnColorRight, GameDirection.Up);
             BoardForm board = new BoardForm(pg0, pg1);
 
-            this.Hide();
+            //this.Hide();
             board.Show();
         }
 
         private void closeButton_Click(object sender, EventArgs e)
         {
             this.Close();
+        }
+
+        private void PawnColor0_Click(object sender, EventArgs e)
+        {
+            Image tempImage = PawnColor0.BackgroundImage;
+            PawnColor0.BackgroundImage = PawnColor1.BackgroundImage;
+            PawnColor1.BackgroundImage = tempImage;
+
+            PawnColor tempPawnColor = pawnColorLeft;
+            pawnColorLeft = pawnColorRight;
+            pawnColorRight = tempPawnColor;
+        }
+
+        private void PawnColor1_Click(object sender, EventArgs e)
+        {
+            PawnColor0_Click(sender, e);
         }
     }
 }

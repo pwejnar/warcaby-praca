@@ -16,13 +16,18 @@ namespace Checkers
 
         public BoardGraphical(Board board, MovementManager moveManager)
         {
-            this.MoveManager = moveManager;
             SourceBoard = board;
+            this.MoveManager = moveManager;
             Location = new Point(100, 60);
             ColumnCount = board.GetSize();
             RowCount = board.GetSize();
             BorderStyle = BorderStyle.FixedSingle;
             this.AutoSize = true;
+        }
+
+        public Control GetControl(Position pos)
+        {
+            return this.GetControlFromPosition(pos.Column, pos.Row);
         }
 
 

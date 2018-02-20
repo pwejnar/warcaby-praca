@@ -25,6 +25,13 @@ namespace Checkers
         {
             InitializeComponent();
             gameManager = new GameManager(this, pg1, pg2);
+
+            nick1_lbl.Text = pg1.Player.Nick;
+            nick2_lbl.Text = pg2.Player.Nick;
+
+            PlayerGraphical actualPlayer = gameManager.ActualPlayer;
+            nick_value.Text = actualPlayer.Player.Nick;
+            pawnCount_value.Text = gameManager.BoardGraphical.SourceBoard.GetPawns(actualPlayer.Player).Count.ToString();
         }
 
         public void AddToForm(Control control)

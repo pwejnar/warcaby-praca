@@ -152,7 +152,7 @@
             this.tableLayoutPanel4.Name = "tableLayoutPanel4";
             this.tableLayoutPanel4.RowCount = 1;
             this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 80F));
+            this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 92F));
             this.tableLayoutPanel4.Size = new System.Drawing.Size(212, 92);
             this.tableLayoutPanel4.TabIndex = 3;
             // 
@@ -163,11 +163,13 @@
             this.nickRightValue.Name = "nickRightValue";
             this.nickRightValue.Size = new System.Drawing.Size(87, 20);
             this.nickRightValue.TabIndex = 1;
+            this.nickRightValue.Text = "Player2";
             // 
             // PawnColor1
             // 
             this.PawnColor1.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("PawnColor1.BackgroundImage")));
             this.PawnColor1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.PawnColor1.Cursor = System.Windows.Forms.Cursors.Hand;
             this.PawnColor1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.PawnColor1.Location = new System.Drawing.Point(203, 3);
             this.PawnColor1.Name = "PawnColor1";
@@ -175,6 +177,7 @@
             this.PawnColor1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.PawnColor1.TabIndex = 9;
             this.PawnColor1.TabStop = false;
+            this.PawnColor1.Click += new System.EventHandler(this.PawnColor1_Click);
             // 
             // tableLayoutPanel2
             // 
@@ -232,10 +235,10 @@
             this.tableLayoutPanel3.Controls.Add(this.aiLeft_checkbox, 0, 1);
             this.tableLayoutPanel3.Location = new System.Drawing.Point(209, 204);
             this.tableLayoutPanel3.Name = "tableLayoutPanel3";
-            this.tableLayoutPanel3.RowCount = 3;
-            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 44.44444F));
-            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 34.35897F));
-            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 21.53846F));
+            this.tableLayoutPanel3.RowCount = 2;
+            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 56.39914F));
+            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 43.60087F));
+            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel3.Size = new System.Drawing.Size(194, 165);
             this.tableLayoutPanel3.TabIndex = 11;
             // 
@@ -245,7 +248,7 @@
             this.aiLeft_checkbox.AutoSize = true;
             this.aiLeft_checkbox.Font = new System.Drawing.Font("Bodoni MT Poster Compressed", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.aiLeft_checkbox.ForeColor = System.Drawing.Color.White;
-            this.aiLeft_checkbox.Location = new System.Drawing.Point(3, 85);
+            this.aiLeft_checkbox.Location = new System.Drawing.Point(3, 121);
             this.aiLeft_checkbox.Name = "aiLeft_checkbox";
             this.aiLeft_checkbox.Size = new System.Drawing.Size(50, 41);
             this.aiLeft_checkbox.TabIndex = 12;
@@ -256,12 +259,14 @@
             // 
             this.PawnColor0.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("PawnColor0.BackgroundImage")));
             this.PawnColor0.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.PawnColor0.Cursor = System.Windows.Forms.Cursors.Hand;
             this.PawnColor0.Dock = System.Windows.Forms.DockStyle.Fill;
             this.PawnColor0.Location = new System.Drawing.Point(3, 3);
             this.PawnColor0.Name = "PawnColor0";
             this.PawnColor0.Size = new System.Drawing.Size(200, 195);
             this.PawnColor0.TabIndex = 0;
             this.PawnColor0.TabStop = false;
+            this.PawnColor0.Click += new System.EventHandler(this.PawnColor0_Click);
             // 
             // tableLayoutPanel1
             // 
@@ -286,6 +291,7 @@
             this.nickLeftValue.Name = "nickLeftValue";
             this.nickLeftValue.Size = new System.Drawing.Size(87, 20);
             this.nickLeftValue.TabIndex = 4;
+            this.nickLeftValue.Text = "Player1";
             // 
             // label1
             // 
