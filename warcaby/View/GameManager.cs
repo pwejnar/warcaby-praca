@@ -81,7 +81,8 @@ namespace Checkers
 
         async void MakeAiMove()
         {
-            Speculation spec = new Speculation(ActualPlayer.Player, GetOponent(ActualPlayer).Player, BoardGraphical.SourceBoard, 3);
+            Speculation spec = new Speculation(ActualPlayer.Player, GetOponent(ActualPlayer).Player,
+                BoardGraphical.SourceBoard, 3);
             MoveAnalyze move = await spec.FindBestMove();
 
             Pawn selectedPawn = BoardGraphical.SourceBoard.GetControlInPosition(move.Move.PositionBeforeMove) as Pawn;
@@ -93,14 +94,15 @@ namespace Checkers
 
             if (multipleFightMove != null)
             {
-                IMakeBeat child = multipleFightMove.GetNextMove();
+                int childCount = multipleFightMove.FightMoves.Count;
 
-                while (child != null)
+                for (int i = 0; i < childCount; i++)
                 {
                     WaitForMove(false);
-                    selectedField = BoardGraphical.SourceBoard.GetControlInPosition(child.PositionAfterMove) as Field;
+                    IMakeBeat nextChild = multipleFightMove.GetNextMove();
+                    selectedField =
+                        BoardGraphical.SourceBoard.GetControlInPosition(nextChild.PositionAfterMove) as Field;
                     MovementManager.SelectField(selectedField);
-                    child = multipleFightMove.GetNextMove();
                 }
             }
             else

@@ -252,5 +252,23 @@ namespace Tests.Working
             Position newPosition = new Position(4, 7);
             Assert.IsTrue(bestMove.Move.PositionAfterMove.Equals(newPosition));
         }
+
+        [TestMethod]
+        public async Task Fail4()
+        {
+            Pawn mainPawn0 = new Pawn(p2, new Position(2, 7));
+
+            Pawn enemy0 = new Pawn(p1, new Position(3, 6));
+            Pawn enemy1 = new Pawn(p1, new Position(5, 4));
+            Pawn enemy2 = new Pawn(p1, new Position(5, 6));
+
+            board.PutOnBoard(mainPawn0, enemy0, enemy1, enemy2);
+
+            Speculation spec = new Speculation(p2, p1, board, 3);
+            MoveAnalyze bestMove = await spec.FindBestMove();
+            Position newPosition0 = new Position(6, 7);
+            Position newPosition1 = new Position(6, 3);
+            Assert.IsTrue(bestMove.Move.PositionAfterMove.Equals(newPosition0) || bestMove.Move.PositionAfterMove.Equals(newPosition1));
+        }
     }
 }

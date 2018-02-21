@@ -106,12 +106,9 @@ namespace Checkers
                 if (multipleMove != null)
                 {
                     IMakeBeat nextMove = multipleMove.GetNextMove();
+                    MakeFormMove(nextMove);
 
-                    if (nextMove != null)
-                    {
-                        MakeFormMove(nextMove);   
-                    }
-                    else
+                    if (multipleMove.FightMoves.Count == 0)
                     {
                         ChangeTurn();
                     }
