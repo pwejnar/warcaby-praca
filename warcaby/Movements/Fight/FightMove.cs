@@ -10,7 +10,7 @@ using warcaby.Extensions;
 
 namespace Checkers
 {
-    public class FightMove : Move, IMakeBeat
+    public class FightMove : Move, IMakeBeat, IGotPawnToBeat
     {
         public Pawn PawnToBeat { get; set; }
 

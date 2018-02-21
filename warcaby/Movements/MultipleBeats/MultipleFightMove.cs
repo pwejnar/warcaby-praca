@@ -16,19 +16,6 @@ namespace warcaby.Movements.Fight
         public Position PositionBeforeMove { get; set; }
         public Position PositionAfterMove { get; set; }
 
-        public Pawn PawnToBeat
-        {
-            get
-            {
-                return FightMoves.First().PawnToBeat;
-            }
-
-            set
-            {
-                throw new NotImplementedException();
-            }
-        }
-
         public MultipleFightMove(List<IMakeBeat> fightMoves)
         {
             FightMoves = fightMoves;

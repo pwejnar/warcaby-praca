@@ -7,6 +7,8 @@ using Checkers;
 
 namespace warcaby.Extensions
 {
-   // public interface IGotPawnToBeat
-
+    public interface IGotPawnToBeat
+    {
+        Pawn PawnToBeat { get; set; }
+    }
 }

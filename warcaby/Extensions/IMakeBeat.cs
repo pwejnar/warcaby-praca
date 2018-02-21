@@ -10,6 +10,5 @@ namespace warcaby.Extensions
     public interface IMakeBeat : IMoveable
     {
         void MakeBeat(Board board);
-        Pawn PawnToBeat { get; set; }
     }
 }

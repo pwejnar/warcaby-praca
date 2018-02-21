@@ -139,7 +139,7 @@ namespace Checkers
             GameManager.BoardGraphical.SwapControls(move.PositionBeforeMove,
                 move.PositionAfterMove);
 
-            IMakeBeat makeBeat = move as IMakeBeat;
+            IGotPawnToBeat makeBeat = move as IGotPawnToBeat;
 
             if (makeBeat != null)
             {
