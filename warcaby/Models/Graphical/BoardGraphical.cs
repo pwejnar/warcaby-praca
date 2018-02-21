@@ -41,6 +41,19 @@ namespace Checkers
             Extension.EndControlUpdate(this);
         }
 
+        public void RemovePawn(Pawn pawn)
+        {
+            Extension.BeginControlUpdate(this);
+            Position position = pawn.Position;
+            Controls.Remove(GetControl(position));
+            Field field = SourceBoard.GetControlInPosition(position) as Field;
+            FieldGraphical fieldGraphical = new FieldGraphical(field, BoardForm.DarkFieldsColor);
+            fieldGraphical.Click += new EventHandler(FieldClicked);
+            SetCellPosition(fieldGraphical, new TableLayoutPanelCellPosition(position.Column, position.Row));
+            this.Controls.Add(fieldGraphical);
+            Extension.EndControlUpdate(this);
+        }
+
         public void SetUpPawns(PlayerGraphical p1, PlayerGraphical p2)
         {
             SourceBoard.SetUpPawns(p1.Player);

@@ -12,13 +12,13 @@ namespace Checkers
 {
     public class FightMove : Move, IMakeBeat
     {
-        public Pawn PawntoBeat { get; set; }
+        public Pawn PawnToBeat { get; set; }
 
         public FightMove(Position positionBeforeMove, Position positionAfterMove, Pawn pawntoBeat,
             MoveDirection beatDirection)
             : base(positionBeforeMove, positionAfterMove, beatDirection)
         {
-            this.PawntoBeat = pawntoBeat;
+            this.PawnToBeat = pawntoBeat;
         }
 
         public new Board Simulate(Board board)
@@ -31,7 +31,7 @@ namespace Checkers
         public new void PrepareMove(Board board)
         {
             base.PrepareMove(board);
-            board.Remove(PawntoBeat);
+            board.Remove(PawnToBeat);
         }
 
         public void MakeBeat(Board board)

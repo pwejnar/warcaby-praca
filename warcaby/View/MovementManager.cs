@@ -59,8 +59,7 @@ namespace Checkers
 
             if (SelectedPawn != null && SelectedPawn == pawn)
             {
-                GameManager.BoardGraphical.GetControl(pawn.Position).BackColor = BoardForm.DarkFieldsColor; //unhighlit selected pawn
-                SelectedPawn = null;
+                UnhighlightControl();
                 return;
             }
 
@@ -71,8 +70,7 @@ namespace Checkers
             }
 
             this.SelectedPawn = pawn;
-            HighlitedControl = GameManager.BoardGraphical.GetControl(pawn.Position);
-            HighlitedControl.BackColor = Color.Blue; //highlit selected pawn
+            HighlightControl(GameManager.BoardGraphical.GetControl(pawn.Position));
         }
 
         public void SelectField(Field field)
@@ -103,30 +101,55 @@ namespace Checkers
 
         private void MakeMove(IMoveable selectedMove)
         {
+            UnhighlightControl();
 
-            if (!(selectedMove is MultipleFightMove))
+            if (selectedMove is IMakeBeat)
             {
-                selectedMove.PrepareMove(GameManager.BoardGraphical.SourceBoard);
-                GameManager.BoardGraphical.SwapControls(selectedMove.PositionBeforeMove, selectedMove.PositionAfterMove);
-                GameManager.ChangeTurn();
-            }
-            else
-            {
-                MultipleFightMove multipleMove = (MultipleFightMove)selectedMove;
-                IMakeBeat makeBeat = multipleMove.GetNextMove();
+                MultipleFightMove multipleMove = selectedMove as MultipleFightMove;
 
-                if (makeBeat!= null)
+                if (multipleMove != null)
                 {
-                    makeBeat.PrepareMove(GameManager.BoardGraphical.SourceBoard);
-                    GameManager.BoardGraphical.SwapControls(makeBeat.PositionBeforeMove, makeBeat.PositionAfterMove);
+                    MakeFormMove(multipleMove.GetNextMove());
+                    if (multipleMove.FightMoves.Count == 0)
+                    {
+                        GameManager.ChangeTurn();
+                    }
                 }
+
                 else
                 {
+                    MakeFormMove(selectedMove);
                     GameManager.ChangeTurn();
                 }
             }
+            else
+            {
+                MakeFormMove(selectedMove);
+                GameManager.ChangeTurn();
+            }
+
+            //if (selectedMove is imak)
+            //{
+            //    selectedMove.PrepareMove(GameManager.BoardGraphical.SourceBoard);
+            //    GameManager.BoardGraphical.SwapControls(selectedMove.PositionBeforeMove, selectedMove.PositionAfterMove);
+            //    GameManager.ChangeTurn();
+            //}
 
             ClearMoveData();
+        }
+
+        void MakeFormMove(IMoveable move)
+        {
+            move.PrepareMove(GameManager.BoardGraphical.SourceBoard);
+            GameManager.BoardGraphical.SwapControls(move.PositionBeforeMove,
+                move.PositionAfterMove);
+
+            IMakeBeat makeBeat = move as IMakeBeat;
+
+            if (makeBeat != null)
+            {
+                GameManager.BoardGraphical.RemovePawn(makeBeat.PawnToBeat);
+            }
         }
 
         private void ClearMoveData()
@@ -134,6 +157,17 @@ namespace Checkers
             SelectedPawn = null;
             SelectedField = null;
         }
+        void HighlightControl(Control control)
+        {
+            HighlitedControl = control;
+            HighlitedControl.BackColor = Color.Blue; //highlit selected pawn
 
+        }
+        void UnhighlightControl()
+        {
+            HighlitedControl.BackColor = BoardForm.DarkFieldsColor;
+            HighlitedControl = null;
+            SelectedPawn = null;
+        }
     }
 }

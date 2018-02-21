@@ -39,11 +39,11 @@ namespace Checkers
 
         public bool IsMove(IMoveable move)
         {
-            bool a = move.PositionBeforeMove.Equals(this.PositionBeforeMove);
-            bool b = move.PositionAfterMove.Equals(this.PositionAfterMove);
-            bool c = move.MoveDirection.Equals(this.MoveDirection);
+            bool positionBefore = move.PositionBeforeMove.Equals(this.PositionBeforeMove);
+            bool positionAfter = move.PositionAfterMove.Equals(this.PositionAfterMove);
+            bool moveDirection = move.MoveDirection.Equals(this.MoveDirection);
 
-            if (a && b && c)
+            if (positionBefore && positionAfter && moveDirection)
                 return true;
             return false;
         }

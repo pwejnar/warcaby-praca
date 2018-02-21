@@ -78,6 +78,7 @@
     <Compile Include="AI\Rating\MoveAnalyze.cs" />
     <Compile Include="AI\Speculation.cs" />
     <Compile Include="AI\MoveEffect.cs" />
+    <Compile Include="Extensions\IGotPawnToBeat.cs" />
     <Compile Include="Extensions\IMakeBeat.cs" />
     <Compile Include="Extensions\IMoveable.cs" />
     <Compile Include="Movements\MultipleBeats\MultipleFightMove.cs" />
