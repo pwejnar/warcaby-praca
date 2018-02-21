@@ -40,6 +40,7 @@ namespace Checkers
             BoardGraphical.ResetBoardState(Player1, Player2);
             MovementManager.UpdatePlayerMoves();
             UpdateGameState();
+            BoardForm.StartCountingTime();
         }
 
         public void EndGame()
@@ -48,7 +49,6 @@ namespace Checkers
             string endText = string.Format("Game over Player {0} lose!", losePlayer.Nick);
             GameHasEnded = true;
             BoardForm.ShowMessage(endText);
-            BoardGraphical.SourceBoard.ClearPawns();
         }
         public void ChangeTurn()
         {
@@ -62,14 +62,11 @@ namespace Checkers
 
             if (!GameHasEnded)
             {
-                BoardForm.UpdateGameInfo();
-
                 if (ActualPlayer.Ai)
                 {
                     MakeAiMove();
                 }
             }
-            //show info about pawn color 
         }
 
         void BuildBoardForm()
@@ -124,10 +121,10 @@ namespace Checkers
             WaitNSeconds(1);
         }
 
-        void WaitNSeconds(int segundos)
+        void WaitNSeconds(int sec)
         {
-            if (segundos < 1) return;
-            DateTime _desired = DateTime.Now.AddSeconds(segundos);
+            if (sec < 1) return;
+            DateTime _desired = DateTime.Now.AddSeconds(sec);
             while (DateTime.Now < _desired)
             {
                 Application.DoEvents();

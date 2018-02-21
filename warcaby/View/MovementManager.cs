@@ -167,7 +167,10 @@ namespace Checkers
         }
         void UnhighlightControl()
         {
-            HighlitedControl.BackColor = BoardForm.DarkFieldsColor;
+            if (HighlitedControl != null)
+            {
+                HighlitedControl.BackColor = BoardForm.DarkFieldsColor;
+            }
             HighlitedControl = null;
             SelectedPawn = null;
         }

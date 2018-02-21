@@ -38,6 +38,12 @@ namespace Checkers
             PlayerGraphical actualPlayer = gameManager.ActualPlayer;
             nick_value.Text = actualPlayer.Player.Nick;
             pawnCount_value.Text = gameManager.BoardGraphical.SourceBoard.GetPawns(actualPlayer.Player).Count.ToString();
+            time_value.Text = actualPlayer.TimeLeft.ToString();
+        }
+
+        public void StartCountingTime()
+        {
+            timer1.Enabled = true;
         }
 
         public void AddToForm(Control control)
@@ -62,6 +68,20 @@ namespace Checkers
         private void restart_btn_Click(object sender, EventArgs e)
         {
             newGame_btn_Click(sender, e);
+        }
+
+        private void timer1_Tick(object sender, EventArgs e)
+        {
+            gameManager.ActualPlayer.TimeLeft = gameManager.ActualPlayer.TimeLeft.Add(new TimeSpan(0, 0, -1));
+
+            if (gameManager.ActualPlayer.TimeLeft <= TimeSpan.Zero)
+            {
+                timer1.Enabled = false;
+                gameManager.EndGame();
+                return;
+            }
+
+            UpdateGameInfo();
         }
     }
 }

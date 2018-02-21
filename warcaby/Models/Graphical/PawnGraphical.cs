@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using Checkers;
 using Checkers.Properties;
-using warcaby.Properties;
 
 namespace Checkers
 {
