@@ -35,6 +35,7 @@ namespace Checkers
 
         public void SetUpGame()
         {
+            GameHasEnded = false;
             ActualPlayer = Player1.PawnsColor == PawnColor.Light ? Player1 : Player2;
             BoardGraphical.ResetBoardState(Player1, Player2);
             MovementManager.UpdatePlayerMoves();

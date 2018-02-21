@@ -60,6 +60,7 @@
     <Compile Include="Working\SingleBeatsTest.cs" />
     <Compile Include="Working\LongestBeatPathDetectionTest.cs" />
     <Compile Include="Working\SpeculationTest.cs" />
+    <Compile Include="Working\TestFails.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\warcaby\Checkers.csproj">

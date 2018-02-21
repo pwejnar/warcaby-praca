@@ -20,7 +20,7 @@ namespace Checkers
         public static readonly int ControlSize = 60;
         public static readonly Color DarkFieldsColor = Color.FromArgb(90, 00, 00);
         public static readonly Color LightFieldsColor = Color.FromArgb(250, 200, 100);
-        private MainMenuForm ParentForm { get; set; }
+        public MainMenuForm ParentForm { get; }
 
         public BoardForm(PlayerGraphical pg1, PlayerGraphical pg2, MainMenuForm parentForm)
         {
@@ -53,7 +53,7 @@ namespace Checkers
         {
             ParentForm.Close();
         }
-        
+
         private void newGame_btn_Click(object sender, EventArgs e)
         {
             gameManager.SetUpGame();

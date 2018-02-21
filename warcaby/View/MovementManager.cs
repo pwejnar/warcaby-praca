@@ -107,6 +107,7 @@ namespace Checkers
                 {
                     IMakeBeat nextMove = multipleMove.GetNextMove();
                     MakeFormMove(nextMove);
+                    UpdatePlayerMoves();
 
                     if (multipleMove.FightMoves.Count == 0)
                     {
