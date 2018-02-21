@@ -138,5 +138,19 @@ namespace Tests.Working
             List<IMoveable> moves = await scope.FindMoves(p1, true, false);
             Assert.IsTrue(moves.Count == 4);
         }
+
+        [TestMethod]
+        public async Task Fail2()
+        {
+            Pawn mainPawn0 = new Pawn(p2, new Position(2, 7));
+            Pawn mainPawn1 = new Pawn(p2, new Position(4, 5));
+
+            Pawn enemy0 = new Pawn(p1, new Position(5, 4));
+            Pawn enemy1 = new Pawn(p1, new Position(5, 6));
+
+            board.PutOnBoard(mainPawn0, mainPawn1, enemy0, enemy1);
+            List<IMoveable> moves = await scope.FindMoves(p1, true, true);
+            Assert.IsTrue(moves.Count == 2);
+        }
     }
 }

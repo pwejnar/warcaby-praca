@@ -25,9 +25,13 @@ namespace Checkers
         {
             InitializeComponent();
             gameManager = new GameManager(this, pg1, pg2);
+            UpdateGameInfo();
+        }
 
-            nick1_lbl.Text = pg1.Player.Nick;
-            nick2_lbl.Text = pg2.Player.Nick;
+        public void UpdateGameInfo()
+        {
+            nick1_lbl.Text = gameManager.Player1.Player.Nick;
+            nick2_lbl.Text = gameManager.Player2.Player.Nick;
 
             PlayerGraphical actualPlayer = gameManager.ActualPlayer;
             nick_value.Text = actualPlayer.Player.Nick;

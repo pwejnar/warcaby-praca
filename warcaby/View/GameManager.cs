@@ -5,6 +5,10 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Checkers;
+using warcaby.AI;
+using warcaby.AI.Rating;
+using warcaby.Extensions;
+using warcaby.Movements.Fight;
 
 namespace Checkers
 {
@@ -18,6 +22,7 @@ namespace Checkers
 
         public PlayerGraphical ActualPlayer { get; set; }
         public MovementManager MovementManager { get; set; }
+        public bool GameHasEnded { get; set; }
 
         public GameManager(BoardForm form, PlayerGraphical player1, PlayerGraphical player2)    // every time white pawns start game
         {
@@ -33,7 +38,7 @@ namespace Checkers
         {
             BoardGraphical.SetUpPawns(Player1, Player2);
             MovementManager.UpdatePlayerMoves();
-            BoardGraphical.BuildBoard(Player1,Player2);
+            BoardGraphical.BuildBoard(Player1, Player2);
         }
 
         void BuildBoardForm()
@@ -44,37 +49,58 @@ namespace Checkers
         }
 
 
-        public void ChangeTurn()
+        public async void ChangeTurn()
         {
             ChangePlayer();
             MovementManager.UpdatePlayerMoves();
+            if (!GameHasEnded)
+            {
+                BoardForm.UpdateGameInfo();
 
-            //show info about player
+                if (ActualPlayer.Ai)
+                {
+                    Speculation spec = new Speculation(ActualPlayer.Player, GetOponent(ActualPlayer).Player, BoardGraphical.SourceBoard, 5);
+                    MoveAnalyze move = await spec.FindBestMove();
+
+                    MultipleFightMove multipleFightMove = move.Move as MultipleFightMove;
+
+                    if (multipleFightMove != null)
+                    {
+                        while (multipleFightMove.FightMoves.Count != 0)
+                        {
+                            MovementManager.MakeFormMove(multipleFightMove.GetNextMove());
+                        }
+                    }
+                
+                else
+                {
+                    MovementManager.MakeFormMove(move.Move);
+                }
+                ChangeTurn();
+            }
             //show info about pawn color 
-            //check if game has ended
-
-            //AI move???
-        }
-
-        void ChangePlayer()
-        {
-
-            if (ActualPlayer == Player1)
-            {
-                ActualPlayer = Player2;
-            }
-            else
-            {
-                ActualPlayer = Player1;
-            }
-        }
-
-        public void EndGame()
-        {
-            Player losePlayer = ActualPlayer.Player;
-            string endText = string.Format("Game over Player {0} lose!", losePlayer.Nick);
-            BoardForm.ShowMessage(endText);
-            BoardGraphical.SourceBoard.ClearPawns();
         }
     }
+
+    PlayerGraphical GetOponent(PlayerGraphical playerGraphical)
+    {
+        if (playerGraphical == Player1)
+            return Player2;
+        return Player1;
+    }
+
+    void ChangePlayer()
+    {
+        ActualPlayer = GetOponent(ActualPlayer);
+    }
+
+    public void EndGame()
+    {
+        Player losePlayer = ActualPlayer.Player;
+        string endText = string.Format("Game over Player {0} lose!", losePlayer.Nick);
+        GameHasEnded = true;
+        BoardForm.ShowMessage(endText);
+        BoardGraphical.SourceBoard.ClearPawns();
+    }
+}
 }

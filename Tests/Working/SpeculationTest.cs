@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Checkers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -173,6 +174,82 @@ namespace Tests.Working
             MoveAnalyze bestMove = await spec.FindBestMove();
 
             Position newPosition = new Position(4, 3);
+            Assert.IsTrue(bestMove.Move.PositionAfterMove.Equals(newPosition));
+        }
+
+        [TestMethod]
+        public async Task Fail1a()
+        {
+            Pawn pawn0 = new Pawn(p1, new Position(6, 7));
+            pawn0.KingState = true;
+
+            Pawn enemyPawn0 = new Pawn(p2, new Position(0, 1));
+            Pawn enemyPawn1 = new Pawn(p2, new Position(7, 4));
+            enemyPawn0.KingState = true;
+            enemyPawn1.KingState = true;
+
+            board.PutOnBoard(pawn0, enemyPawn0, enemyPawn1);
+
+            Speculation spec = new Speculation(p2, p1, board, 3);
+            MoveAnalyze bestMove = await spec.FindBestMove();
+
+            Position newPosition = new Position(5, 6);
+            Assert.IsTrue(bestMove.Move.PositionAfterMove.Equals(newPosition));
+        }
+
+        [TestMethod]
+        public async Task Fail1b()
+        {
+            Pawn pawn0 = new Pawn(p1, new Position(6, 7));
+            pawn0.KingState = true;
+
+            Pawn enemyPawn0 = new Pawn(p2, new Position(0, 1));
+            Pawn enemyPawn1 = new Pawn(p2, new Position(7, 4));
+            enemyPawn0.KingState = true;
+            enemyPawn1.KingState = true;
+
+            board.PutOnBoard(pawn0, enemyPawn0, enemyPawn1);
+
+            Speculation spec = new Speculation(p2, p1, board, 5);
+            MoveAnalyze bestMove = await spec.FindBestMove();
+            Position newPosition = new Position(5, 6);
+            Assert.IsTrue(bestMove.Move.PositionAfterMove.Equals(newPosition));
+        }
+
+
+
+        [TestMethod]
+        public async Task Fail2a()
+        {
+            Pawn mainPawn0 = new Pawn(p2, new Position(2, 7));
+            Pawn mainPawn1 = new Pawn(p2, new Position(3, 6));
+
+            Pawn enemy0 = new Pawn(p1, new Position(5, 4));
+            Pawn enemy1 = new Pawn(p1, new Position(5, 6));
+
+            board.PutOnBoard(mainPawn0, mainPawn1, enemy0, enemy1);
+
+            Speculation spec = new Speculation(p2, p1, board, 3);
+            MoveAnalyze bestMove = await spec.FindBestMove();
+            Position newPosition = new Position(4, 7);
+            Assert.IsTrue(bestMove.Move.PositionAfterMove.Equals(newPosition));
+        }
+
+        [TestMethod]
+        public async Task Fail2b()
+        {
+            Pawn mainPawn0 = new Pawn(p2, new Position(2, 7));
+            Pawn mainPawn1 = new Pawn(p2, new Position(3, 6));
+
+            Pawn enemy0 = new Pawn(p1, new Position(5, 4));
+            Pawn enemy1 = new Pawn(p1, new Position(5, 6));
+            Pawn enemy2 = new Pawn(p1, new Position(6, 7));
+
+            board.PutOnBoard(mainPawn0, mainPawn1, enemy0, enemy1, enemy2);
+
+            Speculation spec = new Speculation(p2, p1, board, 5);
+            MoveAnalyze bestMove = await spec.FindBestMove();
+            Position newPosition = new Position(4, 7);
             Assert.IsTrue(bestMove.Move.PositionAfterMove.Equals(newPosition));
         }
     }

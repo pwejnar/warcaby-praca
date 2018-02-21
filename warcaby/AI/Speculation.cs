@@ -28,13 +28,13 @@ namespace warcaby.AI
 
         public async Task<MoveAnalyze> FindBestMove()
         {
-
             if (Depth < 2)
             { throw new Exception("Deepth must be be value at least 2"); }
 
             Player actual = Player;
             Board currentBoard = Board;
-            List<MoveEffect> latestNodes = null;
+            List<MoveEffect> latestNodes = new List<MoveEffect>();
+            List<MoveEffect> shorterWays = new List<MoveEffect>();
 
             for (int i = 0; i < Depth; i++)
             {
@@ -42,7 +42,6 @@ namespace warcaby.AI
                 {
                     Scope scope = new Scope(currentBoard);
                     List<IMoveable> roots = await scope.FindMoves(Player);
-                    latestNodes = new List<MoveEffect>();
 
                     foreach (var root in roots)
                     {
@@ -60,6 +59,11 @@ namespace warcaby.AI
                         Scope scope1 = new Scope(root.EffectOfMove);
                         List<IMoveable> moves = await scope1.FindMoves(actual);
 
+                        if (moves.Count == 0)
+                        {
+                            shorterWays.Add(root);
+                        }
+
                         foreach (var move in moves)
                         {
                             newMoves.Add(new MoveEffect(root.InitMove, move.Simulate(root.EffectOfMove)));
@@ -73,6 +77,8 @@ namespace warcaby.AI
                     latestNodes = newMoves;
                 }
             }
+
+            latestNodes.AddRange(shorterWays);
             MoveAnalyze best = FindBestMove(latestNodes);
             return best;
         }
@@ -88,7 +94,6 @@ namespace warcaby.AI
 
             foreach (var grp in group)
             {
-
                 double? worseGroupRate = null;
 
                 foreach (MoveEffect moveEffect in grp.Value)

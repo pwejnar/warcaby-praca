@@ -127,18 +127,10 @@ namespace Checkers
                 MakeFormMove(selectedMove);
                 GameManager.ChangeTurn();
             }
-
-            //if (selectedMove is imak)
-            //{
-            //    selectedMove.PrepareMove(GameManager.BoardGraphical.SourceBoard);
-            //    GameManager.BoardGraphical.SwapControls(selectedMove.PositionBeforeMove, selectedMove.PositionAfterMove);
-            //    GameManager.ChangeTurn();
-            //}
-
             ClearMoveData();
         }
 
-        void MakeFormMove(IMoveable move)
+        public void MakeFormMove(IMoveable move)
         {
             move.PrepareMove(GameManager.BoardGraphical.SourceBoard);
             GameManager.BoardGraphical.SwapControls(move.PositionBeforeMove,
