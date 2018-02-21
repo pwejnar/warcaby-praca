@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Checkers;
+using warcaby.Properties;
 
 namespace Checkers
 {
@@ -41,6 +42,12 @@ namespace Checkers
             Extension.EndControlUpdate(this);
         }
 
+        public void ChangeToKingState(Position position)
+        {
+            PawnGraphical pawn = GetControl(position) as PawnGraphical;
+            pawn.Image = pawn.PawnColor == PawnColor.Dark ? Resources.darkKing : Resources.lightKing;
+        }
+
         public void RemovePawn(Pawn pawn)
         {
             Extension.BeginControlUpdate(this);
@@ -54,16 +61,18 @@ namespace Checkers
             Extension.EndControlUpdate(this);
         }
 
-        public void SetUpPawns(PlayerGraphical p1, PlayerGraphical p2)
+        public void ResetBoardState(PlayerGraphical p1, PlayerGraphical p2)
         {
-            SourceBoard.SetUpPawns(p1.Player);
-            SourceBoard.SetUpPawns(p2.Player);
+            SourceBoard.SetUpBoardWithFields();
+            SourceBoard.SetUpPlayerPawns(p1.Player);
+            SourceBoard.SetUpPlayerPawns(p2.Player);
+            RefreshBoardState(p1, p2);
         }
 
-        public void BuildBoard(PlayerGraphical p1, PlayerGraphical p2)
+        public void RefreshBoardState(PlayerGraphical p1, PlayerGraphical p2)
         {
             Extension.BeginControlUpdate(this);
-            ClearBoard();
+            Controls.Clear();
 
             TableLayoutPanel tlp = new TableLayoutPanel();
             TableLayoutControlCollection newControls = new TableLayoutControlCollection(tlp);
@@ -102,11 +111,6 @@ namespace Checkers
             Extension.EndControlUpdate(this);
         }
 
-        public void ClearBoard()
-        {
-            Controls.Clear();
-        }
-
         void FieldClicked(object sender, EventArgs e)
         {
             FieldGraphical fg = sender as FieldGraphical;
@@ -116,7 +120,7 @@ namespace Checkers
         void PawnClicked(object sender, EventArgs e)
         {
             PawnGraphical pg = sender as PawnGraphical;
-            MoveManager.SelectPawn(pg.GetPawn());
+            MoveManager.SelectPawn(pg.Pawn);
         }
     }
 }

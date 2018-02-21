@@ -122,7 +122,7 @@ namespace Checkers
 
         #region SetUp
 
-        void SetUpBoardWithFields()
+        public void SetUpBoardWithFields()
         {
             for (int i = 0; i < horizontalCellCount; i++)
             {
@@ -133,7 +133,7 @@ namespace Checkers
             }
         }
 
-        public void SetUpPawns(Player _player)
+        public void SetUpPlayerPawns(Player _player)
         {
             int min = 0;
             int blockade = 0;

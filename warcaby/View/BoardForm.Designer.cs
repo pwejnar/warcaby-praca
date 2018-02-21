@@ -32,7 +32,7 @@
             this.newGame_btn = new System.Windows.Forms.Button();
             this.nick2_lbl = new System.Windows.Forms.Label();
             this.nick1_lbl = new System.Windows.Forms.Label();
-            this.button1 = new System.Windows.Forms.Button();
+            this.restart_btn = new System.Windows.Forms.Button();
             this.nick_lbl = new System.Windows.Forms.Label();
             this.nick_value = new System.Windows.Forms.Label();
             this.pawnCount_value = new System.Windows.Forms.Label();
@@ -76,15 +76,16 @@
             this.nick1_lbl.TabIndex = 2;
             this.nick1_lbl.Text = "Player1";
             // 
-            // button1
+            // restart_btn
             // 
-            this.button1.BackColor = System.Drawing.Color.Transparent;
-            this.button1.Location = new System.Drawing.Point(669, 418);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(98, 23);
-            this.button1.TabIndex = 3;
-            this.button1.Text = "Restart";
-            this.button1.UseVisualStyleBackColor = false;
+            this.restart_btn.BackColor = System.Drawing.Color.Transparent;
+            this.restart_btn.Location = new System.Drawing.Point(669, 418);
+            this.restart_btn.Name = "restart_btn";
+            this.restart_btn.Size = new System.Drawing.Size(98, 23);
+            this.restart_btn.TabIndex = 3;
+            this.restart_btn.Text = "Restart";
+            this.restart_btn.UseVisualStyleBackColor = false;
+            this.restart_btn.Click += new System.EventHandler(this.restart_btn_Click);
             // 
             // nick_lbl
             // 
@@ -168,7 +169,7 @@
             this.Controls.Add(this.pawnCount_lbl);
             this.Controls.Add(this.nick_value);
             this.Controls.Add(this.nick_lbl);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.restart_btn);
             this.Controls.Add(this.nick1_lbl);
             this.Controls.Add(this.nick2_lbl);
             this.Controls.Add(this.newGame_btn);
@@ -189,7 +190,7 @@
         private System.Windows.Forms.Button newGame_btn;
         private System.Windows.Forms.Label nick2_lbl;
         private System.Windows.Forms.Label nick1_lbl;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button restart_btn;
         private System.Windows.Forms.Label nick_lbl;
         private System.Windows.Forms.Label nick_value;
         private System.Windows.Forms.Label pawnCount_value;

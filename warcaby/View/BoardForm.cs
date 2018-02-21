@@ -20,10 +20,12 @@ namespace Checkers
         public static readonly int ControlSize = 60;
         public static readonly Color DarkFieldsColor = Color.FromArgb(90, 00, 00);
         public static readonly Color LightFieldsColor = Color.FromArgb(250, 200, 100);
+        private MainMenuForm ParentForm { get; set; }
 
-        public BoardForm(PlayerGraphical pg1, PlayerGraphical pg2)
+        public BoardForm(PlayerGraphical pg1, PlayerGraphical pg2, MainMenuForm parentForm)
         {
             InitializeComponent();
+            this.ParentForm = parentForm;
             gameManager = new GameManager(this, pg1, pg2);
             UpdateGameInfo();
         }
@@ -42,19 +44,24 @@ namespace Checkers
         {
             this.Controls.Add(control);
         }
+        public void ShowMessage(string content)
+        {
+            MessageBox.Show(content);
+        }
 
+        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            ParentForm.Close();
+        }
+        
         private void newGame_btn_Click(object sender, EventArgs e)
         {
             gameManager.SetUpGame();
         }
 
-        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+        private void restart_btn_Click(object sender, EventArgs e)
         {
-        }
-
-        public void ShowMessage(string content)
-        {
-            MessageBox.Show(content);
+            newGame_btn_Click(sender, e);
         }
     }
 }

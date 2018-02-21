@@ -36,9 +36,9 @@ namespace Checkers
 
             PlayerGraphical pg0 = new PlayerGraphical(nickLeft, aiLeft_checkbox.Checked, pawnColorLeft, GameDirection.Down);
             PlayerGraphical pg1 = new PlayerGraphical(nickRight, aiRight_checkbox.Checked, pawnColorRight, GameDirection.Up);
-            BoardForm board = new BoardForm(pg0, pg1);
+            BoardForm board = new BoardForm(pg0, pg1,this);
 
-            //this.Hide();
+            this.Hide();
             board.Show();
         }
 

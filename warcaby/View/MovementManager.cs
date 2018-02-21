@@ -135,9 +135,15 @@ namespace Checkers
 
         void MakeFormMove(IMoveable move)
         {
+            bool kingState = SelectedPawn.KingState;
             move.PrepareMove(GameManager.BoardGraphical.SourceBoard);
             GameManager.BoardGraphical.SwapControls(move.PositionBeforeMove,
                 move.PositionAfterMove);
+
+            if (SelectedPawn.KingState != kingState)
+            {
+                GameManager.BoardGraphical.ChangeToKingState(move.PositionAfterMove);
+            }
 
             IGotPawnToBeat makeBeat = move as IGotPawnToBeat;
 

@@ -35,9 +35,9 @@ namespace Checkers
 
         public void SetUpGame()
         {
-            BoardGraphical.SetUpPawns(Player1, Player2);
+            ActualPlayer = Player1.PawnsColor == PawnColor.Light ? Player1 : Player2;
+            BoardGraphical.ResetBoardState(Player1, Player2);
             MovementManager.UpdatePlayerMoves();
-            BoardGraphical.BuildBoard(Player1, Player2);
             UpdateGameState();
         }
 
@@ -76,7 +76,7 @@ namespace Checkers
             MovementManager = new MovementManager(this);
             BoardGraphical = new BoardGraphical(new Board(8), MovementManager);
             BoardForm.AddToForm(BoardGraphical);
-            BoardGraphical.BuildBoard(Player1, Player2);
+            BoardGraphical.RefreshBoardState(Player1, Player2);
         }
 
         async void MakeAiMove()
