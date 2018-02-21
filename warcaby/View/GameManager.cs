@@ -85,24 +85,27 @@ namespace Checkers
             MoveAnalyze move = await spec.FindBestMove();
 
             Pawn selectedPawn = BoardGraphical.SourceBoard.GetControlInPosition(move.Move.PositionBeforeMove) as Pawn;
-            MovementManager.SelectPawn(selectedPawn);
             Field selectedField = BoardGraphical.SourceBoard.GetControlInPosition(move.Move.PositionAfterMove) as Field;
-
             MultipleFightMove multipleFightMove = move.Move as MultipleFightMove;
+
+            WaitForMove();
+            MovementManager.SelectPawn(selectedPawn);
 
             if (multipleFightMove != null)
             {
-                while (multipleFightMove.FightMoves.Count != 0)
+                IMakeBeat child = multipleFightMove.GetNextMove();
+
+                while (child != null)
                 {
                     WaitForMove(false);
-                    selectedField = BoardGraphical.SourceBoard.GetControlInPosition(move.Move.PositionAfterMove) as Field;
+                    selectedField = BoardGraphical.SourceBoard.GetControlInPosition(child.PositionAfterMove) as Field;
                     MovementManager.SelectField(selectedField);
+                    child = multipleFightMove.GetNextMove();
                 }
             }
-
             else
             {
-                WaitForMove();
+                WaitForMove(false);
                 MovementManager.SelectField(selectedField);
             }
         }
@@ -113,6 +116,7 @@ namespace Checkers
             {
                 Random random = new Random();
                 WaitNSeconds(random.Next(2, 4));
+                return;
             }
             WaitNSeconds(1);
         }
