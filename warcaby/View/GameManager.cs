@@ -29,9 +29,8 @@ namespace Checkers
             BoardForm = form;
             Player1 = player1;
             Player2 = player2;
-
             BuildBoardForm();
-            ActualPlayer = player1.PawnsColor == PawnColor.Light ? player1 : player2;
+            ActualPlayer = Player1.PawnsColor == PawnColor.Light ? Player1 : Player2;
         }
 
         public void SetUpGame()
@@ -39,6 +38,37 @@ namespace Checkers
             BoardGraphical.SetUpPawns(Player1, Player2);
             MovementManager.UpdatePlayerMoves();
             BoardGraphical.BuildBoard(Player1, Player2);
+            UpdateGameState();
+        }
+
+        public void EndGame()
+        {
+            Player losePlayer = ActualPlayer.Player;
+            string endText = string.Format("Game over Player {0} lose!", losePlayer.Nick);
+            GameHasEnded = true;
+            BoardForm.ShowMessage(endText);
+            BoardGraphical.SourceBoard.ClearPawns();
+        }
+        public void ChangeTurn()
+        {
+            ChangePlayer();
+            UpdateGameState();
+        }
+
+        void UpdateGameState()
+        {
+            MovementManager.UpdatePlayerMoves();
+
+            if (!GameHasEnded)
+            {
+                BoardForm.UpdateGameInfo();
+
+                if (ActualPlayer.Ai)
+                {
+                    MakeAiMove();
+                }
+            }
+            //show info about pawn color 
         }
 
         void BuildBoardForm()
@@ -46,61 +76,67 @@ namespace Checkers
             MovementManager = new MovementManager(this);
             BoardGraphical = new BoardGraphical(new Board(8), MovementManager);
             BoardForm.AddToForm(BoardGraphical);
+            BoardGraphical.BuildBoard(Player1, Player2);
         }
 
-
-        public async void ChangeTurn()
+        async void MakeAiMove()
         {
-            ChangePlayer();
-            MovementManager.UpdatePlayerMoves();
-            if (!GameHasEnded)
+            Speculation spec = new Speculation(ActualPlayer.Player, GetOponent(ActualPlayer).Player, BoardGraphical.SourceBoard, 3);
+            MoveAnalyze move = await spec.FindBestMove();
+
+            Pawn selectedPawn = BoardGraphical.SourceBoard.GetControlInPosition(move.Move.PositionBeforeMove) as Pawn;
+            MovementManager.SelectPawn(selectedPawn);
+            Field selectedField = BoardGraphical.SourceBoard.GetControlInPosition(move.Move.PositionAfterMove) as Field;
+
+            MultipleFightMove multipleFightMove = move.Move as MultipleFightMove;
+
+            if (multipleFightMove != null)
             {
-                BoardForm.UpdateGameInfo();
-
-                if (ActualPlayer.Ai)
+                while (multipleFightMove.FightMoves.Count != 0)
                 {
-                    Speculation spec = new Speculation(ActualPlayer.Player, GetOponent(ActualPlayer).Player, BoardGraphical.SourceBoard, 5);
-                    MoveAnalyze move = await spec.FindBestMove();
-
-                    MultipleFightMove multipleFightMove = move.Move as MultipleFightMove;
-
-                    if (multipleFightMove != null)
-                    {
-                        while (multipleFightMove.FightMoves.Count != 0)
-                        {
-                            MovementManager.MakeFormMove(multipleFightMove.GetNextMove());
-                        }
-                    }
-                
-                else
-                {
-                    MovementManager.MakeFormMove(move.Move);
+                    WaitForMove(false);
+                    selectedField = BoardGraphical.SourceBoard.GetControlInPosition(move.Move.PositionAfterMove) as Field;
+                    MovementManager.SelectField(selectedField);
                 }
-                ChangeTurn();
             }
-            //show info about pawn color 
+
+            else
+            {
+                WaitForMove();
+                MovementManager.SelectField(selectedField);
+            }
+        }
+
+        void WaitForMove(bool waitLong = true)
+        {
+            if (waitLong)
+            {
+                Random random = new Random();
+                WaitNSeconds(random.Next(2, 4));
+            }
+            WaitNSeconds(1);
+        }
+
+        void WaitNSeconds(int segundos)
+        {
+            if (segundos < 1) return;
+            DateTime _desired = DateTime.Now.AddSeconds(segundos);
+            while (DateTime.Now < _desired)
+            {
+                Application.DoEvents();
+            }
+        }
+
+        PlayerGraphical GetOponent(PlayerGraphical playerGraphical)
+        {
+            if (playerGraphical == Player1)
+                return Player2;
+            return Player1;
+        }
+
+        void ChangePlayer()
+        {
+            ActualPlayer = GetOponent(ActualPlayer);
         }
     }
-
-    PlayerGraphical GetOponent(PlayerGraphical playerGraphical)
-    {
-        if (playerGraphical == Player1)
-            return Player2;
-        return Player1;
-    }
-
-    void ChangePlayer()
-    {
-        ActualPlayer = GetOponent(ActualPlayer);
-    }
-
-    public void EndGame()
-    {
-        Player losePlayer = ActualPlayer.Player;
-        string endText = string.Format("Game over Player {0} lose!", losePlayer.Nick);
-        GameHasEnded = true;
-        BoardForm.ShowMessage(endText);
-        BoardGraphical.SourceBoard.ClearPawns();
-    }
-}
 }

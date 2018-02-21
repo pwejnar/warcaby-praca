@@ -49,9 +49,7 @@ namespace Checkers
 
         public void SelectPawn(Pawn pawn)
         {
-            PlayerGraphical actualPlayer = GameManager.ActualPlayer;
-
-            if (pawn.Player != actualPlayer.Player)
+            if (pawn.Player != GameManager.ActualPlayer.Player)
             {
                 GameManager.BoardForm.ShowMessage("It is not your turn");
                 return;
@@ -99,10 +97,8 @@ namespace Checkers
             return AvailablePlayerMoves.FirstOrDefault(obj => obj.IsMove(move));
         }
 
-        private void MakeMove(IMoveable selectedMove)
+        void MakeMove(IMoveable selectedMove)
         {
-            UnhighlightControl();
-
             if (selectedMove is IMakeBeat)
             {
                 MultipleFightMove multipleMove = selectedMove as MultipleFightMove;
@@ -112,25 +108,30 @@ namespace Checkers
                     MakeFormMove(multipleMove.GetNextMove());
                     if (multipleMove.FightMoves.Count == 0)
                     {
-                        GameManager.ChangeTurn();
+                        ChangeTurn();
                     }
                 }
-
                 else
                 {
                     MakeFormMove(selectedMove);
-                    GameManager.ChangeTurn();
+                    ChangeTurn();
                 }
             }
             else
             {
                 MakeFormMove(selectedMove);
-                GameManager.ChangeTurn();
+                ChangeTurn();
             }
+        }
+
+        void ChangeTurn()
+        {
+            UnhighlightControl();
+            GameManager.ChangeTurn();
             ClearMoveData();
         }
 
-        public void MakeFormMove(IMoveable move)
+        void MakeFormMove(IMoveable move)
         {
             move.PrepareMove(GameManager.BoardGraphical.SourceBoard);
             GameManager.BoardGraphical.SwapControls(move.PositionBeforeMove,
@@ -144,7 +145,7 @@ namespace Checkers
             }
         }
 
-        private void ClearMoveData()
+        void ClearMoveData()
         {
             SelectedPawn = null;
             SelectedField = null;
