@@ -30,7 +30,7 @@ namespace Checkers
 
             if (nickLeft.Length < 3 || nickRight.Length < 3)
             {
-                MessageBox.Show("Enter correct values.");
+                MessageBox.Show("Nick has to be longer than 3 characters.");
                 return;
             }
 

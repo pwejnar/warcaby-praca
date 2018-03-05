@@ -88,7 +88,7 @@
     <Compile Include="Extensions\IMakeBeat.cs" />
     <Compile Include="Extensions\IMoveable.cs" />
     <Compile Include="Movements\MultipleBeats\MultipleFightMove.cs" />
-    <Compile Include="View\GameManager.cs" />
+    <Compile Include="Managers\GameManager.cs" />
     <Compile Include="Extensions\IGotChildrens.cs" />
     <Compile Include="View\MainMenuForm.cs">
       <SubType>Form</SubType>
@@ -120,7 +120,7 @@
     <Compile Include="View\BoardForm.Designer.cs">
       <DependentUpon>BoardForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="View\MovementManager.cs" />
+    <Compile Include="Managers\MovementManager.cs" />
     <Compile Include="Movements\Normal\Move.cs" />
     <Compile Include="Models\Graphical\PawnGraphical.cs">
       <SubType>Component</SubType>

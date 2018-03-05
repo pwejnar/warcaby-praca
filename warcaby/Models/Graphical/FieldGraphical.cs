@@ -9,22 +9,17 @@ using Checkers;
 
 namespace Checkers
 {
-    class FieldGraphical : PictureBox
+  class FieldGraphical : PictureBox
+  {
+    public Field Field;
+
+    public FieldGraphical(Field field, Color fieldColor)
     {
-        private Field field;
-
-        public FieldGraphical(Field field, Color fieldColor)
-        {
-            this.field = field;
-            BackColor = fieldColor;
-            int controlSize = BoardForm.ControlSize;
-            Size = new Size(controlSize, controlSize);
-            this.Margin = new Padding(0);
-        }
-
-        public Field GetField()
-        {
-            return field;
-        }
+      this.Field = field;
+      BackColor = fieldColor;
+      int controlSize = BoardForm.ControlSize;
+      Size = new Size(controlSize, controlSize);
+      this.Margin = new Padding(0);
     }
+  }
 }
