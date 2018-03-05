@@ -14,12 +14,12 @@ namespace Checkers
   public class BoardGraphical : TableLayoutPanel
   {
     public Board SourceBoard { get; set; }
-    public MovementManager MoveManager { get; set; }
+    public List<FieldGraphical> Fields { get; set; }
+    public List<PawnGraphical> Pawns { get; set; }
 
-    public BoardGraphical(Board board, MovementManager moveManager)
+    public BoardGraphical(Board board)
     {
       SourceBoard = board;
-      this.MoveManager = moveManager;
       Location = new Point(100, 60);
       ColumnCount = board.GetSize();
       RowCount = board.GetSize();
@@ -48,16 +48,13 @@ namespace Checkers
       pawn.Image = pawn.PawnColor == PawnColor.Dark ? Resources.darkKing : Resources.lightKing;
     }
 
-    public void RemovePawn(Pawn pawn)
+    public void RemovePawn(Pawn pawn, FieldGraphical fieldToReplace)
     {
       Extension.BeginControlUpdate(this);
       Position position = pawn.Position;
       Controls.Remove(GetControl(position));
-      Field field = SourceBoard.GetControlInPosition(position) as Field;
-      FieldGraphical fieldGraphical = new FieldGraphical(field, BoardForm.DarkFieldsColor);
-      fieldGraphical.Click += new EventHandler(FieldClicked);
-      SetCellPosition(fieldGraphical, new TableLayoutPanelCellPosition(position.Column, position.Row));
-      this.Controls.Add(fieldGraphical);
+      SetCellPosition(fieldToReplace, new TableLayoutPanelCellPosition(position.Column, position.Row));
+      this.Controls.Add(fieldToReplace);
       Extension.EndControlUpdate(this);
     }
 
@@ -76,7 +73,8 @@ namespace Checkers
 
       TableLayoutPanel tlp = new TableLayoutPanel();
       TableLayoutControlCollection newControls = new TableLayoutControlCollection(tlp);
-
+      Fields = new List<FieldGraphical>();
+      Pawns = new List<PawnGraphical>();
 
       for (int i = 0; i < RowCount; i++)
       {
@@ -89,7 +87,7 @@ namespace Checkers
           {
             PawnColor color = p1.Player == pawn.Player ? p1.PawnsColor : p2.PawnsColor;
             PawnGraphical pawnGraphical = new PawnGraphical(pawn, color);
-            pawnGraphical.Click += new EventHandler(PawnClicked);
+            Pawns.Add(pawnGraphical);
             newControls.Add(pawnGraphical);
           }
 
@@ -97,7 +95,7 @@ namespace Checkers
           {
             Color color = (i + j) % 2 == 0 ? BoardForm.LightFieldsColor : BoardForm.DarkFieldsColor;
             FieldGraphical fieldGraphical = new FieldGraphical(field, color);
-            fieldGraphical.Click += new EventHandler(FieldClicked);
+            Fields.Add(fieldGraphical);
             newControls.Add(fieldGraphical);
           }
         }
@@ -109,18 +107,6 @@ namespace Checkers
       }
 
       Extension.EndControlUpdate(this);
-    }
-
-    void FieldClicked(object sender, EventArgs e)
-    {
-      FieldGraphical fg = sender as FieldGraphical;
-      MoveManager.SelectField(fg.Field);
-    }
-
-    void PawnClicked(object sender, EventArgs e)
-    {
-      PawnGraphical pg = sender as PawnGraphical;
-      MoveManager.SelectPawn(pg.Pawn);
     }
   }
 }

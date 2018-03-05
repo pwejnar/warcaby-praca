@@ -9,7 +9,7 @@ using Checkers;
 
 namespace Checkers
 {
-  class FieldGraphical : PictureBox
+  public class FieldGraphical : PictureBox
   {
     public Field Field;
 

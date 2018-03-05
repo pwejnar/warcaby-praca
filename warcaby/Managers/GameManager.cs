@@ -41,6 +41,9 @@ namespace Checkers
       Player2.RestartLeftTime();
       ActualPlayer = Player1.PawnsColor == PawnColor.Light ? Player1 : Player2;
       BoardGraphical.ResetBoardState(Player1, Player2);
+
+      MovementManager.InitializeClick(BoardGraphical.Pawns);
+      MovementManager.InitializeClick(BoardGraphical.Fields);
       MovementManager.UpdatePlayerMoves();
       BoardForm.StartCountingTime();
       UpdateGameState();
@@ -66,17 +69,17 @@ namespace Checkers
     }
     public void EndGame()
     {
-      Player losePlayer = ActualPlayer.Player;
+      ChangePlayer();
       GameHasEnded = true;
-      string endText = string.Format("Game over Player {0} lose!", losePlayer.Nick);
+      string endText = string.Format("Game over.\nPlayer {0} won!", ActualPlayer.Player.Nick);
       BoardForm.ShowMessage(endText);
       BoardForm.StopTimer();
     }
 
     void BuildBoardForm()
     {
+      BoardGraphical = new BoardGraphical(new Board(8));
       MovementManager = new MovementManager(this);
-      BoardGraphical = new BoardGraphical(new Board(8), MovementManager);
       BoardForm.AddToForm(BoardGraphical);
       BoardGraphical.RefreshBoardState(Player1, Player2);
     }

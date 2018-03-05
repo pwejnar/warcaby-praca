@@ -15,6 +15,7 @@ namespace Checkers
   public partial class BoardForm : Form
   {
     private GameManager gameManager;
+    private DateTime? gameStartedTime;
 
     //move to config 
     public static readonly int ControlSize = 60;
@@ -71,8 +72,19 @@ namespace Checkers
 
     private void newGame_btn_Click(object sender, EventArgs e)
     {
+      if (gameStartedTime != null)
+      {
+        TimeSpan timeDifference = (TimeSpan)(DateTime.Now - gameStartedTime);
+
+        if (timeDifference.TotalSeconds < 5)
+        {
+          return;
+        }
+      }
+
       newGame_btn.Text = "Restart";
       gameManager.SetUpGame();
+      gameStartedTime = DateTime.Now;
     }
 
     private void timer1_Tick(object sender, EventArgs e)

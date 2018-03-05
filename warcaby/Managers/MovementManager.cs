@@ -45,12 +45,51 @@ namespace Checkers
       }
     }
 
+    public void InitializeClick(Control control)
+    {
+      List<Control> controls = new List<Control>();
+      controls.Add(control);
+      InitializeClick(controls);
+    }
+
+    public void InitializeClick(IEnumerable<Control> controls)
+    {
+      foreach (var ctrl in controls)
+      {
+        if (ctrl is FieldGraphical)
+        {
+          ctrl.Click += FieldClicked;
+        }
+
+        else if (ctrl is PawnGraphical)
+        {
+          ctrl.Click += PawnClicked;
+        }
+      }
+    }
+
+    void FieldClicked(object sender, EventArgs e)
+    {
+      if (GameManager.ActualPlayer.Ai)
+        return;
+
+      FieldGraphical fg = sender as FieldGraphical;
+      SelectField(fg.Field);
+    }
+
+    void PawnClicked(object sender, EventArgs e)
+    {
+      if (GameManager.ActualPlayer.Ai)
+        return;
+      PawnGraphical pg = sender as PawnGraphical;
+      SelectPawn(pg.Pawn);
+    }
+
     public void SelectPawn(Pawn pawn)
     {
-
       if (GameManager.GameHasEnded)
       {
-        GameManager.BoardForm.ShowMessage("Game over.\n To continue playing restart game.");
+        GameManager.BoardForm.ShowMessage("Game over.\nTo continue playing restart game.");
         return;
       }
 
@@ -155,7 +194,10 @@ namespace Checkers
 
       if (makeBeat != null)
       {
-        GameManager.BoardGraphical.RemovePawn(makeBeat.PawnToBeat);
+        Position position = makeBeat.PawnToBeat.Position;
+        FieldGraphical fieldGraphical = new FieldGraphical(new Field(position), BoardForm.DarkFieldsColor);
+        InitializeClick(fieldGraphical);
+        GameManager.BoardGraphical.RemovePawn(makeBeat.PawnToBeat, fieldGraphical);
       }
     }
 
