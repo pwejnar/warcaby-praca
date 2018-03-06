@@ -13,7 +13,6 @@ namespace warcaby.AI
         public IMoveable InitMove { get; set; }
         public Board EffectOfMove { get; set; }
 
-        //pozbycie sie ruchow posrednich
         public MoveEffect(IMoveable initMove, Board boardState)
         {
             this.InitMove = initMove;

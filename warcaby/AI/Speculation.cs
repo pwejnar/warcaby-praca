@@ -16,8 +16,6 @@ namespace warcaby.AI
         public Board Board { get; set; }
         public int Depth { get; set; }
 
-
-
         public Speculation(Player player, Player enemy, Board board, int depth)
         {
             this.Player = player;
@@ -83,8 +81,6 @@ namespace warcaby.AI
             return best;
         }
 
-
-
         private MoveAnalyze FindBestMove(List<MoveEffect> moves)
         {
             double? worseRate = null;
@@ -120,15 +116,11 @@ namespace warcaby.AI
             return new MoveAnalyze(bestMove, (double)worseRate);
         }
 
-
         private Player ChangePlayer(Player player)
         {
             if (player == Player)
                 return Enemy;
             return Player;
-
-
         }
-
     }
 }

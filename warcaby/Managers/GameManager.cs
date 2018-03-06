@@ -78,10 +78,10 @@ namespace Checkers
 
     void BuildBoardForm()
     {
-      BoardGraphical = new BoardGraphical(new Board(8));
       MovementManager = new MovementManager(this);
+      BoardGraphical = new BoardGraphical(new Board(8), MovementManager);
       BoardForm.AddToForm(BoardGraphical);
-      BoardGraphical.RefreshBoardState(Player1, Player2);
+      BoardGraphical.SetBoardWithPawns(Player1, Player2);
     }
 
     async void MakeAiMove()

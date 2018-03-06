@@ -45,60 +45,42 @@ namespace Checkers
       }
     }
 
-    public void InitializeClick(Control control)
-    {
-      List<Control> controls = new List<Control>();
-      controls.Add(control);
-      InitializeClick(controls);
-    }
-
-    public void InitializeClick(IEnumerable<Control> controls)
-    {
-      foreach (var ctrl in controls)
-      {
-        if (ctrl is FieldGraphical)
-        {
-          ctrl.Click += FieldClicked;
-        }
-
-        else if (ctrl is PawnGraphical)
-        {
-          ctrl.Click += PawnClicked;
-        }
-      }
-    }
-
-    void FieldClicked(object sender, EventArgs e)
+    public void SelectControl(Control control)
     {
       if (GameManager.ActualPlayer.Ai)
         return;
 
-      FieldGraphical fg = sender as FieldGraphical;
-      SelectField(fg.Field);
-    }
-
-    void PawnClicked(object sender, EventArgs e)
-    {
-      if (GameManager.ActualPlayer.Ai)
-        return;
-      PawnGraphical pg = sender as PawnGraphical;
-      SelectPawn(pg.Pawn);
-    }
-
-    public void SelectPawn(Pawn pawn)
-    {
       if (GameManager.GameHasEnded)
       {
         GameManager.BoardForm.ShowMessage("Game over.\nTo continue playing restart game.");
         return;
       }
 
-      if (pawn.Player != GameManager.ActualPlayer.Player)
+      if (control is PawnGraphical)
       {
-        GameManager.BoardForm.ShowMessage("It is not your turn.");
-        return;
-      }
+        PawnGraphical pawnGraphical = (PawnGraphical)control;
 
+        if (pawnGraphical.Pawn.Player != GameManager.ActualPlayer.Player)
+        {
+          GameManager.BoardForm.ShowMessage("It is not your turn.");
+          return;
+        }
+
+        this.SelectPawn(pawnGraphical.Pawn);
+      }
+      else if (control is FieldGraphical)
+      {
+        if (SelectedPawn == null)
+        {
+          return;
+        }
+
+        this.SelectField(((FieldGraphical)control).Field);
+      }
+    }
+
+    public void SelectPawn(Pawn pawn)
+    {
       if (SelectedPawn != null && SelectedPawn == pawn)
       {
         UnhighlightControl();
@@ -117,18 +99,8 @@ namespace Checkers
 
     public void SelectField(Field field)
     {
-      if (SelectedPawn != null)
-      {
-        this.SelectedField = field;
-        IMoveable selectedMove = GetMove(SelectedPawn.Position, SelectedField.Position);
-
-        if (selectedMove == null)
-        {
-          GameManager.BoardForm.ShowMessage("This move in not allowed");
-          return;
-        }
-        MakeMove(selectedMove);
-      }
+      this.SelectedField = field;
+      MakeMove();
     }
 
     IMoveable GetMove(Position pos1, Position pos2)
@@ -141,8 +113,16 @@ namespace Checkers
       return AvailablePlayerMoves.FirstOrDefault(obj => obj.IsMove(move));
     }
 
-    void MakeMove(IMoveable selectedMove)
+    void MakeMove()
     {
+      IMoveable selectedMove = GetMove(SelectedPawn.Position, SelectedField.Position);
+
+      if (selectedMove == null)
+      {
+        GameManager.BoardForm.ShowMessage("This move in not allowed");
+        return;
+      }
+
       if (selectedMove is IMakeBeat)
       {
         MultipleFightMove multipleMove = selectedMove as MultipleFightMove;
@@ -195,9 +175,7 @@ namespace Checkers
       if (makeBeat != null)
       {
         Position position = makeBeat.PawnToBeat.Position;
-        FieldGraphical fieldGraphical = new FieldGraphical(new Field(position), BoardForm.DarkFieldsColor);
-        InitializeClick(fieldGraphical);
-        GameManager.BoardGraphical.RemovePawn(makeBeat.PawnToBeat, fieldGraphical);
+        GameManager.BoardGraphical.RemovePawn(makeBeat.PawnToBeat);
       }
     }
 
