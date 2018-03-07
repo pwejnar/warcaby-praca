@@ -89,7 +89,7 @@ namespace Checkers
       Pawn selectedPawn = BoardGraphical.SourceBoard.GetControlInPosition(move.Move.PositionBeforeMove) as Pawn;
       Field selectedField = BoardGraphical.SourceBoard.GetControlInPosition(move.Move.PositionAfterMove) as Field;
 
-      WaitForMove();
+      WaitForFindingMove();
       MovementManager.SelectPawn(selectedPawn);
 
       if (move.Move is MultipleFightMove)
@@ -99,7 +99,7 @@ namespace Checkers
 
         for (int i = 0; i < childCount; i++)
         {
-          WaitForMove(false);
+          WaitForFindingMove(false);
           IMakeBeat nextChild = multipleFightMove.GetNextMove();
           selectedField =
               BoardGraphical.SourceBoard.GetControlInPosition(nextChild.PositionAfterMove) as Field;
@@ -108,12 +108,12 @@ namespace Checkers
       }
       else
       {
-        WaitForMove(false);
+        WaitForFindingMove(false);
         MovementManager.SelectField(selectedField);
       }
     }
 
-    void WaitForMove(bool waitLong = true)
+    void WaitForFindingMove(bool waitLong = true)
     {
       if (waitLong)
       {
@@ -121,7 +121,7 @@ namespace Checkers
         WaitNSeconds(random.Next(2, 4));
         return;
       }
-      WaitNSeconds(0);
+      WaitNSeconds(1);
     }
 
     void WaitNSeconds(int sec)

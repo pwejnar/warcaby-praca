@@ -43,15 +43,18 @@ namespace Checkers
       this.SetCellPosition(field, new TableLayoutPanelCellPosition(pawnGraphical.Pawn.Position.Column, pawnGraphical.Pawn.Position.Row));
       Extension.EndControlUpdate(this);
 
-      //Position temp = pawnGraphical.Pawn.Position;
-      //pawnGraphical.Pawn.Position = fieldGraphical.Field.Position;
-      //fieldGraphical.Field.Position = temp;
+      bool oldKingState = pawnGraphical.Pawn.KingState;
+      SourceBoard.ChangePosition(pawnGraphical.Pawn, fieldGraphical.Field);
+
+      if (!oldKingState && pawnGraphical.Pawn.KingState)
+      {
+        ChangeToKingState(pawnGraphical);
+      }
     }
 
-    public void ChangeToKingState(Position position)
+    public void ChangeToKingState(PawnGraphical pawnGraphical)
     {
-      PawnGraphical pawn = GetControl(position) as PawnGraphical;
-      pawn.Image = pawn.PawnColor == PawnColor.Dark ? Resources.darkKing : Resources.lightKing;
+      pawnGraphical.Image = pawnGraphical.PawnColor == PawnColor.Dark ? Resources.darkKing : Resources.lightKing;
     }
 
     public void RemovePawn(Pawn pawn)
