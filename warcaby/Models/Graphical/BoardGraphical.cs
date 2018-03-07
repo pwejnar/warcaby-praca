@@ -14,13 +14,14 @@ namespace Checkers
   public class BoardGraphical : TableLayoutPanel
   {
     public Board SourceBoard { get; set; }
-    public List<FieldGraphical> Fields { get; set; }
-    public List<PawnGraphical> Pawns { get; set; }
+    public List<FieldGraphical> GraphicalFields { get; set; }
+    public List<PawnGraphical> GraphicalPawns { get; set; }
     public MovementManager MovementManager { get; set; }
 
     public BoardGraphical(Board board, MovementManager movementManager)
     {
       SourceBoard = board;
+      this.MovementManager = movementManager;
       Location = new Point(100, 60);
       ColumnCount = board.GetSize();
       RowCount = board.GetSize();
@@ -33,14 +34,18 @@ namespace Checkers
       return this.GetControlFromPosition(pos.Column, pos.Row);
     }
 
-    public void SwapControls(Position position1, Position position2)
+    public void ChangePosition(PawnGraphical pawnGraphical, FieldGraphical fieldGraphical)
     {
       Extension.BeginControlUpdate(this);
-      Control ctrl1 = GetControl(position1);
-      Control ctrl2 = GetControl(position2);
-      this.SetCellPosition(ctrl1, new TableLayoutPanelCellPosition(position2.Column, position2.Row));
-      this.SetCellPosition(ctrl2, new TableLayoutPanelCellPosition(position1.Column, position1.Row));
+      Control pawn = GetControl(pawnGraphical.Pawn.Position);
+      Control field = GetControl(fieldGraphical.Field.Position);
+      this.SetCellPosition(pawn, new TableLayoutPanelCellPosition(fieldGraphical.Field.Position.Column, fieldGraphical.Field.Position.Row));
+      this.SetCellPosition(field, new TableLayoutPanelCellPosition(pawnGraphical.Pawn.Position.Column, pawnGraphical.Pawn.Position.Row));
       Extension.EndControlUpdate(this);
+
+      //Position temp = pawnGraphical.Pawn.Position;
+      //pawnGraphical.Pawn.Position = fieldGraphical.Field.Position;
+      //fieldGraphical.Field.Position = temp;
     }
 
     public void ChangeToKingState(Position position)
@@ -72,7 +77,8 @@ namespace Checkers
     void CellClicked(object sender, EventArgs e)
     {
       TableLayoutPanelCellPosition cellPosition = this.GetPositionFromControl((Control)sender);
-      MovementManager.SelectControl((Control)sender);
+      Control controlFromPostion = GetControl(new Position(cellPosition.Row, cellPosition.Column));
+      MovementManager.SelectControl(controlFromPostion);
     }
 
     public void SetBoardWithPawns(PlayerGraphical p1, PlayerGraphical p2)
@@ -81,9 +87,8 @@ namespace Checkers
       Controls.Clear();
 
       TableLayoutPanel tlp = new TableLayoutPanel();
-      TableLayoutControlCollection newControls = new TableLayoutControlCollection(tlp);
-      Fields = new List<FieldGraphical>();
-      Pawns = new List<PawnGraphical>();
+      GraphicalFields = new List<FieldGraphical>();
+      GraphicalPawns = new List<PawnGraphical>();
 
       for (int i = 0; i < RowCount; i++)
       {
@@ -94,11 +99,22 @@ namespace Checkers
 
           if (pawn != null)
           {
-            PawnColor color = p1.Player == pawn.Player ? p1.PawnsColor : p2.PawnsColor;
-            PawnGraphical pawnGraphical = new PawnGraphical(pawn, color);
+            PawnGraphical pawnGraphical = null;
+
+            if (pawn.Player == p1.Player)
+            {
+              PawnColor color = p1.PawnsColor;
+              pawnGraphical = new PawnGraphical(pawn, p1, color);
+            }
+            else
+            {
+              PawnColor color = p2.PawnsColor;
+              pawnGraphical = new PawnGraphical(pawn, p2, color);
+            }
+
             pawnGraphical.Click += CellClicked;
-            Pawns.Add(pawnGraphical);
-            newControls.Add(pawnGraphical);
+            GraphicalPawns.Add(pawnGraphical);
+            this.Controls.Add(pawnGraphical);
           }
 
           else
@@ -106,17 +122,11 @@ namespace Checkers
             Color color = (i + j) % 2 == 0 ? BoardForm.LightFieldsColor : BoardForm.DarkFieldsColor;
             FieldGraphical fieldGraphical = new FieldGraphical(field, color);
             fieldGraphical.Click += CellClicked;
-            Fields.Add(fieldGraphical);
-            newControls.Add(fieldGraphical);
+            GraphicalFields.Add(fieldGraphical);
+            this.Controls.Add(fieldGraphical);
           }
         }
       }
-
-      foreach (var control in newControls)
-      {
-        this.Controls.Add((Control)(control));
-      }
-
       Extension.EndControlUpdate(this);
     }
   }

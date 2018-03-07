@@ -46,7 +46,6 @@ namespace warcaby.AI
                         latestNodes.Add(new MoveEffect(root, root.Simulate(currentBoard)));
                     }
                 }
-
                 else
                 {
                     List<MoveEffect> newMoves = new List<MoveEffect>();

@@ -41,10 +41,6 @@ namespace Checkers
       Player2.RestartLeftTime();
       ActualPlayer = Player1.PawnsColor == PawnColor.Light ? Player1 : Player2;
       BoardGraphical.ResetBoardState(Player1, Player2);
-
-      MovementManager.InitializeClick(BoardGraphical.Pawns);
-      MovementManager.InitializeClick(BoardGraphical.Fields);
-      MovementManager.UpdatePlayerMoves();
       BoardForm.StartCountingTime();
       UpdateGameState();
     }
@@ -67,11 +63,11 @@ namespace Checkers
         }
       }
     }
+
     public void EndGame()
     {
-      ChangePlayer();
       GameHasEnded = true;
-      string endText = string.Format("Game over.\nPlayer {0} won!", ActualPlayer.Player.Nick);
+      string endText = string.Format("Game over.\nPlayer {0} won!", GetOponent(ActualPlayer).Player.Nick);
       BoardForm.ShowMessage(endText);
       BoardForm.StopTimer();
     }
@@ -92,13 +88,13 @@ namespace Checkers
 
       Pawn selectedPawn = BoardGraphical.SourceBoard.GetControlInPosition(move.Move.PositionBeforeMove) as Pawn;
       Field selectedField = BoardGraphical.SourceBoard.GetControlInPosition(move.Move.PositionAfterMove) as Field;
-      MultipleFightMove multipleFightMove = move.Move as MultipleFightMove;
 
       WaitForMove();
       MovementManager.SelectPawn(selectedPawn);
 
-      if (multipleFightMove != null)
+      if (move.Move is MultipleFightMove)
       {
+        MultipleFightMove multipleFightMove = move.Move as MultipleFightMove;
         int childCount = multipleFightMove.FightMoves.Count;
 
         for (int i = 0; i < childCount; i++)
@@ -125,7 +121,7 @@ namespace Checkers
         WaitNSeconds(random.Next(2, 4));
         return;
       }
-      WaitNSeconds(1);
+      WaitNSeconds(0);
     }
 
     void WaitNSeconds(int sec)

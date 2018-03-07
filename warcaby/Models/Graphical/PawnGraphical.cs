@@ -19,10 +19,12 @@ namespace Checkers
   {
     public Pawn Pawn { get; set; }
     public PawnColor PawnColor { get; set; }
+    public PlayerGraphical GraphicalPlayer { get; set; }
 
-    public PawnGraphical(Pawn pawn, PawnColor color)
+    public PawnGraphical(Pawn pawn, PlayerGraphical owner, PawnColor color)
     {
       this.Pawn = pawn;
+      this.GraphicalPlayer = owner;
       this.PawnColor = color;
       this.Image = color == PawnColor.Dark ? Resources.darkPawn : Resources.lightPawn;
       this.SizeMode = PictureBoxSizeMode.StretchImage;

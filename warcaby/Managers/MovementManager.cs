@@ -29,7 +29,7 @@ namespace Checkers
 
     public async void UpdatePlayerMoves()
     {
-      if (GameManager.BoardGraphical.SourceBoard.GetPawns(GameManager.ActualPlayer.Player).Count == 0)
+      if (GameManager.BoardGraphical.GraphicalPawns.Where(x => x.GraphicalPlayer == GameManager.ActualPlayer).ToList().Count == 0)
       {
         GameManager.EndGame();
         return;
@@ -47,6 +47,7 @@ namespace Checkers
 
     public void SelectControl(Control control)
     {
+
       if (GameManager.ActualPlayer.Ai)
         return;
 
@@ -60,7 +61,7 @@ namespace Checkers
       {
         PawnGraphical pawnGraphical = (PawnGraphical)control;
 
-        if (pawnGraphical.Pawn.Player != GameManager.ActualPlayer.Player)
+        if (pawnGraphical.GraphicalPlayer != GameManager.ActualPlayer)
         {
           GameManager.BoardForm.ShowMessage("It is not your turn.");
           return;
@@ -100,7 +101,14 @@ namespace Checkers
     public void SelectField(Field field)
     {
       this.SelectedField = field;
-      MakeMove();
+      IMoveable selectedMove = GetMove(SelectedPawn.Position, SelectedField.Position);
+
+      if (selectedMove == null)
+      {
+        GameManager.BoardForm.ShowMessage("This move in not allowed");
+        return;
+      }
+      MakeMove(selectedMove);
     }
 
     IMoveable GetMove(Position pos1, Position pos2)
@@ -113,19 +121,11 @@ namespace Checkers
       return AvailablePlayerMoves.FirstOrDefault(obj => obj.IsMove(move));
     }
 
-    void MakeMove()
+    void MakeMove(IMoveable move)
     {
-      IMoveable selectedMove = GetMove(SelectedPawn.Position, SelectedField.Position);
-
-      if (selectedMove == null)
+      if (move is IMakeBeat)
       {
-        GameManager.BoardForm.ShowMessage("This move in not allowed");
-        return;
-      }
-
-      if (selectedMove is IMakeBeat)
-      {
-        MultipleFightMove multipleMove = selectedMove as MultipleFightMove;
+        MultipleFightMove multipleMove = move as MultipleFightMove;
 
         if (multipleMove != null)
         {
@@ -140,13 +140,13 @@ namespace Checkers
         }
         else
         {
-          MakeFormMove(selectedMove);
+          MakeFormMove(move);
           ChangeTurn();
         }
       }
       else
       {
-        MakeFormMove(selectedMove);
+        MakeFormMove(move);
         ChangeTurn();
       }
     }
@@ -162,8 +162,9 @@ namespace Checkers
     {
       bool kingState = SelectedPawn.KingState;
       move.PrepareMove(GameManager.BoardGraphical.SourceBoard);
-      GameManager.BoardGraphical.SwapControls(move.PositionBeforeMove,
-          move.PositionAfterMove);
+      PawnGraphical pawnGraphical = (PawnGraphical)GameManager.BoardGraphical.GetControl(move.PositionBeforeMove);
+      FieldGraphical fieldGraphical = (FieldGraphical)GameManager.BoardGraphical.GetControl(move.PositionAfterMove);
+      GameManager.BoardGraphical.ChangePosition(pawnGraphical, fieldGraphical);
 
       if (SelectedPawn.KingState != kingState)
       {
@@ -184,6 +185,7 @@ namespace Checkers
       SelectedPawn = null;
       SelectedField = null;
     }
+
     void HighlightControl(Control control)
     {
       if (control != null)

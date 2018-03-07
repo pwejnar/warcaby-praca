@@ -27,14 +27,6 @@ namespace Checkers
             return await FindMoves(playePawns, beatRequired, longestBeatsRequired);
         }
 
-        public async Task<List<IMoveable>> FindMoves(Pawn pawn, bool beatRequired = true, bool longestBeatsRequired = true)
-        {
-            List<Pawn> playerPawns = new List<Pawn>();
-            playerPawns.Add(pawn);
-            return await FindMoves(playerPawns, beatRequired, longestBeatsRequired);
-        }
-
-
         public async Task<List<IMoveable>> FindMoves(List<Pawn> pawns, bool beatRequired = true, bool longestBeatsRequired = true)
         {
             List<Task<List<IMoveable>>> moveTasks = new List<Task<List<IMoveable>>>();
@@ -95,8 +87,6 @@ namespace Checkers
             movesDetected.AddRange(normalMoves);
             return movesDetected;
         }
-
-
 
         public List<Task<List<IMakeBeat>>> FindFightMoves(Pawn pawn, List<MoveDirection> directions = null)
         {
