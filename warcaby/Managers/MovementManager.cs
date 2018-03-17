@@ -12,190 +12,181 @@ using warcaby.Movements.Fight;
 
 namespace Checkers
 {
-  public class MovementManager
-  {
-    public Pawn SelectedPawn { get; set; }
-    public List<IMoveable> AvailablePlayerMoves { get; set; }
-    public Field SelectedField { get; set; }
-    public GameManager GameManager { get; set; }
-    public Control HighlitedControl { get; set; }
-
-    public MovementManager(GameManager gameManager)
+    public class MovementManager
     {
-      this.GameManager = gameManager;
-      SelectedField = null;
-      SelectedPawn = null;
-    }
+        public PawnGraphical SelectedPawn { get; set; }
+        public List<IMoveable> AvailablePlayerMoves { get; set; }
+        public FieldGraphical SelectedField { get; set; }
+        public GameManager GameManager { get; set; }
 
-    public async void UpdatePlayerMoves()
-    {
-      if (GameManager.BoardGraphical.GraphicalPawns.Where(x => x.GraphicalPlayer == GameManager.ActualPlayer).ToList().Count == 0)
-      {
-        GameManager.EndGame();
-        return;
-      }
-
-      Scope scope = new Scope(GameManager.BoardGraphical.SourceBoard);
-      this.AvailablePlayerMoves = await scope.FindMoves(GameManager.ActualPlayer.Player);
-
-      if (AvailablePlayerMoves.Count == 0)
-      {
-        GameManager.EndGame();
-        return;
-      }
-    }
-
-    public void SelectControl(Control control)
-    {
-
-      if (GameManager.ActualPlayer.Ai)
-        return;
-
-      if (GameManager.GameHasEnded)
-      {
-        GameManager.BoardForm.ShowMessage("Game over.\nTo continue playing restart game.");
-        return;
-      }
-
-      if (control is PawnGraphical)
-      {
-        PawnGraphical pawnGraphical = (PawnGraphical)control;
-
-        if (pawnGraphical.GraphicalPlayer != GameManager.ActualPlayer)
+        public MovementManager(GameManager gameManager)
         {
-          GameManager.BoardForm.ShowMessage("It is not your turn.");
-          return;
+            this.GameManager = gameManager;
+            SelectedField = null;
+            SelectedPawn = null;
         }
 
-        this.SelectPawn(pawnGraphical.Pawn);
-      }
-      else if (control is FieldGraphical)
-      {
-        if (SelectedPawn == null)
+        public async void UpdatePlayerMoves()
         {
-          return;
+            Player actualPlayer = GameManager.ActualPlayer.Player;
+            List<Pawn> playerPawns = GameManager.BoardGraphical.SourceBoard.GetPawns(actualPlayer);
+
+            Scope scope = new Scope(GameManager.BoardGraphical.SourceBoard);
+            this.AvailablePlayerMoves = await scope.FindMoves(actualPlayer);
+
+            if (playerPawns.Count == 0 || AvailablePlayerMoves.Count == 0)
+            {
+                GameManager.EndGame();
+                return;
+            }
         }
 
-        this.SelectField(((FieldGraphical)control).Field);
-      }
-    }
-
-    public void SelectPawn(Pawn pawn)
-    {
-      if (SelectedPawn != null && SelectedPawn == pawn)
-      {
-        UnhighlightControl();
-        return;
-      }
-
-      if (HighlitedControl != null)
-      {
-        HighlitedControl.BackColor = BoardForm.DarkFieldsColor;
-        HighlitedControl = null;
-      }
-
-      this.SelectedPawn = pawn;
-      HighlightControl(GameManager.BoardGraphical.GetControl(pawn.Position));
-    }
-
-    public void SelectField(Field field)
-    {
-      this.SelectedField = field;
-      IMoveable selectedMove = GetMove(SelectedPawn.Position, SelectedField.Position);
-
-      if (selectedMove == null)
-      {
-        GameManager.BoardForm.ShowMessage("This move in not allowed");
-        return;
-      }
-      MakeMove(selectedMove);
-    }
-
-    IMoveable GetMove(Position pos1, Position pos2)
-    {
-      MoveDirection direction = Movement.GetDirection(pos1, pos2);
-      if (direction == MoveDirection.Undefined)
-        return null;
-
-      Move move = new Move(pos1, pos2, direction);
-      return AvailablePlayerMoves.FirstOrDefault(obj => obj.IsMove(move));
-    }
-
-    void MakeMove(IMoveable move)
-    {
-      if (move is IMakeBeat)
-      {
-        MultipleFightMove multipleMove = move as MultipleFightMove;
-
-        if (multipleMove != null)
+        public void SelectControl(Control control)
         {
-          IMakeBeat nextMove = multipleMove.GetNextMove();
-          MakeFormMove(nextMove);
-          UpdatePlayerMoves();
+            if (GameManager.ActualPlayer.Ai)
+                return;
 
-          if (multipleMove.FightMoves.Count == 0)
-          {
-            ChangeTurn();
-          }
+            if (GameManager.GameHasEnded)
+            {
+                GameManager.FormWithBoard.ShowMessage("Game over.\nTo continue playing restart game.");
+                return;
+            }
+
+            if (control is PawnGraphical)
+            {
+                PawnGraphical pawnGraphical = (PawnGraphical)control;
+
+                if (pawnGraphical.GraphicalPlayer != GameManager.ActualPlayer)
+                {
+                    GameManager.FormWithBoard.ShowMessage("It is not your turn.");
+                    return;
+                }
+
+                this.SelectPawn(pawnGraphical);
+            }
+            else if (control is FieldGraphical)
+            {
+                if (SelectedPawn == null)
+                {
+                    return;
+                }
+
+                this.SelectField(((FieldGraphical)control));
+            }
         }
-        else
+
+        public void SelectPawn(PawnGraphical pawn)
         {
-          MakeFormMove(move);
-          ChangeTurn();
+            if (SelectedPawn != null)
+            {
+                UnhighlightSelectedPawn();
+                if (SelectedPawn == pawn)
+                {
+                    SelectedPawn = null;
+                    return;
+                }
+            }
+
+            this.SelectedPawn = pawn;
+            HighlightSelectedPawn();
         }
-      }
-      else
-      {
-        MakeFormMove(move);
-        ChangeTurn();
-      }
-    }
 
-    void ChangeTurn()
-    {
-      UnhighlightControl();
-      GameManager.ChangeTurn();
-      ClearMoveData();
-    }
+        public void SelectField(FieldGraphical field)
+        {
+            this.SelectedField = field;
+            FindMove();
+        }
 
-    void MakeFormMove(IMoveable move)
-    {
-      bool kingState = SelectedPawn.KingState;
-      PawnGraphical pawnGraphical = (PawnGraphical)GameManager.BoardGraphical.GetControl(move.PositionBeforeMove);
-      FieldGraphical fieldGraphical = (FieldGraphical)GameManager.BoardGraphical.GetControl(move.PositionAfterMove);
-      GameManager.BoardGraphical.ChangePosition(pawnGraphical, fieldGraphical);
+        void FindMove()
+        {
+            Position pawnPosition = GameManager.BoardGraphical.GetPosition(SelectedPawn);
+            Position fielPosition = GameManager.BoardGraphical.GetPosition(SelectedField);
+            IMoveable selectedMove = GetMove(pawnPosition, fielPosition);
 
-      IGotPawnToBeat makeBeat = move as IGotPawnToBeat;
+            if (selectedMove == null)
+            {
+                GameManager.FormWithBoard.ShowMessage("This move in not allowed.");
+                return;
+            }
+            MakeMove(selectedMove);
+        }
 
-      if (makeBeat != null)
-      {
-        Position position = makeBeat.PawnToBeat.Position;
-        GameManager.BoardGraphical.RemovePawn(makeBeat.PawnToBeat);
-      }
-    }
+        IMoveable GetMove(Position pos1, Position pos2)
+        {
+            MoveDirection direction = Movement.GetDirection(pos1, pos2);
+            if (direction == MoveDirection.Undefined)
+                return null;
 
-    void ClearMoveData()
-    {
-      SelectedPawn = null;
-      SelectedField = null;
-    }
+            Move move = new Move(pos1, pos2, direction);
+            return AvailablePlayerMoves.FirstOrDefault(obj => obj.IsMove(move));
+        }
 
-    void HighlightControl(Control control)
-    {
-      if (control != null)
-      {
-        HighlitedControl = control;
-        HighlitedControl.BackColor = Color.Blue; //highlit selected pawn
-      }
+        void MakeMove(IMoveable move)
+        {
+            if (move is MultipleFightMove)
+            {
+                MultipleFightMove multipleMove = move as MultipleFightMove;
+                IMakeBeat nextMove = multipleMove.GetNextMove();
+                PrepareMove(nextMove);
+
+                if (multipleMove.FightMoves.Count > 0)
+                {
+                    AvailablePlayerMoves.Clear();
+                    AvailablePlayerMoves.Add(multipleMove);
+                }
+                else
+                {
+                    ChangeTurn();
+                }
+            }
+            else
+            {
+                PrepareMove(move);
+                ChangeTurn();
+            }
+        }
+
+        void PrepareMove(IMoveable move)
+        {
+            BoardGraphical board = GameManager.BoardGraphical;
+            PawnGraphical pawnGraphical = (PawnGraphical)board.GetControl(move.PositionBeforeMove);
+            FieldGraphical fieldGraphical = (FieldGraphical)board.GetControl(move.PositionAfterMove);
+
+            if (move is FightMove)
+            {
+                FightMove fightMove = move as FightMove;
+                board.ChangePosition(pawnGraphical, fieldGraphical);
+                GameManager.BoardGraphical.RemovePawn(fightMove.PawnToBeat.Position);
+                fightMove.MakeBeat(board.SourceBoard);
+            }
+            else
+            {
+                board.ChangePosition(pawnGraphical, fieldGraphical);
+                move.PrepareMove(board.SourceBoard);
+            }
+        }
+
+        void ChangeTurn()
+        {
+            UnhighlightSelectedPawn();
+            ClearMoveData();
+            GameManager.ChangeTurn();
+        }
+
+        void ClearMoveData()
+        {
+            SelectedPawn = null;
+            SelectedField = null;
+            AvailablePlayerMoves.Clear();
+        }
+
+        void HighlightSelectedPawn()
+        {
+            SelectedPawn.BackColor = Color.Blue;
+        }
+        void UnhighlightSelectedPawn()
+        {
+            SelectedPawn.BackColor = BoardForm.DarkFieldsColor;
+        }
     }
-    void UnhighlightControl()
-    {
-      if (HighlitedControl != null)
-      {
-        HighlitedControl.BackColor = BoardForm.DarkFieldsColor;
-      }
-      HighlitedControl = null;
-      SelectedPawn = null;
-    }
-  }
 }

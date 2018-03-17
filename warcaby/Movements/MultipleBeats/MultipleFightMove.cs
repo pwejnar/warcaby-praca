@@ -53,8 +53,6 @@ namespace warcaby.Movements.Fight
 
         public IMakeBeat GetNextMove()
         {
-            if (FightMoves.Count == 0)
-                return null;
             IMakeBeat makeBeat = FightMoves.First();
             FightMoves.Remove(makeBeat);
             return makeBeat;

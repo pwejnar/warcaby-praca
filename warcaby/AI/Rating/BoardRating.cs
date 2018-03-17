@@ -9,7 +9,7 @@ namespace Checkers
 {
   public class BoardRating
   {
-    public static double Rate(Board start, Board end, Player player)
+    public static int Rate(Board start, Board end, Player player)
     {
       int startBoardPawnsCount = start.GetPawns().Count(x => x.Player == player);
       int startBoardEnemyPawnsCount = start.GetPawns().Count(x => x.Player != player);
@@ -17,16 +17,6 @@ namespace Checkers
       int endBoardPawnsCount = end.GetPawns().Count(x => x.Player == player);
       int endBoardEnemyPawnsCount = end.GetPawns().Count(x => x.Player != player);
       
-      if (endBoardEnemyPawnsCount == 0)
-      {
-        return 1000;
-      }
-
-      if (endBoardPawnsCount == 0)
-      {
-        return -1000;
-      }
-
       int myDifference = (startBoardPawnsCount - startBoardEnemyPawnsCount);
       int enemyDifference = (endBoardPawnsCount - endBoardEnemyPawnsCount);
 
