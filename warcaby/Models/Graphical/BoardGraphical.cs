@@ -52,14 +52,7 @@ namespace Checkers
 
             pawnGraphical.Pawn.Position = fieldPosition;
             fieldGraphical.Field.Position = pawnPosition;
-
-            bool oldKingState = pawnGraphical.Pawn.KingState;
             SourceBoard.ChangePosition(pawnGraphical.Pawn, fieldGraphical.Field);
-
-            if (!oldKingState && pawnGraphical.Pawn.KingState)
-            {
-                ChangeToKingState(pawnGraphical);
-            }
         }
 
         public void ChangeToKingState(PawnGraphical pawnGraphical)

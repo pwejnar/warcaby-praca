@@ -148,21 +148,29 @@ namespace Checkers
 
         void PrepareMove(IMoveable move)
         {
-            BoardGraphical board = GameManager.BoardGraphical;
-            PawnGraphical pawnGraphical = (PawnGraphical)board.GetControl(move.PositionBeforeMove);
-            FieldGraphical fieldGraphical = (FieldGraphical)board.GetControl(move.PositionAfterMove);
+            BoardGraphical boardGraphical = GameManager.BoardGraphical;
+            PawnGraphical pawnGraphical = (PawnGraphical)boardGraphical.GetControl(move.PositionBeforeMove);
+            FieldGraphical fieldGraphical = (FieldGraphical)boardGraphical.GetControl(move.PositionAfterMove);
+            boardGraphical.ChangePosition(pawnGraphical, fieldGraphical);
+
+            bool kingStateBeforeMove = pawnGraphical.Pawn.KingState;
 
             if (move is FightMove)
             {
                 FightMove fightMove = move as FightMove;
-                board.ChangePosition(pawnGraphical, fieldGraphical);
-                GameManager.BoardGraphical.RemovePawn(fightMove.PawnToBeat.Position);
-                fightMove.MakeBeat(board.SourceBoard);
+                boardGraphical.RemovePawn(fightMove.PawnToBeat.Position);
+                fightMove.MakeBeat(boardGraphical.SourceBoard);
             }
             else
             {
-                board.ChangePosition(pawnGraphical, fieldGraphical);
-                move.PrepareMove(board.SourceBoard);
+                move.PrepareMove(boardGraphical.SourceBoard);
+            }
+
+            bool kingStateAfterMove = pawnGraphical.Pawn.KingState;
+
+            if (kingStateBeforeMove != kingStateAfterMove)
+            {
+                boardGraphical.ChangeToKingState(pawnGraphical);
             }
         }
 
