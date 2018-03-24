@@ -68,8 +68,9 @@ namespace Checkers
         {
             GameHasEnded = true;
             string endText = string.Format("Game over.\nPlayer {0} won!", GetOponent(ActualPlayer).Player.Nick);
+            FormWithBoard.StopTimer(); 
             FormWithBoard.ShowMessage(endText);
-            FormWithBoard.StopTimer();
+            
         }
 
         void BuildBoardForm()
