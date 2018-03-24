@@ -32,7 +32,7 @@ namespace Checkers
             List<Pawn> playerPawns = GameManager.BoardGraphical.SourceBoard.GetPawns(actualPlayer);
 
             Scope scope = new Scope(GameManager.BoardGraphical.SourceBoard);
-            this.AvailablePlayerMoves = await scope.FindMoves(actualPlayer);
+            this.AvailablePlayerMoves = await scope.FindMoves(playerPawns);
 
             if (playerPawns.Count == 0 || AvailablePlayerMoves.Count == 0)
             {
@@ -71,7 +71,7 @@ namespace Checkers
                     return;
                 }
 
-                this.SelectField(((FieldGraphical)control));
+                this.SelectField((FieldGraphical)control);
             }
         }
 
@@ -158,8 +158,8 @@ namespace Checkers
             if (move is FightMove)
             {
                 FightMove fightMove = move as FightMove;
-                boardGraphical.RemovePawn(fightMove.PawnToBeat.Position);
                 fightMove.MakeBeat(boardGraphical.SourceBoard);
+                boardGraphical.RemovePawn(fightMove.PawnToBeat.Position);
             }
             else
             {

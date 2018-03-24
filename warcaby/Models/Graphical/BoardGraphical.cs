@@ -49,10 +49,6 @@ namespace Checkers
             this.SetCellPosition(pawn, new TableLayoutPanelCellPosition(fieldPosition.Column, fieldPosition.Row));
             this.SetCellPosition(field, new TableLayoutPanelCellPosition(pawnPosition.Column, pawnPosition.Row));
             Extension.EndControlUpdate(this);
-
-            pawnGraphical.Pawn.Position = fieldPosition;
-            fieldGraphical.Field.Position = pawnPosition;
-            SourceBoard.ChangePosition(pawnGraphical.Pawn, fieldGraphical.Field);
         }
 
         public void ChangeToKingState(PawnGraphical pawnGraphical)
@@ -65,9 +61,9 @@ namespace Checkers
             Extension.BeginControlUpdate(this);
             Controls.Remove(GetControl(pawnToBeatPosition));
             FieldGraphical fieldGraphical = new FieldGraphical(new Field(pawnToBeatPosition), BoardForm.DarkFieldsColor);
-            fieldGraphical.Click += CellClicked;
-            this.Controls.Add(fieldGraphical);
             SetCellPosition(fieldGraphical, new TableLayoutPanelCellPosition(pawnToBeatPosition.Column, pawnToBeatPosition.Row));
+            this.Controls.Add(fieldGraphical);
+            fieldGraphical.Click += CellClicked;
             Extension.EndControlUpdate(this);
         }
 
